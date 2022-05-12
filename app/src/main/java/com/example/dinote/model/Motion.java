@@ -1,11 +1,13 @@
 package com.example.dinote.model;
 
-public class Motion {
+import java.io.Serializable;
+
+public class Motion implements Serializable {
     private int id;
     private int imgMotion;
-    private String motion;
+    private int motion;
 
-    public Motion(int id, int imgMotion, String motion) {
+    public Motion(int id, int imgMotion, int motion) {
         this.id = id;
         this.imgMotion = imgMotion;
         this.motion = motion;
@@ -27,11 +29,11 @@ public class Motion {
         this.imgMotion = imgMotion;
     }
 
-    public String getMotion() {
+    public int getMotion() {
         return motion;
     }
 
-    public void setMotion(String motion) {
+    public void setMotion(int motion) {
         this.motion = motion;
     }
 }

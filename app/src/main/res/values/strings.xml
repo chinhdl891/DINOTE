@@ -13,4 +13,13 @@
     <string name="close">Close Navigation Drawable</string>
     <string name="txtSave">Lưu</string>
     <string name="item_motion">item_motion</string>
+    <string name="funny">Vui vẻ</string>
+    <string name="happy">Hạnh phúc</string>
+    <string name="Cute">Đáng yêu</string>
+    <string name="cool">Ngầu</string>
+    <string name="wow">Kinh ngạc</string>
+    <string name="diseases">Bệnh tật</string>
+    <string name="noninteresting">Nhạt</string>
+    <string name="hate">Tức Giận</string>
+    <string name="add_tag">Bấm thêm thẻ</string>
 </resources>

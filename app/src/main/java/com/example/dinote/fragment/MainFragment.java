@@ -61,7 +61,7 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.profile_image) {
-            mainActivity.loadFragment(new CreateDenoteFragment(), Constant.CREATE_DINOTE_FRAGMENT);
+            mainActivity.loadFragment(new CreateDinoteFragment(), Constant.CREATE_DINOTE_FRAGMENT);
             mainActivity.getTopFragment();
         }
     }
