@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Dinote</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_account">Tài khoản</string>
+    <string name="text_login">Đăng nhập</string>
+    <string name="text_theme">Chủ đề</string>
+    <string name="text_like">Yêu thích</string>
+    <string name="text_lock">Khóa ứng dụng</string>
+    <string name="text_remind">Nhắc Nhở</string>
+    <string name="text_rate">Thích ứng dụng</string>
+    <string name="text_tag">Thẻ gần đây</string>
+    <string name="open">Open Navigaton Drawable</string>
+    <string name="close">Close Navigation Drawable</string>
+    <string name="txtSave">Lưu</string>
+    <string name="item_motion">item_motion</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/ic_menu_theme"
+            android:id="@+id/item_menu_theme"
+            android:title="@string/text_theme" />
+        <item
+            android:icon="@drawable/ic_menu_heart"
+            android:id="@+id/item_menu_love"
+            android:title="@string/text_like" />
+        <item android:id="@+id/item_menu_lock_app"
+            android:icon="@drawable/ic_menu_lock_app"
+            android:title="@string/text_lock"/>
+        <item android:id="@+id/item_menu_remind"
+            android:icon="@drawable/ic_menu_remind"
+            android:title="@string/text_remind"/>
+        <item android:id="@+id/item_menu_export"
+            android:icon="@drawable/ic_menu_export"
+            android:title="Xuất tệp"/>
+        <item android:id="@+id/item_menu_rate"
+            android:icon="@drawable/ic_menu_rate"
+            android:title="@string/text_rate"/>
+        <item android:id="@+id/item_menu_tag"
+            android:icon="@drawable/ic_menu_tag"
+            android:title="@string/text_tag"/>
+    </group>
+</menu>

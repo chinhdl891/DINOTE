@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="CreateDenoteViewModel"
+            type="com.example.dinote.viewmodel.CreateDenoteViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.CreateDenoteFragment">
+
+        <LinearLayout
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/lnl_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imv_create_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_cancel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.dinote.view.TextViewSemiBold
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:gravity="center"
+                android:text="Dinote Lite"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/cardView"
+                app:layout_constraintHorizontal_bias="0.483"
+
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_create_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#806EFF"
+                    android:gravity="center"
+                    android:paddingStart="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/txtSave"
+                    android:textColor="@color/white" />
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+        <EditText
+
+            android:id="@+id/tv_create_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="80dp"
+          android:background="@android:color/transparent"
+            android:hint="Nhập tiêu đề"
+            android:padding="10dp"
+            android:text="@{CreateDenoteViewModel.title}"
+            app:layout_constraintTop_toBottomOf="@+id/lnl_option" />
+
+
+        <LinearLayout
+            android:id="@+id/lnl_crate_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/coner_view"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date_selection">
+
+            <ImageView
+                android:id="@+id/imv_create_motion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_fun" />
+
+            <EditText
+                android:id="@+id/edt_create_status"
+                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="Vui vẻ" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnl_create_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/coner_view"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:paddingStart="5dp"
+            app:layout_constraintStart_toEndOf="@+id/lnl_crate_status"
+            app:layout_constraintTop_toTopOf="@+id/lnl_crate_status">
+
+            <ImageView
+                android:layout_marginEnd="5dp"
+                android:id="@+id/imv_create_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_tag" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Bấm thêm thẻ" />
+
+        </LinearLayout>
+
+        <EditText
+            android:padding="12dp"
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/margin_start"
+            android:layout_marginBottom="@dimen/margin_start"
+            android:background="@drawable/coner_view"
+            android:gravity="top"
+            android:text="@{CreateDenoteViewModel.content}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnl_create_tag"
+            tools:layout_editor_absoluteX="24dp" />
+
+
+        <LinearLayout
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_start"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/imv_create_text_custom_text"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_edit"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_pen" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_love"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_love" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_tag"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_tag" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_remove"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_drop" />
+        </LinearLayout>
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_date_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="25dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="10dp"
+            android:hint="08/09/2022"
+            android:padding="10dp"
+            app:drawableEndCompat="@drawable/ic_baseline_keyboard_arrow_down_24"
+            app:layout_constraintBottom_toTopOf="@+id/lnl_crate_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_create_title" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
