@@ -61,7 +61,7 @@ public class MotionAdapter extends RecyclerView.Adapter<MotionAdapter.MotionView
 
             imvItemMotion = itemView.findViewById(R.id.imv_item_motion_emoji);
             tvItemMotionName = itemView.findViewById(R.id.tv_item_motion_text);
-            itemView.setOnClickListener(this::onClick);
+            itemView.setOnClickListener(this);
             itemView.setTag(R.string.item_motion);
 
         }

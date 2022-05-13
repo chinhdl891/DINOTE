@@ -1,37 +1,41 @@
 package com.example.dinote.fragment;
 
-import android.app.Activity;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dinote.R;
-import com.example.dinote.activity.DialogActivityMotion;
-import com.example.dinote.activity.MainActivity;
+import com.example.dinote.adapter.MotionAdapter;
 import com.example.dinote.base.BaseFragment;
 import com.example.dinote.databinding.FragmentCreateDinoteBinding;
 import com.example.dinote.interfaces.SendMotionListener;
 import com.example.dinote.model.Motion;
-import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.EditTextUtils;
 import com.example.dinote.utils.ReDesign;
+import com.example.dinote.viewmodel.MotionViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 
-public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, SendMotionListener {
+public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener {
 
-    private static final String TAG = CreateDinoteFragment.class.getSimpleName();
     private Motion mMotion;
 
     @Override
@@ -48,7 +52,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-             mMotion = (Motion) getArguments().getSerializable("obj_emoji");
+            mMotion = (Motion) getArguments().getSerializable("obj_emoji");
 
         }
     }
@@ -61,6 +65,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     @Override
     protected void resizeViews() {
+
         ReDesign.resizeImage(mBinding.imvCreateCancel, 64, 64);
         ReDesign.resizeImage(mBinding.imvCreateTextCustomText, 64, 64);
         ReDesign.resizeImage(mBinding.imvCreateTextEdit, 64, 64);
@@ -85,11 +90,14 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     @Override
     protected void setView() {
         EditTextUtils.disableEditText(mBinding.edtCreateStatus);
-        if (mMotion!=null){
+        if (mMotion != null) {
             mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
             mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
         }
+
+
     }
+
 
     @Override
     public void onClick(View view) {
@@ -97,14 +105,47 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
             selectDate();
         } else if (view == mBinding.lnlCrateStatus) {
-            Intent intent = new Intent(mContext, DialogActivityMotion.class);
-
-            startActivityForResult(intent, Constant.REQUEST_MOTION);
+            getParamView(mBinding.lnlCrateStatus);
+            getPoint(mBinding.lnlCrateStatus);
+            if (getActivity() != null) {
+                onDiaLog(getActivity());
+            }
+//            Intent intent = new Intent(mContext, DialogActivityMotion.class);
+//            startActivityForResult(intent, Constant.REQUEST_MOTION);
         } else if (view.getId() == R.id.imv_create_cancel) {
             getActivity().onBackPressed();
         }
 
     }
+
+    private void onDiaLog(@NonNull FragmentActivity context) {
+        LinearLayout viewGroup = context.findViewById(R.id.cv_popup_motion);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.dialog_motion_pop_up, viewGroup, true);
+        RecyclerView rcvMotion = layout.findViewById(R.id.rcv_pop_up_motion);
+        rcvMotion.setLayoutManager(new GridLayoutManager(context, 3));
+        MotionAdapter motionAdapter = new MotionAdapter();
+        motionAdapter.setMotionList(MotionViewModel.motionList());
+        rcvMotion.setAdapter(motionAdapter);
+        motionAdapter.setEditMotionListener(this);
+
+        final PopupWindow popup = new PopupWindow(context);
+        popup.setContentView(layout);
+        popup.setWidth((int) (0.8 * widthDisplay));
+        popup.setHeight((int) (0.4 * heightDisplay));
+        popup.setFocusable(true);
+
+        int OFFSET_Y = 50;
+
+
+        popup.setBackgroundDrawable(new BitmapDrawable());
+
+
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX*1.3), (int) (pointViewY*1.1));
+
+
+    }
+
 
     private void selectDate() {
         Date date = new Date();
@@ -126,18 +167,16 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         datePickerDialog.show();
     }
 
+//    public void handleEmotion(Motion mMotion) {
+//        mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
+//        mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
+//    }
+//
     @Override
-    public void onSendMotionData(Motion motion) {
-        if (motion != null) {
-            mBinding.imvCreateMotion.setImageResource(motion.getImgMotion());
-            mBinding.edtCreateStatus.setText(motion.getMotion());
-        }
+    public void onSelectMotion(Motion motion) {
+        mBinding.imvCreateMotion.setImageResource(motion.getImgMotion());
+        mBinding.edtCreateStatus.setText(getString(motion.getMotion()));
+
+
     }
-
-    public void handleEmotion(Motion mMotion){
-        mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
-        mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
-    }
-
-
 }

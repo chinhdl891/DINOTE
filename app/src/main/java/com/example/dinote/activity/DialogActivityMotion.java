@@ -30,7 +30,6 @@ public class DialogActivityMotion extends AppCompatActivity implements MotionAda
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityDialogMotionBinding motionBinding = DataBindingUtil.setContentView(this, R.layout.activity_dialog_motion);
-
         MotionViewModel viewModel = new ViewModelProvider(this).get(MotionViewModel.class);
         MotionAdapter motionAdapter = new MotionAdapter();
         motionBinding.rcvMotionSelect.setLayoutManager(new GridLayoutManager(this, 3));

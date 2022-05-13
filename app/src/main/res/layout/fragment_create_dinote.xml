@@ -22,7 +22,7 @@
             android:id="@+id/lnl_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="10"
@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="80dp"
           android:background="@android:color/transparent"
             android:hint="Nhập tiêu đề"
@@ -93,6 +93,8 @@
 
 
         <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/lnl_crate_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,38 +124,45 @@
 
         </LinearLayout>
 
-        <ScrollView
+        <HorizontalScrollView
             android:id="@+id/lnl_create_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:background=""
             android:paddingStart="5dp"
             app:layout_constraintStart_toEndOf="@+id/lnl_crate_status"
             app:layout_constraintTop_toTopOf="@+id/lnl_crate_status">
 
-           <LinearLayout
-               android:gravity="center"
-               android:orientation="horizontal"
-               android:padding="8dp"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content">
-               <ImageView
-                   android:layout_marginEnd="5dp"
-                   android:id="@+id/imv_create_tag"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:src="@drawable/ic_tag" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_backgruond"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-               <EditText
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:background="@android:color/transparent"
-                   android:hint="Bấm thêm thẻ" />
+                <ImageView
 
-           </LinearLayout>
+                    android:id="@+id/imv_create_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_tag"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </ScrollView>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Bấm thêm thẻ"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imv_create_tag" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <EditText
             android:padding="12dp"

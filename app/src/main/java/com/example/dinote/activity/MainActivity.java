@@ -131,11 +131,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 //            bundle.putSerializable("obj_emoji",motion);
 //            createDinoteFragment.setArguments(bundle);
 //            loadFragment(createDinoteFragment,Constant.CREATE_DINOTE_FRAGMENT);
-            int sizeFragment = getSupportFragmentManager().getFragments().size();
-            Fragment f = getSupportFragmentManager().getFragments().get(sizeFragment - 1);
-            if (f != null && f instanceof CreateDinoteFragment){
-                ((CreateDinoteFragment) f).handleEmotion(motion);
-            }
+//            int sizeFragment = getSupportFragmentManager().getFragments().size();
+//            Fragment f = getSupportFragmentManager().getFragments().get(sizeFragment - 1);
+//            if (f != null && f instanceof CreateDinoteFragment){
+//                ((CreateDinoteFragment) f).handleEmotion(motion);
+//            }
 
         }
 
