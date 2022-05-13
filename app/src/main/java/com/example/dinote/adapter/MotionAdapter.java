@@ -1,6 +1,5 @@
 package com.example.dinote.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,11 @@ import java.util.List;
 
 public class MotionAdapter extends RecyclerView.Adapter<MotionAdapter.MotionViewHolder> {
     private List<Motion> motionList;
+    private EditMotionListener editMotionListener;
+
+    public void setEditMotionListener(EditMotionListener editMotionListener) {
+        this.editMotionListener = editMotionListener;
+    }
 
     public void setMotionList(List<Motion> motionList) {
         this.motionList = motionList;
@@ -57,7 +61,7 @@ public class MotionAdapter extends RecyclerView.Adapter<MotionAdapter.MotionView
 
             imvItemMotion = itemView.findViewById(R.id.imv_item_motion_emoji);
             tvItemMotionName = itemView.findViewById(R.id.tv_item_motion_text);
-            itemView.setOnClickListener(this::onClick);
+            itemView.setOnClickListener(this);
             itemView.setTag(R.string.item_motion);
 
         }
@@ -65,17 +69,14 @@ public class MotionAdapter extends RecyclerView.Adapter<MotionAdapter.MotionView
         @Override
         public void onClick(View view) {
             if (view.getTag().equals(R.string.item_motion)) {
-                Log.e("aaa", "onClick: " + getLayoutPosition());
+                editMotionListener.onSelectMotion(motionList.get(getLayoutPosition()));
             }
         }
     }
 
-    public interface EditMotion{
-        void onSelectMotion();
-
-
+    public interface EditMotionListener {
+        void onSelectMotion(Motion motion);
     }
-
 
 
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout
+    android:id="@+id/lnl_add_tag"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginEnd="5dp"
+            android:id="@+id/imv_add_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_tag" />
+
+        <EditText
+            android:id="@+id/edt_add_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="@string/add_tag" />
+
+    </LinearLayout>

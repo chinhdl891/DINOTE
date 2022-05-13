@@ -1,13 +1,14 @@
 package com.example.dinote.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -18,7 +19,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dinote.R;
 import com.example.dinote.databinding.ActivityMainBinding;
+import com.example.dinote.fragment.CreateDinoteFragment;
 import com.example.dinote.fragment.MainFragment;
+import com.example.dinote.model.Motion;
 import com.example.dinote.utils.Constant;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -26,10 +29,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     private static final String TAG = "main_test";
     private FragmentManager fragmentManager;
-
+    private Motion mMotion;
     public static int LAYOUT_WIDTH = 0;
     public static int LAYOUT_HEIGHT = 0;
     private ActivityMainBinding mainBinding;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     public void loadFragment(Fragment fragment, String tag) {
         if (!tag.equals(Constant.MAIN_FRAGMENT)) {
-           mainBinding.tlbMainAction.setVisibility(View.GONE);
+            mainBinding.tlbMainAction.setVisibility(View.GONE);
         }
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -114,6 +119,29 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         String tag = backEntry.getName();
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && resultCode == Activity.RESULT_OK) {
+            Motion motion = (Motion) data.getSerializableExtra("obj_motion");
+//            Motion motion = getArguments().getParcelable("obj_emoji");
+//            CreateDinoteFragment createDinoteFragment = new CreateDinoteFragment();
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("obj_emoji",motion);
+//            createDinoteFragment.setArguments(bundle);
+//            loadFragment(createDinoteFragment,Constant.CREATE_DINOTE_FRAGMENT);
+//            int sizeFragment = getSupportFragmentManager().getFragments().size();
+//            Fragment f = getSupportFragmentManager().getFragments().get(sizeFragment - 1);
+//            if (f != null && f instanceof CreateDinoteFragment){
+//                ((CreateDinoteFragment) f).handleEmotion(motion);
+//            }
+
+        }
+
+    }
+
+
 
 
 }

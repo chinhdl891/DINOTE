@@ -19,7 +19,5 @@ public class Constant {
     public final static String MOTION_CUTE = "motion_cute";
 
 
-
-
-
+    public static final int REQUEST_MOTION = 101;
 }

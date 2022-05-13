@@ -12,12 +12,19 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
-import com.example.dinote.utils.ReDesign;
+import com.example.dinote.utils.GetDisplayInfo;
 
 
 public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment {
-    public VB mBinding;
+    protected VB mBinding;
     protected Context mContext;
+    protected int widthView;
+    protected int heightView;
+    protected int widthDisplay;
+    protected int heightDisplay;
+    protected int pointViewX;
+    protected int pointViewY;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -28,6 +35,8 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutResource(), container, false);
+        widthDisplay = GetDisplayInfo.listInfoDisplay(getActivity())[0];
+        heightDisplay = GetDisplayInfo.listInfoDisplay(getActivity())[1];
         return mBinding.getRoot();
     }
 
@@ -38,6 +47,8 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
         resizeViews();
         onClickViews();
         setView();
+        getParamView(view);
+
 
     }
 
@@ -51,8 +62,16 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
 
     protected abstract void setView();
 
-    void resizeView(View view, int width, int height) {
-        ReDesign.resizeImage(view, width, height);
+    protected void getParamView(@NonNull View view) {
+        widthView = view.getWidth();
+        heightView = view.getHeight();
     }
+
+    protected void getPoint(@NonNull View view) {
+        pointViewX = GetDisplayInfo.locateView(view)[0];
+        pointViewY = GetDisplayInfo.locateView(view)[1];
+
+    }
+
 
 }
