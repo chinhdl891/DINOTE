@@ -23,10 +23,9 @@ import com.example.dinote.R;
 import com.example.dinote.adapter.MotionAdapter;
 import com.example.dinote.base.BaseFragment;
 import com.example.dinote.databinding.FragmentCreateDinoteBinding;
-import com.example.dinote.interfaces.SendMotionListener;
 import com.example.dinote.model.Motion;
-import com.example.dinote.utils.EditTextUtils;
 import com.example.dinote.utils.ReDesign;
+import com.example.dinote.view.AddTagView;
 import com.example.dinote.viewmodel.MotionViewModel;
 
 import java.text.SimpleDateFormat;
@@ -34,9 +33,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener {
+public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.EditTagListener {
 
     private Motion mMotion;
+    private LinearLayout lnlCreateListTag;
 
     @Override
     protected int getLayoutResource() {
@@ -45,6 +45,11 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     @Override
     protected void initViews(View rootView) {
+        lnlCreateListTag = rootView.findViewById(R.id.lnl_create_list_tag);
+        AddTagView addTagView = new AddTagView(mContext);
+        addTagView.setTag(mBinding.lnlCreateListTag.getChildCount());
+        addTagView.setEditTagListener(this);
+        lnlCreateListTag.addView(addTagView);
 
     }
 
@@ -55,6 +60,8 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             mMotion = (Motion) getArguments().getSerializable("obj_emoji");
 
         }
+
+
     }
 
     @Override
@@ -73,8 +80,8 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         ReDesign.resizeImage(mBinding.imvCreateTextRemove, 64, 64);
         ReDesign.resizeImage(mBinding.imvCreateTextTag, 64, 64);
         ReDesign.resizeImage(mBinding.imvCreateCancel, 64, 64);
-        ReDesign.resizeImage(mBinding.imvCreateTag, 44, 48);
         ReDesign.resizeImage(mBinding.imvCreateMotion, 48, 48);
+
     }
 
 
@@ -89,7 +96,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     @Override
     protected void setView() {
-        EditTextUtils.disableEditText(mBinding.edtCreateStatus);
+
         if (mMotion != null) {
             mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
             mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
@@ -110,8 +117,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             if (getActivity() != null) {
                 onDiaLog(getActivity());
             }
-//            Intent intent = new Intent(mContext, DialogActivityMotion.class);
-//            startActivityForResult(intent, Constant.REQUEST_MOTION);
         } else if (view.getId() == R.id.imv_create_cancel) {
             getActivity().onBackPressed();
         }
@@ -134,14 +139,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         popup.setWidth((int) (0.8 * widthDisplay));
         popup.setHeight((int) (0.4 * heightDisplay));
         popup.setFocusable(true);
-
-        int OFFSET_Y = 50;
-
-
         popup.setBackgroundDrawable(new BitmapDrawable());
 
 
-        popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX*1.3), (int) (pointViewY*1.1));
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX * 1.3), (int) (pointViewY * 1.1));
 
 
     }
@@ -167,7 +168,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         datePickerDialog.show();
     }
 
-//    public void handleEmotion(Motion mMotion) {
+    //    public void handleEmotion(Motion mMotion) {
 //        mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
 //        mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
 //    }
@@ -179,4 +180,19 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
 
     }
+
+    @Override
+    public void onDeleteTag(int getTag) {
+        lnlCreateListTag.removeViewAt(getTag);
+
+    }
+
+    @Override
+    public void onAddTag() {
+        AddTagView addTagView = new AddTagView(mContext);
+        addTagView.setTag(lnlCreateListTag.getChildCount());
+        addTagView.setEditTagListener(this);
+        lnlCreateListTag.addView(addTagView);
+    }
+
 }
