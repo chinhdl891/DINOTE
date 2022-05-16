@@ -47,18 +47,20 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
         edtTagAdd = mRootView.findViewById(R.id.edt_add_tag);
         imvTagCancel = mRootView.findViewById(R.id.imv_tag_cancel);
         imvTagAdd = mRootView.findViewById(R.id.imv_add_tag);
+        imvTagCancel.setOnClickListener(this::onClick);
         ReDesign.resizeImage(imvTagAdd, 48, 44);
         ReDesign.resizeImage(imvTagCancel, 52, 52);
-        llAddTag.setOnClickListener(view -> {
-
-        });
+        llAddTag.setBackgroundResource(R.drawable.un_focused_background);
+        imvTagCancel.setVisibility(INVISIBLE);
         edtTagAdd.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b){
+                    imvTagCancel.setVisibility(VISIBLE);
                     llAddTag.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.on_focused_background));
                 }else {
                     llAddTag.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.un_focused_background));
+                    imvTagCancel.setVisibility(INVISIBLE);
                 }
             }
         });
