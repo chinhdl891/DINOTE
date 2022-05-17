@@ -105,18 +105,17 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_date_selection">
 
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:id="@+id/lnl_crate_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/coner_view"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="10dp"
-              >
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imv_create_motion"
@@ -140,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/editText"
+                app:layout_constraintBottom_toTopOf="@+id/edtContentDinote"
                 app:layout_constraintStart_toEndOf="@+id/lnl_crate_status">
 
                 <LinearLayout
@@ -148,9 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                  >
-
+                    android:orientation="horizontal">
 
 
                 </LinearLayout>
@@ -161,12 +158,12 @@
         </LinearLayout>
 
         <EditText
-            android:layout_marginStart="@dimen/margin_start"
-            android:layout_marginEnd="@dimen/margin_start"
-            android:id="@+id/editText"
+            android:id="@+id/edtContentDinote"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/margin_start"
             android:layout_marginBottom="@dimen/margin_start"
             android:background="@drawable/coner_view"
             android:gravity="top"
@@ -178,7 +175,8 @@
 
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+android:visibility="gone"
+            android:id="@+id/lnl_crate_option"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginStart="@dimen/margin_start"
@@ -216,6 +214,67 @@
                 android:id="@+id/imv_create_text_remove"
                 style="@style/imageTools"
                 android:src="@drawable/ic_text_drop" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnl_create_text_custom"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_start"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/imv_create_text_cancel"
+                style="@style/imageTools"
+                android:src="@drawable/ic_edit_text_cancel" />
+
+            <ImageView
+                android:id="@+id/imv_create_color_picker"
+                style="@style/imageTools"
+                android:src="@drawable/ic_color_picker" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_bolder"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_bolder" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_italic"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_italic" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_underline"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_underline" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_align_left"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_align_left" />
+
+            <ImageView
+                android:id="@+id/imv_create_text_align_right"
+                style="@style/imageTools"
+                android:src="@drawable/ic_text_align_right" />
+            <ImageView
+                android:id="@+id/imv_create_text_bullet"
+                style="@style/imageTools"
+                android:src="@drawable/ic_list_bullets" />
+            <ImageView
+                android:id="@+id/imv_create_text_list_number"
+                style="@style/imageTools"
+                android:src="@drawable/ic_list_numbers" />
+
         </LinearLayout>
 
         <TextView
