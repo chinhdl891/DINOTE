@@ -14,10 +14,6 @@ public class ReDesign {
         params.height = pH;
     }
 
-//    private static  int getInfoDisplay(View view) {
-////        return view.getResources().getDisplayMetrics().widthPixels;
-//        return view.getResources().getSy
-//    }
     public static DisplayMetrics getDisplayInfo() {
         return Resources.getSystem().getDisplayMetrics();
     }
