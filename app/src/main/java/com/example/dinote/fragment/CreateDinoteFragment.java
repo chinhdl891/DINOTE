@@ -3,12 +3,19 @@ package com.example.dinote.fragment;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -32,11 +39,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import top.defaults.colorpicker.ColorPickerPopup;
+
 
 public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.EditTagListener {
-
+    private boolean isLove;
     private Motion mMotion;
     private LinearLayout lnlCreateListTag;
+    private Dialog dialog;
+    private int textColor;
 
     @Override
     protected int getLayoutResource() {
@@ -81,6 +92,15 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         ReDesign.resizeImage(mBinding.imvCreateTextTag, 64, 64);
         ReDesign.resizeImage(mBinding.imvCreateCancel, 64, 64);
         ReDesign.resizeImage(mBinding.imvCreateMotion, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateTextAlignLeft, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateTextAlignRight, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateColorPicker, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateTextCancel, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateTextBolder, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateTextItalic, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateTextUnderline, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateTextBullet, 48, 48);
+        ReDesign.resizeImage(mBinding.imvCreateTextListNumber, 48, 48);
 
     }
 
@@ -90,6 +110,19 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         mBinding.tvDateSelection.setOnClickListener(this);
         mBinding.lnlCrateStatus.setOnClickListener(this);
         mBinding.imvCreateCancel.setOnClickListener(this);
+        mBinding.imvCreateTextCustomText.setOnClickListener(this);
+        mBinding.imvCreateTextCancel.setOnClickListener(this);
+        mBinding.imvCreateTextLove.setOnClickListener(this);
+        mBinding.imvCreateTextTag.setOnClickListener(this);
+        mBinding.imvCreateTextRemove.setOnClickListener(this);
+        mBinding.imvCreateColorPicker.setOnClickListener(this);
+        mBinding.imvCreateTextAlignLeft.setOnClickListener(this);
+        mBinding.imvCreateTextAlignRight.setOnClickListener(this);
+        mBinding.imvCreateTextUnderline.setOnClickListener(this);
+        mBinding.imvCreateTextItalic.setOnClickListener(this);
+
+
+
 
 
     }
@@ -109,21 +142,111 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     @Override
     public void onClick(View view) {
         if (view == mBinding.tvDateSelection) {
-
             selectDate();
         } else if (view == mBinding.lnlCrateStatus) {
             getParamView(mBinding.lnlCrateStatus);
             getPoint(mBinding.lnlCrateStatus);
             if (getActivity() != null) {
-                onDiaLog(getActivity());
+                onShowDiaLogMotion(getActivity());
             }
         } else if (view.getId() == R.id.imv_create_cancel) {
             getActivity().onBackPressed();
+        } else if (view.getId() == R.id.imv_create_text_custom_text) {
+            mBinding.lnlCrateOption.setVisibility(View.GONE);
+            mBinding.lnlCreateTextCustom.setVisibility(View.VISIBLE);
+        } else if (view.getId() == R.id.imv_create_text_cancel) {
+            mBinding.lnlCrateOption.setVisibility(View.VISIBLE);
+            mBinding.lnlCreateTextCustom.setVisibility(View.GONE);
+        } else if (view.getId() == R.id.imv_create_text_love) {
+            if (!isLove) {
+                mBinding.imvCreateTextLove.setImageResource(R.drawable.ic_text_loved);
+            } else {
+                mBinding.imvCreateTextLove.setImageResource(R.drawable.ic_text_love);
+            }
+            isLove = !isLove;
+        } else if (view.getId() == R.id.imv_create_text_tag) {
+            addTag();
+        } else if (view.getId() == R.id.imv_create_text_remove) {
+            onShowDialogRemove(Gravity.CENTER);
+        } else if (view.getId() == R.id.btn_dialog_continues) {
+            dialog.dismiss();
+        } else if (view.getId() == R.id.btn_dialog_continues_cancel) {
+            dialog.dismiss();
+            getActivity().onBackPressed();
+        } else if (view.getId() == R.id.imv_create_color_picker) {
+            onShowDialogColorPicker();
+        } else if (view.getId() == R.id.imv_create_text_align_left) {
+            mBinding.edtContentDinote.setGravity(Gravity.LEFT);
+
+        }else if (view.getId() == R.id.imv_create_text_align_right) {
+
+            mBinding.edtContentDinote.setGravity(Gravity.RIGHT);
+        } else if (view.getId() == R.id.imv_create_text_bolder) {
+
+            mBinding.edtContentDinote.setTypeface(null, Typeface.BOLD);
+        } else if (view.getId() == R.id.imv_create_text_italic) {
+
+            mBinding.edtContentDinote.setTypeface(null, Typeface.ITALIC);
+        } else if (view.getId() == R.id.imv_create_text_underline) {
+
+//            mBinding.edtContentDinote.setTypeface(null, Typeface.BOLD);
+            underlineText();
         }
+
+
 
     }
 
-    private void onDiaLog(@NonNull FragmentActivity context) {
+    private void underlineText() {
+
+    }
+
+    private void onShowDialogColorPicker() {
+        new ColorPickerPopup.Builder(getActivity())
+                .initialColor(Color.RED) // Set initial color
+                .enableBrightness(true) // Enable brightness slider or not
+                .enableAlpha(true) // Enable alpha slider or not
+                .okTitle("Choose")
+                .cancelTitle("Cancel")
+                .showIndicator(true)
+                .showValue(true)
+                .build()
+                .show(mBinding.edtContentDinote, new ColorPickerPopup.ColorPickerObserver() {
+                    @Override
+                    public void onColorPicked(int color) {
+                        mBinding.edtContentDinote.setTextColor(color);
+                        textColor = color;
+                    }
+
+                });
+
+    }
+
+
+    private void onShowDialogRemove(int gravity) {
+        dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_remove_dinote);
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.gravity = gravity;
+        window.setAttributes(layoutParams);
+        Button btnContinues = dialog.findViewById(R.id.btn_dialog_continues);
+        Button btnCancel = dialog.findViewById(R.id.btn_dialog_continues_cancel);
+        btnCancel.setOnClickListener(this);
+        btnContinues.setOnClickListener(this);
+        dialog.show();
+
+
+    }
+
+
+    private void onShowDiaLogMotion(@NonNull FragmentActivity context) {
         LinearLayout viewGroup = context.findViewById(R.id.cv_popup_motion);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = layoutInflater.inflate(R.layout.dialog_motion_pop_up, viewGroup, true);
@@ -141,8 +264,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         popup.setFocusable(true);
         popup.setBackgroundDrawable(new BitmapDrawable());
 
-
-        popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX * 1.3), (int) (pointViewY * 1.1));
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX * 1.3) + 22, (int) (pointViewY * 1.1));
 
 
     }
@@ -189,6 +311,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     @Override
     public void onAddTag() {
+        addTag();
+    }
+
+    private void addTag() {
         AddTagView addTagView = new AddTagView(mContext);
         addTagView.setTag(lnlCreateListTag.getChildCount());
         addTagView.setEditTagListener(this);
