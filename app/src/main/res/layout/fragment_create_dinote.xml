@@ -39,7 +39,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.example.dinote.view.TextViewSemiBold
+            <com.example.dinote.view.font.TextViewSemiBold
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -175,7 +175,6 @@
 
 
         <LinearLayout
-android:visibility="gone"
             android:id="@+id/lnl_crate_option"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -186,6 +185,7 @@ android:visibility="gone"
             android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -227,7 +227,7 @@ android:visibility="gone"
             android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -266,10 +266,12 @@ android:visibility="gone"
                 android:id="@+id/imv_create_text_align_right"
                 style="@style/imageTools"
                 android:src="@drawable/ic_text_align_right" />
+
             <ImageView
                 android:id="@+id/imv_create_text_bullet"
                 style="@style/imageTools"
                 android:src="@drawable/ic_list_bullets" />
+
             <ImageView
                 android:id="@+id/imv_create_text_list_number"
                 style="@style/imageTools"

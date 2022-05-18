@@ -19,7 +19,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dinote.R;
 import com.example.dinote.databinding.ActivityMainBinding;
-import com.example.dinote.fragment.CreateDinoteFragment;
 import com.example.dinote.fragment.MainFragment;
 import com.example.dinote.model.Motion;
 import com.example.dinote.utils.Constant;
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         } else {
             if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
-            }
+            } else
             super.onBackPressed();
         }
 

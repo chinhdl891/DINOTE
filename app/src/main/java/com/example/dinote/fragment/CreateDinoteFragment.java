@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dinote.R;
+import com.example.dinote.activity.MainActivity;
 import com.example.dinote.adapter.MotionAdapter;
 import com.example.dinote.base.BaseFragment;
 import com.example.dinote.databinding.FragmentCreateDinoteBinding;
@@ -42,7 +45,7 @@ import java.util.Date;
 import top.defaults.colorpicker.ColorPickerPopup;
 
 
-public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.EditTagListener {
+public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.EditTagListener, DrawFragment.SendUriListerner {
     private boolean isLove;
     private Motion mMotion;
     private LinearLayout lnlCreateListTag;
@@ -120,9 +123,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         mBinding.imvCreateTextAlignRight.setOnClickListener(this);
         mBinding.imvCreateTextUnderline.setOnClickListener(this);
         mBinding.imvCreateTextItalic.setOnClickListener(this);
-
-
-
+        mBinding.imvCreateTextEdit.setOnClickListener(this);
 
 
     }
@@ -178,7 +179,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         } else if (view.getId() == R.id.imv_create_text_align_left) {
             mBinding.edtContentDinote.setGravity(Gravity.LEFT);
 
-        }else if (view.getId() == R.id.imv_create_text_align_right) {
+        } else if (view.getId() == R.id.imv_create_text_align_right) {
 
             mBinding.edtContentDinote.setGravity(Gravity.RIGHT);
         } else if (view.getId() == R.id.imv_create_text_bolder) {
@@ -191,8 +192,14 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
 //            mBinding.edtContentDinote.setTypeface(null, Typeface.BOLD);
             underlineText();
-        }
+        } else if (view.getId() == R.id.imv_create_text_edit) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            DrawFragment fragment = new DrawFragment();
+            fragment.setSendUriListerner(this);
+            assert mainActivity != null;
+            mainActivity.loadFragment(fragment,DrawFragment.class.getSimpleName());
 
+        }
 
 
     }
@@ -321,4 +328,15 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         lnlCreateListTag.addView(addTagView);
     }
 
+
+    public void backFromDraw(String s){
+        Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+
+    }
+
+
+    @Override
+    public void onSendDate(String uri) {
+        Log.e("aaa", "onSendDate: " +uri );
+    }
 }

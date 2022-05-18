@@ -15,7 +15,7 @@
         android:padding="20dp"
         android:orientation="vertical">
 
-        <com.example.dinote.view.TextViewSemiBold
+        <com.example.dinote.view.font.TextViewSemiBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/continues_dinote"

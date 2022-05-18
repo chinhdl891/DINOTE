@@ -49,7 +49,6 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
         setView();
         getParamView(view);
 
-
     }
 
     protected abstract int getLayoutResource();
