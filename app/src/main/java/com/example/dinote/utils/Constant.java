@@ -3,6 +3,7 @@ package com.example.dinote.utils;
 public class Constant {
     public final static String  MAIN_FRAGMENT = "main_fragment" ;
     public final static String  CREATE_DINOTE_FRAGMENT = "create_fragment" ;
+    public final static String  DRAW_FRAGMENT = "draw_fragment";
     public final static String  EXPORT_FRAGMENT = "export_fragment" ;
     public final static String  LOCK_FRAGMENT = "lock_fragment" ;
     public final static String  REMIND_FRAGMENT = "remind_fragment" ;

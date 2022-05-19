@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_centerVertical="true"
+    android:layout_width="match_parent"
+   android:background="@drawable/coner_view_button_cancel"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imv_item_dinote_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_10dp"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        android:src="@drawable/bg_item_dinote"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_item_dinote_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:text="2022"
+        app:layout_constraintStart_toStartOf="@+id/imv_item_dinote_bg"
+        app:layout_constraintTop_toTopOf="@+id/imv_item_dinote_bg" />
+
+    <com.example.dinote.view.font.TextViewSemiBold
+        android:id="@+id/tv_item_dinote_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:textSize="20sp"
+        android:text="16"
+        app:layout_constraintBottom_toBottomOf="@+id/imv_item_dinote_bg"
+        app:layout_constraintStart_toStartOf="@+id/imv_item_dinote_bg" />
+
+    <TextView
+        android:textSize="15sp"
+        android:id="@+id/tv_item_dinote_moth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:text="Th5"
+        app:layout_constraintBottom_toBottomOf="@+id/imv_item_dinote_bg"
+        app:layout_constraintEnd_toEndOf="@+id/imv_item_dinote_bg" />
+
+    <com.example.dinote.view.font.TextViewSemiBold
+        android:id="@+id/tv_item_dinote_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start"
+        android:layout_marginTop="@dimen/margin_start"
+        android:text="Tiêu đề no way hôm "
+        app:layout_constraintStart_toEndOf="@+id/imv_item_dinote_bg"
+        app:layout_constraintTop_toTopOf="@+id/imv_item_dinote_bg" />
+
+    <TextView
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginStart="@dimen/margin_start"
+        android:id="@+id/tv_item_dinote_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không có nội dung"
+        app:layout_constraintStart_toEndOf="@+id/imv_item_dinote_bg"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_dinote_title" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

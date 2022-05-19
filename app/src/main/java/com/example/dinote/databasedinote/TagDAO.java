@@ -14,7 +14,7 @@ public interface TagDAO {
     List<Tag> getAllTag();
     @Insert
     void insertTag(Tag tag);
-
-
+    @Query("SELECT COUNT(contentTag) FROM tag where contentTag = :tag")
+    int getCount(String tag);
 
 }

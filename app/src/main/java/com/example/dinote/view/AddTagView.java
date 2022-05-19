@@ -55,11 +55,11 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
         edtTagAdd.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if (b){
+                if (b) {
                     imvTagCancel.setVisibility(VISIBLE);
-                    llAddTag.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.on_focused_background));
-                }else {
-                    llAddTag.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.un_focused_background));
+                    llAddTag.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.on_focused_background));
+                } else {
+                    llAddTag.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.un_focused_background));
                     imvTagCancel.setVisibility(INVISIBLE);
                 }
             }
@@ -68,8 +68,13 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
-                    editTagListener.onAddTag();
-                    return true;
+
+                    if (getTagString().length() > 0) {
+                        editTagListener.onAddTag();
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
                 return false;
             }
@@ -86,7 +91,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
     public void onClick(View view) {
         if (view.getId() == R.id.imv_tag_cancel) {
             editTagListener.onDeleteTag((int) getTag());
-        }else if (view.getId() == R.id.imv_tag_cancel) {
+        } else if (view.getId() == R.id.imv_tag_cancel) {
             editTagListener.onDeleteTag((int) getTag());
         }
 

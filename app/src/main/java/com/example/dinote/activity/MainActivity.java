@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -18,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dinote.R;
+import com.example.dinote.databasedinote.DinoteDataBase;
 import com.example.dinote.databinding.ActivityMainBinding;
 import com.example.dinote.fragment.MainFragment;
 import com.example.dinote.model.Motion;
@@ -46,7 +48,23 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mainBinding.drlMain, mainBinding.tlbMainAction, R.string.open, R.string.close);
         mainBinding.drlMain.addDrawerListener(toggle);
         toggle.syncState();
+//      DinoteDataBase.getInstance(this).tagDAO().insertTag(new Tag(0,"chinh"));
+//        Log.e(TAG, "onCreate: " +  DinoteDataBase.getInstance(this).tagDAO().getCount("chinh"));
 
+//        List<Tag> tagList = new ArrayList<>();
+//        tagList.add(new Tag(0,"chinh"));
+//        tagList.add(new Tag(0,"chinh1"));
+//        tagList.add(new Tag(0,"chinh4"));
+//        tagList.add(new Tag(0,"chinh3"));
+//        tagList.add(new Tag(0,"chinh2"));
+//        DinoteDataBase.getInstance(this).dinoteDAO().insertDinote(new Dinote(0,1,
+//                "chinh",
+//                "chinh khong dep trai",
+//                "hanh phuc" ,
+//                "mothaiba","chinh",
+//                tagList));
+//
+        Log.e(TAG, "onCreate: "+ DinoteDataBase.getInstance(this).dinoteDAO().getAllDinote().size());
         MainFragment fragment = new MainFragment();
         loadFragment(fragment, Constant.MAIN_FRAGMENT);
 
@@ -68,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         } else {
             if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
+
+                loadFragment(new MainFragment(),Constant.MAIN_FRAGMENT);
             } else
             super.onBackPressed();
         }
@@ -103,11 +123,19 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if (!tag.equals(Constant.MAIN_FRAGMENT)) {
             mainBinding.tlbMainAction.setVisibility(View.GONE);
         }
-        fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frl_main_content, fragment, tag);
-        fragmentTransaction.addToBackStack(tag);
-        fragmentTransaction.commit();
+        if (tag.equals(Constant.DRAW_FRAGMENT)){
+            fragmentManager = getSupportFragmentManager();
+           FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+           fragmentTransaction.add(R.id.frl_main_content, fragment, tag);
+           fragmentTransaction.addToBackStack(tag);
+           fragmentTransaction.commit();
+        }else {
+            fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frl_main_content, fragment, tag);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commit();
+        }
 
 
     }

@@ -11,6 +11,13 @@ public class Tag {
     @ColumnInfo()
     private String contentTag;
 
+    public Tag(int id, String contentTag) {
+        this.id = id;
+        this.contentTag = contentTag;
+    }
+
+
+
     public int getId() {
         return id;
     }
@@ -26,6 +33,7 @@ public class Tag {
     public void setContentTag(String contentTag) {
         this.contentTag = contentTag;
     }
+
 
 
 }

@@ -109,7 +109,6 @@ public class PaintView extends View {
             mPaint.setColor(fp.getColor());
             mPaint.setStrokeWidth(fp.getStrokeWidth());
             mPaint.setMaskFilter(null);
-
             mCanvas.drawPath(fp.getPath(), mPaint);
         }
 

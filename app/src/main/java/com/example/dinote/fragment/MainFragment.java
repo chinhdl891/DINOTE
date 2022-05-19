@@ -30,6 +30,7 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
 
     @Override
     protected void initViews(View rootView) {
+
         mainActivity = (MainActivity) getActivity();
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         vpgMainFragment = rootView.findViewById(R.id.vpg_main_fragment);
@@ -38,7 +39,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         vpgMainFragment.setAdapter(photoAdapter);
         circleImageView = rootView.findViewById(R.id.profile_image);
         circleImageView.setOnClickListener(this);
-
 
     }
 
@@ -63,6 +63,7 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         if (view.getId() == R.id.profile_image) {
             mainActivity.loadFragment(new CreateDinoteFragment(), Constant.CREATE_DINOTE_FRAGMENT);
             mainActivity.getTopFragment();
+
         }
     }
 }
