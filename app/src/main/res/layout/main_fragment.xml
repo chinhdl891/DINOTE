@@ -6,16 +6,18 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-
+    <LinearLayout
+        android:weightSum="10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E8E8E8">
+        android:background="#E8E8E8"
+        android:orientation="vertical">
 
         <androidx.viewpager.widget.ViewPager
+            android:layout_weight="1.25"
             android:id="@+id/vpg_main_fragment"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="0dp"
             android:layout_marginStart="25dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="25dp"
@@ -25,6 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_weight="8.75"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
@@ -56,15 +59,16 @@
                 app:layout_constraintStart_toStartOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="@+id/profile_image"
                 app:srcCompat="@drawable/ic_wirte_noti" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="10dp"
                 android:id="@+id/rcv_main_dinote"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
