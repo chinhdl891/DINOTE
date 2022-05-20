@@ -1,4 +1,4 @@
-package com.example.dinote.view.font;
+package com.example.dinote.views.customs.font;
 
 import android.content.Context;
 import android.graphics.Typeface;

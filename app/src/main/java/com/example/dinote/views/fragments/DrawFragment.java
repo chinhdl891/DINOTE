@@ -1,4 +1,4 @@
-package com.example.dinote.fragment;
+package com.example.dinote.views.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -77,6 +77,11 @@ public class DrawFragment extends BaseFragment<FragmentDrawBinding> implements V
 
     @Override
     protected void setView() {
+
+    }
+
+    @Override
+    protected void setTypeView() {
 
     }
 

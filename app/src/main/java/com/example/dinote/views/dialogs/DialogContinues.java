@@ -1,4 +1,4 @@
-package com.example.dinote.dialog;
+package com.example.dinote.views.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;

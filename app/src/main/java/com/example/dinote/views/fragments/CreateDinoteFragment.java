@@ -1,16 +1,17 @@
-package com.example.dinote.fragment;
+package com.example.dinote.views.fragments;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,18 +29,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dinote.R;
-import com.example.dinote.activity.MainActivity;
+import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.adapter.MotionAdapter;
 import com.example.dinote.base.BaseFragment;
+import com.example.dinote.databases.DinoteDataBase;
 import com.example.dinote.databinding.FragmentCreateDinoteBinding;
+import com.example.dinote.model.Dinote;
 import com.example.dinote.model.Motion;
+import com.example.dinote.model.Tag;
+import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.ReDesign;
-import com.example.dinote.view.AddTagView;
+import com.example.dinote.views.customs.AddTagView;
 import com.example.dinote.viewmodel.MotionViewModel;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import top.defaults.colorpicker.ColorPickerPopup;
 
@@ -51,6 +58,15 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     private LinearLayout lnlCreateListTag;
     private Dialog dialog;
     private int textColor;
+    // public Dinote(int id, long date, String content, String title, int motion, String imageUri, String imageDes, List<Tag> tagList) {
+    private String title;
+    private String content;
+    private int motion = 1;
+    private String imageUri = "no_data";
+    private String imageDes;
+    private List<Tag> tagList;
+    private long dateCreate;
+
 
     @Override
     protected int getLayoutResource() {
@@ -64,7 +80,9 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         addTagView.setTag(mBinding.lnlCreateListTag.getChildCount());
         addTagView.setEditTagListener(this);
         lnlCreateListTag.addView(addTagView);
-
+//        imvDrawer = rootView.findViewById(R.id.imv_create_drawer);
+        mBinding.imvCreateDrawer.setVisibility(View.GONE);
+        mBinding.edtCreateDesDrawer.setVisibility(View.GONE);
     }
 
     @Override
@@ -78,11 +96,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-    }
 
     @Override
     protected void resizeViews() {
@@ -121,21 +134,27 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         mBinding.imvCreateColorPicker.setOnClickListener(this);
         mBinding.imvCreateTextAlignLeft.setOnClickListener(this);
         mBinding.imvCreateTextAlignRight.setOnClickListener(this);
-        mBinding.imvCreateTextUnderline.setOnClickListener(this);
         mBinding.imvCreateTextItalic.setOnClickListener(this);
+        mBinding.imvCreateTextBolder.setOnClickListener(this);
         mBinding.imvCreateTextEdit.setOnClickListener(this);
+        mBinding.tvCreateSave.setOnClickListener(this);
 
 
     }
 
     @Override
     protected void setView() {
-
+        setDateDefault();
         if (mMotion != null) {
             mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
             mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
         }
 
+
+    }
+
+    @Override
+    protected void setTypeView() {
 
     }
 
@@ -177,38 +196,97 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         } else if (view.getId() == R.id.imv_create_color_picker) {
             onShowDialogColorPicker();
         } else if (view.getId() == R.id.imv_create_text_align_left) {
-            mBinding.edtContentDinote.setGravity(Gravity.LEFT);
+            mBinding.edtCreateContent.setGravity(Gravity.LEFT);
 
         } else if (view.getId() == R.id.imv_create_text_align_right) {
 
-            mBinding.edtContentDinote.setGravity(Gravity.RIGHT);
+            mBinding.edtCreateContent.setGravity(Gravity.RIGHT);
         } else if (view.getId() == R.id.imv_create_text_bolder) {
 
-            mBinding.edtContentDinote.setTypeface(null, Typeface.BOLD);
+            mBinding.edtCreateContent.setTypeface(null, Typeface.BOLD);
         } else if (view.getId() == R.id.imv_create_text_italic) {
 
-            mBinding.edtContentDinote.setTypeface(null, Typeface.ITALIC);
+            mBinding.edtCreateContent.setTypeface(null, Typeface.ITALIC);
         } else if (view.getId() == R.id.imv_create_text_underline) {
 
-//            mBinding.edtContentDinote.setTypeface(null, Typeface.BOLD);
+            mBinding.edtCreateContent.setTypeface(null, Typeface.BOLD);
             underlineText();
         } else if (view.getId() == R.id.imv_create_text_edit) {
             MainActivity mainActivity = (MainActivity) getActivity();
             DrawFragment fragment = new DrawFragment();
             fragment.setSendUriListerner(this);
             assert mainActivity != null;
-            mainActivity.loadFragment(fragment,DrawFragment.class.getSimpleName());
+            mainActivity.loadFragment(fragment, Constant.DRAW_FRAGMENT);
+
+        } else if (view.getId() == R.id.tv_create_save) {
+            onSaveData();
 
         }
 
 
     }
 
+    private void onSaveData() {
+        // public Dinote(int id, long date, String content, String title, int motion, String imageUri, String imageDes, List<Tag> tagList)
+
+        imageDes = mBinding.edtCreateDesDrawer.getText().toString();
+        title = mBinding.edtCreateTitle.getText().toString();
+        content = mBinding.edtCreateContent.getText().toString();
+        if (imageDes.length() == 0) {
+            imageDes = "No description";
+        }
+        if (title.length() == 0) {
+            title = "No Title";
+        }
+        if (content.length() == 0) {
+            content = "No Content";
+        }
+        Dinote dinote = new Dinote(
+                0
+                , dateCreate
+                , content
+                , title
+                , motion
+                , imageUri
+                , imageDes
+                , getListTag()
+        );
+
+
+        DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+        createDinoteListener.onShowSaveComplete();
+        getActivity().onBackPressed();
+
+    }
+
+
+    private List<Tag> getListTag() {
+        tagList = new ArrayList<>();
+        int size = mBinding.lnlCreateListTag.getChildCount();
+        for (int i = 0; i < size; i++) {
+            if (mBinding.lnlCreateListTag.getChildAt(i) instanceof AddTagView) {
+                String tag = ((AddTagView) mBinding.lnlCreateListTag.getChildAt(i)).getTagString();
+                if (tag.length() > 0) {
+                    tagList.add(new Tag(0, tag));
+                    if (DinoteDataBase.getInstance(getActivity()).tagDAO().getCount(tag) > 0) {
+                        continue;
+                    } else {
+                        DinoteDataBase.getInstance(getActivity()).tagDAO().insertTag(new Tag(0, tag));
+                    }
+                }
+            }
+        }
+        return tagList;
+
+    }
+
+
     private void underlineText() {
 
     }
 
     private void onShowDialogColorPicker() {
+
         new ColorPickerPopup.Builder(getActivity())
                 .initialColor(Color.RED) // Set initial color
                 .enableBrightness(true) // Enable brightness slider or not
@@ -218,10 +296,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 .showIndicator(true)
                 .showValue(true)
                 .build()
-                .show(mBinding.edtContentDinote, new ColorPickerPopup.ColorPickerObserver() {
+                .show(mBinding.edtCreateContent, new ColorPickerPopup.ColorPickerObserver() {
                     @Override
                     public void onColorPicked(int color) {
-                        mBinding.edtContentDinote.setTextColor(color);
+                        mBinding.edtCreateContent.setTextColor(color);
                         textColor = color;
                     }
 
@@ -276,6 +354,17 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     }
 
+    public void setDateDefault() {
+        Date date = new Date();
+        date.setTime(System.currentTimeMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        mBinding.tvDateSelection.setText(simpleDateFormat.format(calendar.getTime()));
+        dateCreate = calendar.getTimeInMillis();
+
+    }
+
 
     private void selectDate() {
         Date date = new Date();
@@ -289,6 +378,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 calendar.set(i, i1, i2);
+                dateCreate = calendar.getTimeInMillis();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 mBinding.tvDateSelection.setText(simpleDateFormat.format(calendar.getTime()));
 
@@ -306,6 +396,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     public void onSelectMotion(Motion motion) {
         mBinding.imvCreateMotion.setImageResource(motion.getImgMotion());
         mBinding.edtCreateStatus.setText(getString(motion.getMotion()));
+        this.motion = motion.getId();
 
 
     }
@@ -322,21 +413,50 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     }
 
     private void addTag() {
-        AddTagView addTagView = new AddTagView(mContext);
-        addTagView.setTag(lnlCreateListTag.getChildCount());
-        addTagView.setEditTagListener(this);
-        lnlCreateListTag.addView(addTagView);
-    }
 
-
-    public void backFromDraw(String s){
-        Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+        if (lnlCreateListTag.getChildAt(lnlCreateListTag.getChildCount() - 1) instanceof AddTagView) {
+            int tagSize = (((AddTagView) lnlCreateListTag.getChildAt(lnlCreateListTag.getChildCount() - 1)).getTagString().length());
+            if (tagSize > 0) {
+                AddTagView addTagView = new AddTagView(mContext);
+                addTagView.setTag(lnlCreateListTag.getChildCount());
+                addTagView.setEditTagListener(this);
+                lnlCreateListTag.addView(addTagView);
+            } else {
+                return;
+            }
+        }
 
     }
 
 
     @Override
     public void onSendDate(String uri) {
-        Log.e("aaa", "onSendDate: " +uri );
+        imageUri = uri;
+        mBinding.imvCreateDrawer.setVisibility(View.VISIBLE);
+        mBinding.edtCreateDesDrawer.setVisibility(View.VISIBLE);
+
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(uri));
+
+            int height = bitmap.getHeight();
+
+            mBinding.imvCreateDrawer.getLayoutParams().height = (int) height / 2;
+
+            mBinding.imvCreateDrawer.setImageBitmap(MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(uri)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private CreateDinoteListener createDinoteListener;
+
+    public void setCreateDinoteListener(CreateDinoteListener createDinoteListener) {
+        this.createDinoteListener = createDinoteListener;
+    }
+
+    public interface CreateDinoteListener {
+
+        void onShowSaveComplete();
+
     }
 }

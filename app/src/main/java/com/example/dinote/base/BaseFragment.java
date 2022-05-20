@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
+import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.utils.GetDisplayInfo;
 
 
@@ -24,6 +25,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
     protected int heightDisplay;
     protected int pointViewX;
     protected int pointViewY;
+    protected MainActivity mainActivity;
 
 
     @Override
@@ -37,6 +39,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
         mBinding = DataBindingUtil.inflate(inflater, getLayoutResource(), container, false);
         widthDisplay = GetDisplayInfo.listInfoDisplay(getActivity())[0];
         heightDisplay = GetDisplayInfo.listInfoDisplay(getActivity())[1];
+        mainActivity = (MainActivity) getActivity();
         return mBinding.getRoot();
     }
 
@@ -47,7 +50,9 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
         resizeViews();
         onClickViews();
         setView();
+        setTypeView();
         getParamView(view);
+
 
     }
 
@@ -60,6 +65,8 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
     protected abstract void onClickViews();
 
     protected abstract void setView();
+
+    protected abstract void setTypeView();
 
     protected void getParamView(@NonNull View view) {
         widthView = view.getWidth();

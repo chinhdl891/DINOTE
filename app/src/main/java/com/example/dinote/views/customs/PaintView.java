@@ -1,4 +1,4 @@
-package com.example.dinote.view;
+package com.example.dinote.views.customs;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -109,7 +109,6 @@ public class PaintView extends View {
             mPaint.setColor(fp.getColor());
             mPaint.setStrokeWidth(fp.getStrokeWidth());
             mPaint.setMaskFilter(null);
-
             mCanvas.drawPath(fp.getPath(), mPaint);
         }
 
