@@ -1,10 +1,9 @@
-package com.example.dinote.fragment;
+package com.example.dinote.views.fragments;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,7 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,17 +29,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dinote.R;
-import com.example.dinote.activity.MainActivity;
+import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.adapter.MotionAdapter;
 import com.example.dinote.base.BaseFragment;
-import com.example.dinote.databasedinote.DinoteDataBase;
+import com.example.dinote.databases.DinoteDataBase;
 import com.example.dinote.databinding.FragmentCreateDinoteBinding;
 import com.example.dinote.model.Dinote;
 import com.example.dinote.model.Motion;
 import com.example.dinote.model.Tag;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.ReDesign;
-import com.example.dinote.view.AddTagView;
+import com.example.dinote.views.customs.AddTagView;
 import com.example.dinote.viewmodel.MotionViewModel;
 
 import java.io.IOException;
@@ -68,6 +65,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     private String imageUri = "no_data";
     private String imageDes;
     private List<Tag> tagList;
+    private long dateCreate;
 
 
     @Override
@@ -98,11 +96,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-    }
 
     @Override
     protected void resizeViews() {
@@ -151,12 +144,17 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     @Override
     protected void setView() {
-
+        setDateDefault();
         if (mMotion != null) {
             mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
             mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
         }
 
+
+    }
+
+    @Override
+    protected void setTypeView() {
 
     }
 
@@ -243,19 +241,21 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         if (content.length() == 0) {
             content = "No Content";
         }
-
-
-        DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(new Dinote(
+        Dinote dinote = new Dinote(
                 0
-                , System.currentTimeMillis()
+                , dateCreate
                 , content
                 , title
                 , motion
                 , imageUri
                 , imageDes
                 , getListTag()
-        ));
-        Log.e("aaa", "onSaveData: "+ imageUri );
+        );
+
+
+        DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+        createDinoteListener.onShowSaveComplete();
+        getActivity().onBackPressed();
 
     }
 
@@ -354,6 +354,17 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     }
 
+    public void setDateDefault() {
+        Date date = new Date();
+        date.setTime(System.currentTimeMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        mBinding.tvDateSelection.setText(simpleDateFormat.format(calendar.getTime()));
+        dateCreate = calendar.getTimeInMillis();
+
+    }
+
 
     private void selectDate() {
         Date date = new Date();
@@ -367,6 +378,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 calendar.set(i, i1, i2);
+                dateCreate = calendar.getTimeInMillis();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 mBinding.tvDateSelection.setText(simpleDateFormat.format(calendar.getTime()));
 
@@ -417,12 +429,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     }
 
 
-    public void backFromDraw(String s) {
-        Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
-
-    }
-
-
     @Override
     public void onSendDate(String uri) {
         imageUri = uri;
@@ -440,6 +446,17 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+    private CreateDinoteListener createDinoteListener;
+
+    public void setCreateDinoteListener(CreateDinoteListener createDinoteListener) {
+        this.createDinoteListener = createDinoteListener;
+    }
+
+    public interface CreateDinoteListener {
+
+        void onShowSaveComplete();
 
     }
 }

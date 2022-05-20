@@ -10,5 +10,17 @@ public class EditTextUtils {
         editText.setCursorVisible(false);
         editText.setKeyListener(null);
         editText.setBackgroundColor(Color.TRANSPARENT);
+        editText.setTextColor(Color.BLACK);
     }
+
+    public static void enableEditText(EditText editText) {
+        editText.setFocusable(false);
+        editText.setEnabled(false);
+        editText.setCursorVisible(false);
+        editText.setKeyListener(null);
+        editText.setBackgroundColor(Color.TRANSPARENT);
+        editText.setTextColor(Color.BLACK);
+    }
+
+
 }

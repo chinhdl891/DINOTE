@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:context=".activity.DialogActivityMotion">
+            tools:context=".views.activities.DialogActivityMotion">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_motion_select"

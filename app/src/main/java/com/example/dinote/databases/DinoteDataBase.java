@@ -1,4 +1,4 @@
-package com.example.dinote.databasedinote;
+package com.example.dinote.databases;
 
 import android.content.Context;
 

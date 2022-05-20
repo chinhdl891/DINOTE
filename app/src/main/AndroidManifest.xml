@@ -13,10 +13,10 @@
         <activity
 
             android:theme="@style/Theme.AppCompat.Dialog.Pop"
-            android:name=".activity.DialogActivityMotion"
+            android:name=".views.activities.DialogActivityMotion"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".views.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

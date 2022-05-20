@@ -4,10 +4,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(tableName = "dinote")
-public class Dinote {
+public class Dinote implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo

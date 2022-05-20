@@ -1,4 +1,4 @@
-package com.example.dinote.view;
+package com.example.dinote.views.customs;
 
 import android.content.Context;
 import android.util.AttributeSet;

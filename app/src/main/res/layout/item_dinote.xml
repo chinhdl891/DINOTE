@@ -3,10 +3,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_centerVertical="true"
+    android:layout_marginTop="@dimen/margin_10dp"
     android:layout_width="match_parent"
-   android:background="@drawable/coner_view_button_cancel"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:background="@drawable/coner_view"
+    android:foregroundGravity="center_vertical">
 
     <ImageView
         android:id="@+id/imv_item_dinote_bg"
@@ -23,53 +25,63 @@
         android:id="@+id/tv_item_dinote_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:text="2022"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:hint="2022"
         app:layout_constraintStart_toStartOf="@+id/imv_item_dinote_bg"
         app:layout_constraintTop_toTopOf="@+id/imv_item_dinote_bg" />
 
-    <com.example.dinote.view.font.TextViewSemiBold
+    <com.example.dinote.views.customs.font.TextViewSemiBold
         android:id="@+id/tv_item_dinote_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginBottom="@dimen/margin_16dp"
-        android:textSize="20sp"
-        android:text="16"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="5dp"
+        android:hint="16"
         app:layout_constraintBottom_toBottomOf="@+id/imv_item_dinote_bg"
         app:layout_constraintStart_toStartOf="@+id/imv_item_dinote_bg" />
 
     <TextView
-        android:textSize="15sp"
         android:id="@+id/tv_item_dinote_moth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_16dp"
-        android:layout_marginBottom="@dimen/margin_16dp"
-        android:text="Th5"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:hint="Th5"
+
         app:layout_constraintBottom_toBottomOf="@+id/imv_item_dinote_bg"
         app:layout_constraintEnd_toEndOf="@+id/imv_item_dinote_bg" />
 
-    <com.example.dinote.view.font.TextViewSemiBold
-        android:id="@+id/tv_item_dinote_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_start"
-        android:layout_marginTop="@dimen/margin_start"
-        android:text="Tiêu đề no way hôm "
-        app:layout_constraintStart_toEndOf="@+id/imv_item_dinote_bg"
-        app:layout_constraintTop_toTopOf="@+id/imv_item_dinote_bg" />
-
-    <TextView
+    <LinearLayout
+        android:layout_marginStart="@dimen/margin_10dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_marginStart="@dimen/margin_start"
-        android:id="@+id/tv_item_dinote_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Không có nội dung"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imv_item_dinote_bg"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_dinote_title" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.example.dinote.views.customs.font.TextViewSemiBold
+            android:id="@+id/tv_item_dinote_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:hint="Tiêu đề no way hôm "
+        />
+
+        <TextView
+            android:id="@+id/tv_item_dinote_content"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="10dp"
+            android:hint="Không có nội dung"
+             />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".fragment.CreateDinoteFragment">
+            tools:context=".views.fragments.CreateDinoteFragment">
 
             <LinearLayout
                 android:id="@+id/lnl_option"
@@ -44,7 +44,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.example.dinote.view.font.TextViewSemiBold
+                <com.example.dinote.views.customs.font.TextViewSemiBold
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

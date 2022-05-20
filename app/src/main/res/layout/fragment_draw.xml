@@ -11,7 +11,7 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.DrawFragment">
+        tools:context=".views.fragments.DrawFragment">
         <LinearLayout
             android:id="@+id/lnl_draw_option"
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.example.dinote.view.font.TextViewSemiBold
+            <com.example.dinote.views.customs.font.TextViewSemiBold
                 android:id="@+id/tv_draw_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
 
         </LinearLayout>
 
-        <com.example.dinote.view.PaintView
+        <com.example.dinote.views.customs.PaintView
 
             android:id="@+id/pv_draw_content"
             android:layout_width="match_parent"
