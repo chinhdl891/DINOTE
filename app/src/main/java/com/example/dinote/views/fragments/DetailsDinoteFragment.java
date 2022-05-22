@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 
 import com.example.dinote.R;
@@ -22,6 +23,8 @@ import java.io.IOException;
 
 public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBinding> implements View.OnClickListener {
     private Dinote mDinote;
+    private static final String TAG = "DetailsDinoteFragment";
+
 
 
     @Override
@@ -110,15 +113,19 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
         switch (view.getId()) {
             case R.id.tv_create_save:
                 if (!isEdit) {
-//                    EditTextUtils.enableEditText(mBinding.edtCreateContent);
-//                    EditTextUtils.enableEditText(mBinding.edtCreateDesDrawer);
-//                    EditTextUtils.enableEditText(mBinding.edtCreateTitle);
+                    mBinding.tvCreateSave.setText("Lưu");
+                    EditTextUtils.enableEditText(mBinding.edtCreateContent);
+                    EditTextUtils.enableEditText(mBinding.edtCreateDesDrawer);
+                    EditTextUtils.enableEditText(mBinding.edtCreateTitle);
                 } else {
-//                    EditTextUtils.disableEditText(mBinding.edtCreateContent);
-//                    EditTextUtils.disableEditText(mBinding.edtCreateDesDrawer);
-//                    EditTextUtils.disableEditText(mBinding.edtCreateTitle);
+                    mBinding.tvCreateSave.setText("Cập Nhật");
+                    EditTextUtils.disableEditText(mBinding.edtCreateContent);
+                    EditTextUtils.disableEditText(mBinding.edtCreateDesDrawer);
+                    EditTextUtils.disableEditText(mBinding.edtCreateTitle);
                 }
                 isEdit = !isEdit;
+                Log.e(TAG, "onClick: " + isEdit );
+
                 break;
             case R.id.imv_create_cancel:
                 getActivity().onBackPressed();
