@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     private String imageUri = "no_data";
     private String imageDes;
     private List<Tag> tagList;
+    private int isLike;
     private long dateCreate;
+    private static final String TAG = "CreateDinoteFragment";
+
 
 
     @Override
@@ -180,10 +184,13 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         } else if (view.getId() == R.id.imv_create_text_love) {
             if (!isLove) {
                 mBinding.imvCreateTextLove.setImageResource(R.drawable.ic_text_loved);
+                isLike = 1;
             } else {
                 mBinding.imvCreateTextLove.setImageResource(R.drawable.ic_text_love);
+                isLike =0 ;
             }
             isLove = !isLove;
+            Log.e(TAG, "onClick: " + isLike );
         } else if (view.getId() == R.id.imv_create_text_tag) {
             addTag();
         } else if (view.getId() == R.id.imv_create_text_remove) {
@@ -249,6 +256,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 , motion
                 , imageUri
                 , imageDes
+                ,isLike
                 , getListTag()
         );
 

@@ -23,10 +23,14 @@ public class Dinote implements Serializable {
     private String imageUri;
     @ColumnInfo
     private String imageDes;
+
+    @ColumnInfo
+    private int isLike;
+
     @ColumnInfo
     private List<Tag> tagList;
 
-    public Dinote(int id, long date, String content, String title, int motion, String imageUri, String imageDes, List<Tag> tagList) {
+    public Dinote(int id, long date, String content, String title, int motion, String imageUri, String imageDes, int isLike, List<Tag> tagList) {
         this.id = id;
         this.date = date;
         this.content = content;
@@ -34,6 +38,7 @@ public class Dinote implements Serializable {
         this.motion = motion;
         this.imageUri = imageUri;
         this.imageDes = imageDes;
+        this.isLike = isLike;
         this.tagList = tagList;
     }
 
@@ -91,6 +96,14 @@ public class Dinote implements Serializable {
 
     public void setImageDes(String imageDes) {
         this.imageDes = imageDes;
+    }
+
+    public int getIsLike() {
+        return isLike;
+    }
+
+    public void setIsLike(int isLike) {
+        this.isLike = isLike;
     }
 
     public List<Tag> getTagList() {

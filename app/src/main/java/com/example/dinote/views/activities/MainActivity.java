@@ -1,16 +1,21 @@
 package com.example.dinote.views.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -21,6 +26,7 @@ import com.example.dinote.R;
 import com.example.dinote.databinding.ActivityMainBinding;
 import com.example.dinote.model.Motion;
 import com.example.dinote.utils.Constant;
+import com.example.dinote.views.dialogs.ExitAppDialog;
 import com.example.dinote.views.dialogs.SavedDialog;
 import com.example.dinote.views.fragments.CreateDinoteFragment;
 import com.example.dinote.views.fragments.MainFragment;
@@ -49,8 +55,16 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         toggle.syncState();
         MainFragment fragment = new MainFragment();
         loadFragment(fragment, Constant.MAIN_FRAGMENT);
+        checkPermission();
 
 
+    }
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.PERMISSION_WRITE_EXTERNAL_STORAGE);
+        }
     }
 
     private void getInfoDisplay() {
@@ -66,15 +80,27 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if (mainBinding.drlMain.isDrawerOpen(GravityCompat.START)) {
             mainBinding.drlMain.closeDrawer(GravityCompat.START);
         } else {
+            if (getTopFragment().getTag().equals(Constant.MAIN_FRAGMENT)){
+                onShowExitApp();
+            }
             if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
-
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
-            } else
-                super.onBackPressed();
+
+            } else if (getTopFragment().getTag().equals(Constant.DETAIL_FRAGMENT)) {
+                mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
+                loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
+            }
+
+
         }
 
 
+    }
+
+    private void onShowExitApp() {
+        ExitAppDialog exitAppDialog = new ExitAppDialog(this);
+        exitAppDialog.show();
     }
 
     @Override
@@ -163,4 +189,21 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         dialog.show();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == Constant.PERMISSION_WRITE_EXTERNAL_STORAGE) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    if (i == 0) {
+                        Toast.makeText(this, "Write permission denied", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Read permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                    checkPermission();
+                }
+            }
+        }
+    }
 }

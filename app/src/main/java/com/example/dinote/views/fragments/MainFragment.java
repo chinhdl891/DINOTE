@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.dinote.R;
-import com.example.dinote.model.PhotoModel;
 import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.adapter.DinoteAdapter;
 import com.example.dinote.adapter.PhotoAdapter;
@@ -60,8 +59,8 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         vpgMainFragment.setAdapter(photoAdapter);
         autoNextAds();
 
-        circleImageView = rootView.findViewById(R.id.bg_main_background);
-        circleImageView.setOnClickListener(this);
+
+        mBinding.bgMainBackground.setOnClickListener(this);
 
         mBinding.rcvMainDinote.setLayoutManager(new LinearLayoutManager(mContext));
         DinoteAdapter dinoteAdapter = new DinoteAdapter();
@@ -152,7 +151,7 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         bundle.putSerializable(Constant.SEND_DATA_OBJ_DINOTE,dinote);
         DetailsDinoteFragment detailsDinoteFragment = new DetailsDinoteFragment();
         detailsDinoteFragment.setArguments(bundle);
-        mainActivity.loadFragment(detailsDinoteFragment, Constant.Details_Dinote_Fragment);
+        mainActivity.loadFragment(detailsDinoteFragment, Constant.DETAIL_FRAGMENT);
 
     }
 

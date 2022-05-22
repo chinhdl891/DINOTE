@@ -26,7 +26,6 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
     private static final String TAG = "DetailsDinoteFragment";
 
 
-
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_details_dinote;
@@ -63,6 +62,7 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
     @Override
     protected void onClickViews() {
         mBinding.tvCreateSave.setOnClickListener(this);
+        mBinding.imvCreateCancel.setOnClickListener(this);
 
     }
 
@@ -122,9 +122,10 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
                     EditTextUtils.disableEditText(mBinding.edtCreateContent);
                     EditTextUtils.disableEditText(mBinding.edtCreateDesDrawer);
                     EditTextUtils.disableEditText(mBinding.edtCreateTitle);
+                    getActivity().onBackPressed();
                 }
                 isEdit = !isEdit;
-                Log.e(TAG, "onClick: " + isEdit );
+
 
                 break;
             case R.id.imv_create_cancel:

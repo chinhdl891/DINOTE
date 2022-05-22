@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:gravity="center"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:padding="@dimen/margin_start"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_exit_continue"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_start"
+            android:layout_width="0dp"
+            android:textColor="@color/white"
+            android:background="@drawable/coner_view_button_continues"
+            android:layout_height="wrap_content"
+            android:text="Tiếp tục"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_exit_exit"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginEnd="@dimen/margin_start"
+            android:layout_width="0dp"
+            android:textColor="@color/purple_500"
+            android:layout_weight="1"
+            android:background="@drawable/coner_view_button_cancel"
+            android:layout_height="wrap_content"
+            android:text="Thoát"/>
+
+    </LinearLayout>
+</layout>
