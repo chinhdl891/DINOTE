@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.dinote.R;
-import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.adapter.DinoteAdapter;
 import com.example.dinote.adapter.PhotoAdapter;
 import com.example.dinote.base.BaseFragment;
@@ -21,6 +20,7 @@ import com.example.dinote.model.Dinote;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.ReDesign;
 import com.example.dinote.viewmodel.MainViewModel;
+import com.example.dinote.views.activities.MainActivity;
 
 import java.util.List;
 import java.util.Timer;
@@ -37,6 +37,8 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     private MainViewModel viewModel;
     private int[] photoModelList;
     private Timer mTimer;
+    int i = 0;
+    private static final String TAG = "MainFragment";
 
     @Override
     protected int getLayoutResource() {
@@ -44,29 +46,25 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     }
 
 
-
-
     @Override
     protected void initViews(View rootView) {
 
         mainActivity = (MainActivity) getActivity();
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
         vpgMainFragment = rootView.findViewById(R.id.vpg_main_fragment);
         vpgMainFragment.setPageMargin(50);
         photoModelList = viewModel.image;
         photoAdapter = new PhotoAdapter(mContext, photoModelList);
         vpgMainFragment.setAdapter(photoAdapter);
         autoNextAds();
-
-
         mBinding.bgMainBackground.setOnClickListener(this);
-
         mBinding.rcvMainDinote.setLayoutManager(new LinearLayoutManager(mContext));
         DinoteAdapter dinoteAdapter = new DinoteAdapter();
         mBinding.rcvMainDinote.setAdapter(dinoteAdapter);
         dinoteAdapter.setDinoteList(getListDinote());
         dinoteAdapter.setDinoteAdapterListener(this);
+
+
 
 
     }
@@ -87,7 +85,7 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
                     @Override
                     public void run() {
                         int currentItem = vpgMainFragment.getCurrentItem();
-                        int totalItem = photoModelList.length -1;
+                        int totalItem = photoModelList.length - 1;
                         if (currentItem < totalItem) {
                             currentItem++;
                             vpgMainFragment.setCurrentItem(currentItem);
@@ -148,7 +146,7 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     @Override
     public void onGotoDetailDinote(Dinote dinote) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constant.SEND_DATA_OBJ_DINOTE,dinote);
+        bundle.putSerializable(Constant.SEND_DATA_OBJ_DINOTE, dinote);
         DetailsDinoteFragment detailsDinoteFragment = new DetailsDinoteFragment();
         detailsDinoteFragment.setArguments(bundle);
         mainActivity.loadFragment(detailsDinoteFragment, Constant.DETAIL_FRAGMENT);

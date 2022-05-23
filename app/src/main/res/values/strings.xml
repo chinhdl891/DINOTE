@@ -24,4 +24,7 @@
     <string name="add_tag">Bấm thêm thẻ</string>
     <string name="continues_dinote">Tiếp tục Nhật ký của bạn</string>
     <string name="question_and_answer">Bạn có muốn tiếp tục viết nhật ký ?</string>
+    <string name="update">Cập Nhật</string>
+    <string name="save">Lưu</string>
+    <string name="favorite">Yêu Thích</string>
 </resources>

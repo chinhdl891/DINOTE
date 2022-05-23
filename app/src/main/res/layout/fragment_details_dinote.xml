@@ -7,6 +7,7 @@
     <data>
 
     </data>
+
     <ScrollView
         android:id="@+id/svCreateDinote"
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.example.dinote.views.customs.font.TextViewSemiBold
+                <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,6 +49,7 @@
                     android:gravity="center"
                     android:text="Dinote Lite"
                     android:textSize="20sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/cardView"
                     app:layout_constraintHorizontal_bias="0.483"
 
@@ -103,7 +105,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_date_selection">
+                app:layout_constraintTop_toBottomOf="@+id/lnl_date_selection">
 
                 <LinearLayout
                     android:id="@+id/lnl_crate_status"
@@ -150,11 +152,11 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-
                     </LinearLayout>
 
 
                 </HorizontalScrollView>
+
 
             </LinearLayout>
 
@@ -284,23 +286,49 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_date_selection"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/lnl_date_selection"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_start"
-                android:layout_marginTop="25dp"
-                android:background="@android:color/transparent"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:hint="08/09/2022"
-                android:padding="10dp"
-                app:drawableEndCompat="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:layout_marginTop="@dimen/margin_start"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_create_title" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_create_title">
 
+                <TextView
+                    android:id="@+id/tv_date_selection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_start"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:hint="08/09/2022"
+                    android:padding="10dp"
+                    app:drawableEndCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
+                <LinearLayout
+                    android:layout_marginEnd="@dimen/margin_10dp"
+                    android:gravity="end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <!--           -->
+                    <ImageView
+                        android:id="@+id/imv_detail_is_loved"
+                        android:layout_marginEnd="@dimen/margin_10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_text_love"/>
+                    <ImageView
+                        android:id="@+id/imv_detail_is_drop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_text_drop"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_create_drawer"
@@ -314,10 +342,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/lnl_motion_tag">
 
                 <ImageView
-                    android:scaleType="centerCrop"
                     android:id="@+id/imv_create_drawer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
 
             <EditText

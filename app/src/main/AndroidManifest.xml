@@ -12,7 +12,6 @@
         android:theme="@style/Theme.Dinote"
         android:windowSoftInputMode="adjustPan">
         <activity
-
             android:theme="@style/Theme.AppCompat.Dialog.Pop"
             android:name=".views.activities.DialogActivityMotion"
             android:exported="false" />

@@ -1,11 +1,13 @@
 package com.example.dinote.views.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -27,14 +29,14 @@ import com.example.dinote.databinding.ActivityMainBinding;
 import com.example.dinote.model.Motion;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.views.dialogs.ExitAppDialog;
-import com.example.dinote.views.dialogs.SavedDialog;
 import com.example.dinote.views.fragments.CreateDinoteFragment;
+import com.example.dinote.views.fragments.FavouriteFragment;
 import com.example.dinote.views.fragments.MainFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, CreateDinoteFragment.CreateDinoteListener {
 
-
+    private static final String TAG = "MainActivity";
     private FragmentManager fragmentManager;
     private Motion mMotion;
     public static int LAYOUT_WIDTH = 0;
@@ -45,17 +47,17 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkPermission();
+
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         getInfoDisplay();
-
         setSupportActionBar(mainBinding.tlbMainAction);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mainBinding.drlMain, mainBinding.tlbMainAction, R.string.open, R.string.close);
         mainBinding.drlMain.addDrawerListener(toggle);
         toggle.syncState();
+        mainBinding.ngvMainAction.setNavigationItemSelectedListener(this::onNavigationItemSelected);
         MainFragment fragment = new MainFragment();
         loadFragment(fragment, Constant.MAIN_FRAGMENT);
-        checkPermission();
 
 
     }
@@ -77,10 +79,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     @Override
     public void onBackPressed() {
+
         if (mainBinding.drlMain.isDrawerOpen(GravityCompat.START)) {
             mainBinding.drlMain.closeDrawer(GravityCompat.START);
         } else {
-            if (getTopFragment().getTag().equals(Constant.MAIN_FRAGMENT)){
+            if (getTopFragment().getTag().equals(Constant.MAIN_FRAGMENT)) {
                 onShowExitApp();
             }
             if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
@@ -90,6 +93,19 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             } else if (getTopFragment().getTag().equals(Constant.DETAIL_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
+
+
+            } else if (getTopFragment().getTag().equals(Constant.DETAIL_FRAGMENT_LOVE)) {
+                loadFragment(new FavouriteFragment(), Constant.MAIN_FRAGMENT);
+
+
+            } else if (getTopFragment().getTag().equals(Constant.FAVORITE_FRAGMENT)) {
+                mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
+                loadFragment(new FavouriteFragment(), Constant.MAIN_FRAGMENT);
+
+            } else {
+                mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
+                super.onBackPressed();
             }
 
 
@@ -103,15 +119,19 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         exitAppDialog.show();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Fragment fragment = null;
+        Fragment fragment;
         switch (item.getItemId()) {
+
             case R.id.item_menu_export:
                 break;
             case R.id.item_menu_lock_app:
                 break;
-            case R.id.item_menu_love:
+            case R.id.item_menu_favorite:
+                fragment = new FavouriteFragment();
+                loadFragment(fragment, Constant.FAVORITE_FRAGMENT);
                 break;
             case R.id.item_menu_rate:
                 break;
@@ -120,10 +140,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             case R.id.item_menu_tag:
                 break;
             case R.id.item_menu_theme:
+                Log.d(TAG, "onNavigationItemSelected: ");
                 break;
 
         }
-
+        mainBinding.drlMain.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -182,11 +203,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     @Override
     public void onShowSaveComplete() {
-        SavedDialog dialog = new SavedDialog(this);
-        dialog.setCallbackSaveDialog(() -> {
-
-        });
-        dialog.show();
+//        SavedDialog dialog = new SavedDialog(this);
+//        dialog.setCallbackSaveDialog(() -> {
+//
+//        });
+//        dialog.show();
     }
 
     @Override

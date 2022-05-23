@@ -2,13 +2,16 @@ package com.example.dinote.views.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.view.LayoutInflater;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 
 import com.example.dinote.R;
 import com.example.dinote.databinding.DialogExitBinding;
+import com.example.dinote.utils.ReDesign;
 
 public class ExitAppDialog extends Dialog implements View.OnClickListener {
     private DialogExitBinding mBinding;
@@ -25,10 +28,13 @@ public class ExitAppDialog extends Dialog implements View.OnClickListener {
     }
 
     public void init() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mBinding = DialogExitBinding.inflate(getLayoutInflater());
         mBinding.btnExitExit.setOnClickListener(this);
         mBinding.btnExitContinue.setOnClickListener(this);
         setContentView(mBinding.getRoot());
+        ReDesign.resizeImage(mBinding.ivmExit,900,900);
     }
 
 
