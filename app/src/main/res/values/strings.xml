@@ -27,4 +27,5 @@
     <string name="update">Cập Nhật</string>
     <string name="save">Lưu</string>
     <string name="favorite">Yêu Thích</string>
+    <string name="add_favorite">Đã thêm vào mục yêu thích</string>
 </resources>

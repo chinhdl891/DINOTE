@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -34,6 +35,7 @@ import com.example.dinote.utils.ReDesign;
 import com.example.dinote.viewmodel.MotionViewModel;
 import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.views.customs.AddTagView;
+import com.example.dinote.views.customs.ToastCustom;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -45,11 +47,10 @@ import java.util.List;
 public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBinding> implements View.OnClickListener, DrawFragment.SendUriListerner, AddTagView.TagListener, MotionAdapter.EditMotionListener {
     private Dinote mDinote;
     private String imgUri;
-    private int isLike,motion;
+    private int isLike, motion;
     private List<Tag> tagList;
     private LinearLayout lnlListTag;
     private PopupWindow popup;
-
 
 
     private static final String TAG = "DetailsDinoteFragment";
@@ -180,9 +181,15 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
                 if (isLike == 1) {
                     mBinding.imvDetailIsLoved.setImageResource(R.drawable.ic_text_love);
                     isLike = 0;
+
                 } else {
                     mBinding.imvDetailIsLoved.setImageResource(R.drawable.ic_text_loved);
                     isLike = 1;
+                    ToastCustom toastCustom = new ToastCustom(getContext());
+                    Toast toast = new Toast(getContext());
+                    toast.setView(toastCustom);
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.show();
                 }
                 onSaveEditDinote();
                 break;
@@ -258,7 +265,6 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
         mDinote.setMotion(motion);
         mDinote.setTagList(getListTag());
         DinoteDataBase.getInstance(getActivity()).dinoteDAO().updateDinote(mDinote);
-        getActivity().onBackPressed();
     }
 
     private List<Tag> getListTag() {

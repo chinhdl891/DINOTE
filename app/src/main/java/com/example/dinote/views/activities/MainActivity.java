@@ -83,10 +83,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if (mainBinding.drlMain.isDrawerOpen(GravityCompat.START)) {
             mainBinding.drlMain.closeDrawer(GravityCompat.START);
         } else {
+
             if (getTopFragment().getTag().equals(Constant.MAIN_FRAGMENT)) {
                 onShowExitApp();
             }
-            if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
+            else if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
 
@@ -94,18 +95,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
 
-
             } else if (getTopFragment().getTag().equals(Constant.DETAIL_FRAGMENT_LOVE)) {
                 loadFragment(new FavouriteFragment(), Constant.MAIN_FRAGMENT);
 
-
             } else if (getTopFragment().getTag().equals(Constant.FAVORITE_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
-                loadFragment(new FavouriteFragment(), Constant.MAIN_FRAGMENT);
-
-            } else {
-                mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
-                super.onBackPressed();
+                loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
             }
 
 

@@ -3,6 +3,7 @@ package com.example.dinote.views.fragments;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -11,12 +12,14 @@ import com.example.dinote.adapter.DinoteAdapter;
 import com.example.dinote.base.BaseFragment;
 import com.example.dinote.databases.DinoteDataBase;
 import com.example.dinote.databinding.FragmentFavouriteBinding;
+import com.example.dinote.databinding.ToastLoveBinding;
 import com.example.dinote.model.Dinote;
 import com.example.dinote.utils.Constant;
+import com.example.dinote.views.customs.ToastCustom;
 
 import java.util.List;
 
-public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> implements DinoteAdapter.DinoteAdapterListener {
+public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> implements DinoteAdapter.DinoteAdapterListener, View.OnClickListener {
     private List<Dinote> dinoteList;
     private static final String TAG = "FavouriteFragment";
 
@@ -38,7 +41,18 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     @Override
     protected void onClickViews() {
+        mBinding.imvFavoriteCancel.setOnClickListener(this);
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imv_favorite_cancel:
+
+                mainActivity.loadFragment(new MainFragment(),Constant.MAIN_FRAGMENT);
+                break;
+        }
     }
 
     @Override
@@ -58,7 +72,7 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     private List<Dinote> getListDinoteFavorite() {
         dinoteList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinoteFavorite();
-        Log.d(TAG, "getListDinoteFavorite: "+dinoteList.size());
+        Log.d(TAG, "getListDinoteFavorite: " + dinoteList.size());
         return dinoteList;
     }
 
@@ -71,5 +85,6 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
         mainActivity.loadFragment(detailsDinoteFragment, Constant.DETAIL_FRAGMENT_LOVE);
 
     }
+
 
 }
