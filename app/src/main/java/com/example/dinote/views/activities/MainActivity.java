@@ -3,11 +3,13 @@ package com.example.dinote.views.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -27,11 +30,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.dinote.R;
 import com.example.dinote.databinding.ActivityMainBinding;
 import com.example.dinote.model.Motion;
+import com.example.dinote.myshareferences.MySharePreference;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.views.dialogs.ExitAppDialog;
 import com.example.dinote.views.fragments.CreateDinoteFragment;
 import com.example.dinote.views.fragments.FavouriteFragment;
 import com.example.dinote.views.fragments.MainFragment;
+import com.example.dinote.views.fragments.ReminderFragment;
+import com.example.dinote.views.fragments.ThemeFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, CreateDinoteFragment.CreateDinoteListener {
@@ -48,7 +54,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermission();
-
+        createChanelID();
+        int theme = new MySharePreference(this).getData(ThemeFragment.TAG);
+        if (theme == 1) {
+            setTheme(com.google.android.material.R.style.Theme_Material3_Dark_NoActionBar);
+        } else {
+            setTheme(com.google.android.material.R.style.Theme_Material3_Light_NoActionBar);
+        }
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         getInfoDisplay();
         setSupportActionBar(mainBinding.tlbMainAction);
@@ -60,6 +72,19 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         loadFragment(fragment, Constant.MAIN_FRAGMENT);
 
 
+    }
+
+    private void createChanelID() {
+        if (Build.VERSION.SDK_INT >Build.VERSION_CODES.O) {
+            CharSequence name = "Dinote Chanel";
+            String des  = "Chanel remind write dinote";
+            int importance = NotificationManagerCompat.IMPORTANCE_HIGH;
+            @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel("dinoteId",name ,(int) importance);
+            channel.setDescription(des);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void checkPermission() {
@@ -86,8 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
             if (getTopFragment().getTag().equals(Constant.MAIN_FRAGMENT)) {
                 onShowExitApp();
-            }
-            else if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
+            } else if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
 
@@ -96,9 +120,18 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
 
             } else if (getTopFragment().getTag().equals(Constant.DETAIL_FRAGMENT_LOVE)) {
-                loadFragment(new FavouriteFragment(), Constant.MAIN_FRAGMENT);
+                loadFragment(new FavouriteFragment(), Constant.FAVORITE_FRAGMENT);
 
             } else if (getTopFragment().getTag().equals(Constant.FAVORITE_FRAGMENT)) {
+                mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
+                loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
+
+            } else if (getTopFragment().getTag().equals(Constant.DRAW_FRAGMENT)) {
+                super.onBackPressed();
+            } else if (getTopFragment().getTag().equals(Constant.THEME_FRAGMENT)) {
+                mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
+                loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
+            } else if (getTopFragment().getTag().equals(Constant.REMIND_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
             }
@@ -131,11 +164,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             case R.id.item_menu_rate:
                 break;
             case R.id.item_menu_remind:
+                loadFragment(new ReminderFragment(), Constant.REMIND_FRAGMENT);
                 break;
             case R.id.item_menu_tag:
                 break;
             case R.id.item_menu_theme:
-                Log.d(TAG, "onNavigationItemSelected: ");
+                fragment = new ThemeFragment();
+                loadFragment(fragment, Constant.THEME_FRAGMENT);
                 break;
 
         }

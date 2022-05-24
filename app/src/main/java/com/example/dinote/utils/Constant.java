@@ -22,7 +22,7 @@ public class Constant {
     public final static String MOTION_CUTE = "motion_cute";
     public final static String SEND_DATA_OBJ_DINOTE = "send_obj_dinote";
     public final static int PERMISSION_WRITE_EXTERNAL_STORAGE = 101;
-    public final static int PERMISSION_READ_EXTERNAL_STORAGE = 102;
+    public final static String THEME_SHARE_PER = "theme_int";
 
 
 
