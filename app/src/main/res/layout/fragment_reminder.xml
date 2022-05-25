@@ -77,7 +77,9 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/lnl_remind_list_tine"
+            android:layout_marginStart="@dimen/margin_10dp"
+            android:layout_marginEnd="@dimen/margin_10dp"
+            android:id="@+id/lnl_remind_list_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -92,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_start"
+            android:textColor="@color/white"
             android:background="@drawable/coner_view_bule"
             android:text="Thêm lời nhắc thời gian " />
 

@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         super.onCreate(savedInstanceState);
         checkPermission();
         createChanelID();
-        int theme = new MySharePreference(this).getData(ThemeFragment.TAG);
+
+        int theme = new MySharePreference(this).getDataTheme(ThemeFragment.TAG);
         if (theme == 1) {
             setTheme(com.google.android.material.R.style.Theme_Material3_Dark_NoActionBar);
         } else {
@@ -100,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         LAYOUT_HEIGHT = displayMetrics.heightPixels;
         LAYOUT_WIDTH = displayMetrics.widthPixels;
     }
-
 
     @Override
     public void onBackPressed() {

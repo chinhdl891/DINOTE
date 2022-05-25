@@ -21,9 +21,24 @@ public class MySharePreference {
     }
 
 
-    public int getData(String key) {
+    public int getDataTheme(String key) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(key, 0);
+    }
+
+    public  void pushTimeValue(String key, String value) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+
+    }
+
+
+    public String getDataTime(String key) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key, "09:00 AM");
+
     }
 
 

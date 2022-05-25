@@ -10,8 +10,9 @@ import androidx.room.TypeConverters;
 import com.example.dinote.model.Dinote;
 import com.example.dinote.model.Tag;
 import com.example.dinote.model.TagConverter;
+import com.example.dinote.model.TimeRemind;
 
-@Database(entities = {Tag.class, Dinote.class},version = 1)
+@Database(entities = {Tag.class, Dinote.class, TimeRemind.class},version = 1)
 @TypeConverters(TagConverter.class)
 public abstract class DinoteDataBase extends RoomDatabase {
     private static final String DB_NAME = "qr_gen.db";
@@ -26,4 +27,5 @@ public abstract class DinoteDataBase extends RoomDatabase {
     }
     public abstract TagDAO tagDAO();
     public abstract DinoteDAO dinoteDAO();
+    public abstract TimeRemindDAO timeRemindDAO();
 }

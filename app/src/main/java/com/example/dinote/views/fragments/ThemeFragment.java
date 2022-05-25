@@ -25,7 +25,7 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
 
     @Override
     protected void initViews(View rootView) {
-        int theme = new MySharePreference(getActivity()).getData(ThemeFragment.TAG);
+        int theme = new MySharePreference(getActivity()).getDataTheme(ThemeFragment.TAG);
         vpgThemeFragment = rootView.findViewById(R.id.vpg_theme_change);
         vpgThemeFragment.setPageMargin(50);
         themeAdapter = new ThemeAdapter(mContext, images());

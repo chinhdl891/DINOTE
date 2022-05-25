@@ -28,7 +28,7 @@ public class MyDataLocal {
 
     }
     public static int getTheme(){
-      return MyDataLocal.getInstance().mySharePreference.getData(KEY_PREFERENCE_FIRST);
+      return MyDataLocal.getInstance().mySharePreference.getDataTheme(KEY_PREFERENCE_FIRST);
     }
 
 
