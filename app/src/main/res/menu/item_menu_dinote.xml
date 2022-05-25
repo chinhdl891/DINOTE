@@ -8,7 +8,7 @@
             android:title="@string/text_theme" />
         <item
             android:icon="@drawable/ic_menu_heart"
-            android:id="@+id/item_menu_love"
+            android:id="@+id/item_menu_favorite"
             android:title="@string/text_like" />
         <item android:id="@+id/item_menu_lock_app"
             android:icon="@drawable/ic_menu_lock_app"

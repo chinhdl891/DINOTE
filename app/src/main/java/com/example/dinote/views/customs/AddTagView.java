@@ -68,9 +68,8 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
-
                     if (getTagString().length() > 0) {
-                        editTagListener.onAddTag();
+                        tagListener.onAddTag();
                         return true;
                     } else {
                         return false;
@@ -86,13 +85,17 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
         return edtTagAdd.getText().toString().trim();
     }
 
+    public void setUpString(String data) {
+        edtTagAdd.setText(data);
+
+
+    }
+
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.imv_tag_cancel) {
-            editTagListener.onDeleteTag((int) getTag());
-        } else if (view.getId() == R.id.imv_tag_cancel) {
-            editTagListener.onDeleteTag((int) getTag());
+            tagListener.onDeleteTag((int) this.getTag());
         }
 
     }
@@ -103,14 +106,14 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
 
     }
 
-    private EditTagListener editTagListener;
+    private TagListener tagListener;
 
 
-    public void setEditTagListener(EditTagListener editTagListener) {
-        this.editTagListener = editTagListener;
+    public void setEditTagListener(TagListener tagListener) {
+        this.tagListener = tagListener;
     }
 
-    public interface EditTagListener {
+    public interface TagListener {
         void onDeleteTag(int getTag);
 
         void onAddTag();

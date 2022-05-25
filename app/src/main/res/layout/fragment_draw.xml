@@ -8,10 +8,13 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
         tools:context=".views.fragments.DrawFragment">
+
         <LinearLayout
             android:id="@+id/lnl_draw_option"
             android:layout_width="match_parent"
@@ -28,12 +31,12 @@
                 android:id="@+id/imv_draw_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:src="@drawable/ic_cancel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.example.dinote.views.customs.font.TextViewSemiBold
+            <TextView
+                android:textStyle="bold"
                 android:id="@+id/tv_draw_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,19 +46,18 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/cardView"
                 app:layout_constraintHorizontal_bias="0.483"
-
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-                <ImageView
+            <ImageView
 
-                    android:src="@drawable/ic_draw_save"
-                    android:id="@+id/imv_draw_save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
+                android:id="@+id/imv_draw_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:src="@drawable/ic_draw_save"
 
-                   />
+                />
 
 
         </LinearLayout>
@@ -70,10 +72,10 @@
 
 
         <LinearLayout
-            android:layout_marginTop="5dp"
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:weightSum="4"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -94,10 +96,7 @@
                 android:src="@drawable/ic_draw_change_size" />
 
             <LinearLayout
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:id="@+id/lnl_draw_change_size"
-                android:weightSum="1.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -105,7 +104,10 @@
                 android:background="@drawable/un_focused_background"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                android:weightSum="1.5">
 
                 <ImageView
                     android:id="@+id/imv_draw_size_16"
@@ -147,7 +149,6 @@
                 android:layout_weight="1"
                 android:src="@drawable/ic_draw_eraser" />
         </LinearLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

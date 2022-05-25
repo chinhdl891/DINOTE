@@ -2,6 +2,8 @@ package com.example.dinote.views.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -9,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.dinote.R;
-import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.adapter.DinoteAdapter;
 import com.example.dinote.adapter.PhotoAdapter;
 import com.example.dinote.base.BaseFragment;
@@ -19,8 +20,11 @@ import com.example.dinote.model.Dinote;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.ReDesign;
 import com.example.dinote.viewmodel.MainViewModel;
+import com.example.dinote.views.activities.MainActivity;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,13 +34,17 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     private CircleImageView circleImageView;
     private MainActivity mainActivity;
     private List<Dinote> dinoteList;
+    private MainViewModel viewModel;
+    private int[] photoModelList;
+    private Timer mTimer;
+    int i = 0;
+    private static final String TAG = "MainFragment";
 
     @Override
     protected int getLayoutResource() {
         return R.layout.main_fragment;
     }
 
-    private MainViewModel viewModel;
 
     @Override
     protected void initViews(View rootView) {
@@ -45,16 +53,49 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         vpgMainFragment = rootView.findViewById(R.id.vpg_main_fragment);
         vpgMainFragment.setPageMargin(50);
-        photoAdapter = new PhotoAdapter(mContext, viewModel.image);
+        photoModelList = viewModel.image;
+        photoAdapter = new PhotoAdapter(mContext, photoModelList);
         vpgMainFragment.setAdapter(photoAdapter);
-        circleImageView = rootView.findViewById(R.id.bg_main_background);
-        circleImageView.setOnClickListener(this);
+        autoNextAds();
+        mBinding.bgMainBackground.setOnClickListener(this);
         mBinding.rcvMainDinote.setLayoutManager(new LinearLayoutManager(mContext));
         DinoteAdapter dinoteAdapter = new DinoteAdapter();
         mBinding.rcvMainDinote.setAdapter(dinoteAdapter);
         dinoteAdapter.setDinoteList(getListDinote());
         dinoteAdapter.setDinoteAdapterListener(this);
 
+
+
+
+    }
+
+    private void autoNextAds() {
+        if (photoModelList == null || photoModelList.length == 0 || vpgMainFragment == null) {
+            return;
+        }
+
+        if (mTimer == null) {
+            mTimer = new Timer();
+
+        }
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int currentItem = vpgMainFragment.getCurrentItem();
+                        int totalItem = photoModelList.length - 1;
+                        if (currentItem < totalItem) {
+                            currentItem++;
+                            vpgMainFragment.setCurrentItem(currentItem);
+                        } else {
+                            vpgMainFragment.setCurrentItem(0);
+                        }
+                    }
+                });
+            }
+        }, 500, 3000);
 
     }
 
@@ -105,10 +146,10 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     @Override
     public void onGotoDetailDinote(Dinote dinote) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constant.SEND_DATA_OBJ_DINOTE,dinote);
+        bundle.putSerializable(Constant.SEND_DATA_OBJ_DINOTE, dinote);
         DetailsDinoteFragment detailsDinoteFragment = new DetailsDinoteFragment();
         detailsDinoteFragment.setArguments(bundle);
-        mainActivity.loadFragment(detailsDinoteFragment, Constant.Details_Dinote_Fragment);
+        mainActivity.loadFragment(detailsDinoteFragment, Constant.DETAIL_FRAGMENT);
 
     }
 

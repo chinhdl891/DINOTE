@@ -27,6 +27,7 @@ public class SavedDialog extends Dialog {
 
     protected SavedDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+        initViews();
     }
 
     private void initViews() {
@@ -35,7 +36,6 @@ public class SavedDialog extends Dialog {
 
         mBinding = ShowDialogSaveCompleteBinding.inflate(LayoutInflater.from(getContext()));
         setContentView(mBinding.getRoot());
-
         resizeViews();
         onClickViews();
     }

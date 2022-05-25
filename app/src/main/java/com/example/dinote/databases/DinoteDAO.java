@@ -17,6 +17,10 @@ public interface DinoteDAO {
     @Query("select * from dinote order by date desc")
     List<Dinote> getAllDinote();
 
+
+    @Query("select * from dinote where isLike = 1 order by date desc ")
+    List<Dinote> getAllDinoteFavorite();
+
     @Insert
     void insertDinote(Dinote dinote);
 

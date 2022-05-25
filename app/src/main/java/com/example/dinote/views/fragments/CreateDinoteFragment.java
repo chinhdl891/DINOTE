@@ -4,6 +4,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +43,7 @@ import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.ReDesign;
 import com.example.dinote.views.customs.AddTagView;
 import com.example.dinote.viewmodel.MotionViewModel;
+import com.example.dinote.views.dialogs.SavedDialog;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,7 +55,7 @@ import java.util.List;
 import top.defaults.colorpicker.ColorPickerPopup;
 
 
-public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.EditTagListener, DrawFragment.SendUriListerner {
+public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.TagListener, DrawFragment.SendUriListerner {
     private boolean isLove;
     private Motion mMotion;
     private LinearLayout lnlCreateListTag;
@@ -65,7 +68,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     private String imageUri = "no_data";
     private String imageDes;
     private List<Tag> tagList;
+    private int isLike;
     private long dateCreate;
+    private PopupWindow popup;
+    private static final String TAG = "CreateDinoteFragment";
 
 
     @Override
@@ -180,12 +186,15 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         } else if (view.getId() == R.id.imv_create_text_love) {
             if (!isLove) {
                 mBinding.imvCreateTextLove.setImageResource(R.drawable.ic_text_loved);
+                isLike = 1;
             } else {
                 mBinding.imvCreateTextLove.setImageResource(R.drawable.ic_text_love);
+                isLike = 0;
             }
             isLove = !isLove;
+            Log.e(TAG, "onClick: " + isLike);
         } else if (view.getId() == R.id.imv_create_text_tag) {
-            addTag();
+            addTag(lnlCreateListTag, lnlCreateListTag.getChildCount(), mContext);
         } else if (view.getId() == R.id.imv_create_text_remove) {
             onShowDialogRemove(Gravity.CENTER);
         } else if (view.getId() == R.id.btn_dialog_continues) {
@@ -249,16 +258,33 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 , motion
                 , imageUri
                 , imageDes
+                , isLike
                 , getListTag()
         );
 
 
-        DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
-        createDinoteListener.onShowSaveComplete();
-        getActivity().onBackPressed();
+       new Thread(new Runnable() {
+           @Override
+           public void run() {
+               DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+           }
+       }).start();
+//        createDinoteListener.onShowSaveComplete();
+        showDiaLogSaveSuccess();
+
 
     }
 
+    private void showDiaLogSaveSuccess() {
+        SavedDialog dialog = new SavedDialog(getActivity());
+        dialog.show();
+        dialog.setCallbackSaveDialog(new SavedDialog.CallbackSaveDialog() {
+            @Override
+            public void onClickSaved() {
+                getActivity().onBackPressed();
+            }
+        });
+    }
 
     private List<Tag> getListTag() {
         tagList = new ArrayList<>();
@@ -341,14 +367,12 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         motionAdapter.setMotionList(MotionViewModel.motionList());
         rcvMotion.setAdapter(motionAdapter);
         motionAdapter.setEditMotionListener(this);
-
-        final PopupWindow popup = new PopupWindow(context);
+        popup = new PopupWindow(context);
         popup.setContentView(layout);
         popup.setWidth((int) (0.8 * widthDisplay));
         popup.setHeight((int) (0.4 * heightDisplay));
         popup.setFocusable(true);
         popup.setBackgroundDrawable(new BitmapDrawable());
-
         popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX * 1.3) + 22, (int) (pointViewY * 1.1));
 
 
@@ -394,9 +418,11 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 //
     @Override
     public void onSelectMotion(Motion motion) {
+
         mBinding.imvCreateMotion.setImageResource(motion.getImgMotion());
         mBinding.edtCreateStatus.setText(getString(motion.getMotion()));
         this.motion = motion.getId();
+        popup.dismiss();
 
 
     }
@@ -409,21 +435,27 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     @Override
     public void onAddTag() {
-        addTag();
+        addTag(lnlCreateListTag, lnlCreateListTag.getChildCount(), mContext);
     }
 
-    private void addTag() {
+    private void addTag(LinearLayout lnlCreateListTag, int lnlChildCount, Context mContext) {
 
-        if (lnlCreateListTag.getChildAt(lnlCreateListTag.getChildCount() - 1) instanceof AddTagView) {
-            int tagSize = (((AddTagView) lnlCreateListTag.getChildAt(lnlCreateListTag.getChildCount() - 1)).getTagString().length());
-            if (tagSize > 0) {
-                AddTagView addTagView = new AddTagView(mContext);
-                addTagView.setTag(lnlCreateListTag.getChildCount());
-                addTagView.setEditTagListener(this);
-                lnlCreateListTag.addView(addTagView);
-            } else {
-                return;
+        if (lnlChildCount > 0) {
+            if (lnlCreateListTag.getChildAt(lnlChildCount - 1) instanceof AddTagView) {
+                int tagSize = (((AddTagView) lnlCreateListTag.getChildAt(lnlChildCount - 1)).getTagString().length());
+                if (tagSize > 0) {
+                    AddTagView addTagView = new AddTagView(mContext);
+                    addTagView.setTag(lnlCreateListTag.getChildCount());
+                    addTagView.setEditTagListener(this);
+                    lnlCreateListTag.addView(addTagView);
+                }
             }
+
+        } else {
+            AddTagView addTagView = new AddTagView(mContext);
+            addTagView.setTag(lnlCreateListTag.getChildCount());
+            addTagView.setEditTagListener(this);
+            lnlCreateListTag.addView(addTagView);
         }
 
     }
@@ -448,6 +480,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         }
 
     }
+
     private CreateDinoteListener createDinoteListener;
 
     public void setCreateDinoteListener(CreateDinoteListener createDinoteListener) {

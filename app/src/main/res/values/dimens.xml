@@ -4,4 +4,6 @@
     <dimen name="margin_20">10dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
     <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="conner_radius">12dp</dimen>
+    <dimen name="padding_textview">5dp</dimen>
 </resources>
