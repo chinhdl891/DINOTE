@@ -4,10 +4,14 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.dinote.R;
@@ -22,6 +26,7 @@ import com.example.dinote.utils.ReDesign;
 import com.example.dinote.viewmodel.MainViewModel;
 import com.example.dinote.views.activities.MainActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +34,8 @@ import java.util.TimerTask;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainFragment extends BaseFragment<MainFragmentBinding> implements View.OnClickListener, DinoteAdapter.DinoteAdapterListener {
+    private static final String TAG = "MainFragment";
+    public static final int NUM_ITEM_LOAD_MORE = 50;
     private ViewPager vpgMainFragment;
     private PhotoAdapter photoAdapter;
     private CircleImageView circleImageView;
@@ -37,8 +44,14 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     private MainViewModel viewModel;
     private int[] photoModelList;
     private Timer mTimer;
-    int i = 0;
-    private static final String TAG = "MainFragment";
+    private DinoteAdapter mDinoteAdapter;
+    private int page = 1;
+    private int mOffset = 0;
+    private boolean isLoading = false;
+    private boolean isCanLoadMore = false;
+
+    private RecyclerView.LayoutManager mLayoutManager;
+    private int totalItem;
 
     @Override
     protected int getLayoutResource() {
@@ -50,6 +63,8 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     protected void initViews(View rootView) {
 
         mainActivity = (MainActivity) getActivity();
+        totalItem = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getTotalItemCount();
+        Toast.makeText(mainActivity, "" + totalItem, Toast.LENGTH_SHORT).show();
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         vpgMainFragment = rootView.findViewById(R.id.vpg_main_fragment);
         vpgMainFragment.setPageMargin(50);
@@ -57,17 +72,49 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         photoAdapter = new PhotoAdapter(mContext, photoModelList);
         vpgMainFragment.setAdapter(photoAdapter);
         autoNextAds();
+
         mBinding.bgMainBackground.setOnClickListener(this);
-        mBinding.rcvMainDinote.setLayoutManager(new LinearLayoutManager(mContext));
-        DinoteAdapter dinoteAdapter = new DinoteAdapter();
-        mBinding.rcvMainDinote.setAdapter(dinoteAdapter);
-        dinoteAdapter.setDinoteList(getListDinote());
-        dinoteAdapter.setDinoteAdapterListener(this);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mBinding.rcvMainDinote.setLayoutManager(mLayoutManager);
+
+        dinoteList = new ArrayList<>();
+        dinoteList.addAll(DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote(NUM_ITEM_LOAD_MORE, mOffset));
+        mDinoteAdapter = new DinoteAdapter(dinoteList);
+        mDinoteAdapter.setDinoteAdapterListener(this);
+        mBinding.rcvMainDinote.setAdapter(mDinoteAdapter);
+
+//        mBinding.rcvMainDinote.setLayoutManager(new LinearLayoutManager(mContext));
+
+        mBinding.rcvMainDinote.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+                if (((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition() == (dinoteList.size() - 1) && !isCanLoadMore) {
+                    isCanLoadMore = true;
+                    loadData();
+                }
+            }
+        });
+    }
+
+
+    private void loadData() {
+
+        if (mOffset -50 >= totalItem) {
+            isCanLoadMore = true;
+        }else {
+            mOffset += NUM_ITEM_LOAD_MORE;
+            List<Dinote> newDataList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote(NUM_ITEM_LOAD_MORE, mOffset);
+            dinoteList.addAll(newDataList);
+            mDinoteAdapter.notifyItemRangeInserted(mOffset, newDataList.size());
+            isCanLoadMore = false;
+        }
 
 
 
 
     }
+
 
     private void autoNextAds() {
         if (photoModelList == null || photoModelList.length == 0 || vpgMainFragment == null) {
@@ -99,10 +146,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
 
     }
 
-    private List<Dinote> getListDinote() {
-        dinoteList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote();
-        return dinoteList;
-    }
 
     @Override
     protected void resizeViews() {

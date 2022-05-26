@@ -14,8 +14,8 @@ import java.util.List;
 public interface DinoteDAO {
 
 
-    @Query("select * from dinote order by date desc")
-    List<Dinote> getAllDinote();
+    @Query("select * from dinote order by date desc limit :limit offset :next ")
+    List<Dinote> getAllDinote(int limit, int next);
 
 
     @Query("select * from dinote where isLike = 1 order by date desc ")
@@ -32,5 +32,8 @@ public interface DinoteDAO {
 
     @Query("select * from dinote where content like '%' +:search+'%' ")
     List<Dinote> searchList(String search);
+
+    @Query("select COUNT(id) from dinote")
+    int getTotalItemCount();
 
 }

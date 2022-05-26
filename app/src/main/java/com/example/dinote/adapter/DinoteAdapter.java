@@ -16,11 +16,11 @@ import java.util.Calendar;
 import java.util.List;
 
 public class DinoteAdapter extends RecyclerView.Adapter<DinoteAdapter.DinoteViewHolder> {
-    List<Dinote> dinoteList;
+    private List<Dinote> dinoteList;
 
-    public void setDinoteList(List<Dinote> dinoteList) {
+
+    public DinoteAdapter(List<Dinote> dinoteList) {
         this.dinoteList = dinoteList;
-        notifyDataSetChanged();
     }
 
     @NonNull

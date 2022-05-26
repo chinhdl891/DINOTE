@@ -125,9 +125,8 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a");
                 String date = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
                 mBinding.tvTimeSelect.setText("Thời gian nhắc nhở " + date);
-
+                mySharePreference.pushTimeRemind(calendar.getTimeInMillis());
                 mySharePreference.pushTimeValue(Constant.TIME_REMIND, date);
-
                 setAlarmRemind(calendar);
             }
         }, hour, minus, false);
@@ -181,12 +180,13 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
     }
 
     private static final String TAG = "ReminderFragment";
+
     @Override
     public void onSetUpStatusTime(int status, TimeRemind timeRemind) {
 
         timeRemind.setStatus(status);
         DinoteDataBase.getInstance(getActivity()).timeRemindDAO().update(timeRemind);
-        Log.e(TAG, "onSetUpStatusTime: " + DinoteDataBase.getInstance(getActivity()).timeRemindDAO().getListTimeRemind().get(0).getStatus() );
+        Log.e(TAG, "onSetUpStatusTime: " + DinoteDataBase.getInstance(getActivity()).timeRemindDAO().getListTimeRemind().get(0).getStatus());
     }
 
     @Override

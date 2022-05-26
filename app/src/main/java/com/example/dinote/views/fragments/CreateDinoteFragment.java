@@ -267,6 +267,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
            @Override
            public void run() {
                DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+               for (int i = 0; i < 500; i++) {
+                   dinote.setTitle(i+"");
+                   DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+               }
            }
        }).start();
 //        createDinoteListener.onShowSaveComplete();

@@ -62,6 +62,7 @@ public class DrawFragment extends BaseFragment<FragmentDrawBinding> implements V
     @Override
     protected void onClickViews() {
 
+
         mBinding.imvDrawBack.setOnClickListener(this);
         mBinding.imvDrawEraser.setOnClickListener(this);
         mBinding.imvDrawChangeColor.setOnClickListener(this);

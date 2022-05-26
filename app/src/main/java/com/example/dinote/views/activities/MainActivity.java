@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         checkPermission();
         createChanelID();
 
+        long time = new MySharePreference(this).getTimeRemind();
+        Log.e(TAG, "onCreate: " +time );
         int theme = new MySharePreference(this).getDataTheme(ThemeFragment.TAG);
         if (theme == 1) {
             setTheme(com.google.android.material.R.style.Theme_Material3_Dark_NoActionBar);

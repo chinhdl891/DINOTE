@@ -30,4 +30,5 @@ public class Constant {
     public static final int REQUEST_MOTION = 101;
     public static final String TIME_REMIND = "time_default";
     public static final String RE_CREATE_ALARM = "re_create_alarm" ;
+    public static final String TIME_REMIND_DEFAULT = "long_time_default";
 }

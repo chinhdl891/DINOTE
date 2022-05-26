@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity()
-public class TimeRemind {
+public class TimeRemind implements Comparable<TimeRemind> {
     @PrimaryKey()
     private long id;
     @ColumnInfo
@@ -41,5 +41,17 @@ public class TimeRemind {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Override
+    public int compareTo(TimeRemind timeRemind) {
+        if (time == timeRemind.getTime()) {
+            return 0;
+        } else if (time > timeRemind.getTime()) {
+            return 1;
+        } else {
+            return -1;
+        }
+
     }
 }
