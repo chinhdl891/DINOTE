@@ -56,7 +56,6 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
         mBinding.rcvFavoriteDinote.setLayoutManager(new LinearLayoutManager(getActivity()));
         DinoteAdapter dinoteAdapter = new DinoteAdapter(getListDinoteFavorite());
-
         dinoteAdapter.setDinoteAdapterListener(this);
         mBinding.rcvFavoriteDinote.setAdapter(dinoteAdapter);
 

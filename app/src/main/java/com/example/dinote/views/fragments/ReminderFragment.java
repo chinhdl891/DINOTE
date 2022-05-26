@@ -38,7 +38,7 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
     private PendingIntent pendingIntent;
     private List<TimeRemind> timeRemindList;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a");
-
+    private static final String TAG = "ReminderFragment";
 
     @Override
     protected int getLayoutResource() {
@@ -134,8 +134,6 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
     }
 
     private void setAlarmRemind(Calendar calendar) {
-        Log.e("TAG", "setAlarmRemind: " + calendar.get(Calendar.HOUR_OF_DAY) + " - " + calendar.get(Calendar.MINUTE) + " - " + calendar.getTimeInMillis());
-
         alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext, RemindReceiver.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -143,7 +141,6 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
         } else {
             pendingIntent = PendingIntent.getBroadcast(mContext, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-
         int type = AlarmManager.RTC_WAKEUP;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(type, calendar.getTimeInMillis(), pendingIntent);
@@ -178,8 +175,6 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
         deleteTimeDialog.show();
 
     }
-
-    private static final String TAG = "ReminderFragment";
 
     @Override
     public void onSetUpStatusTime(int status, TimeRemind timeRemind) {

@@ -38,16 +38,13 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     public static final int NUM_ITEM_LOAD_MORE = 50;
     private ViewPager vpgMainFragment;
     private PhotoAdapter photoAdapter;
-    private CircleImageView circleImageView;
     private MainActivity mainActivity;
     private List<Dinote> dinoteList;
     private MainViewModel viewModel;
     private int[] photoModelList;
     private Timer mTimer;
     private DinoteAdapter mDinoteAdapter;
-    private int page = 1;
     private int mOffset = 0;
-    private boolean isLoading = false;
     private boolean isCanLoadMore = false;
 
     private RecyclerView.LayoutManager mLayoutManager;
@@ -64,7 +61,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
 
         mainActivity = (MainActivity) getActivity();
         totalItem = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getTotalItemCount();
-        Toast.makeText(mainActivity, "" + totalItem, Toast.LENGTH_SHORT).show();
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         vpgMainFragment = rootView.findViewById(R.id.vpg_main_fragment);
         vpgMainFragment.setPageMargin(50);
@@ -82,9 +78,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         mDinoteAdapter = new DinoteAdapter(dinoteList);
         mDinoteAdapter.setDinoteAdapterListener(this);
         mBinding.rcvMainDinote.setAdapter(mDinoteAdapter);
-
-//        mBinding.rcvMainDinote.setLayoutManager(new LinearLayoutManager(mContext));
-
         mBinding.rcvMainDinote.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -96,6 +89,7 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
             }
         });
     }
+
 
 
     private void loadData() {
