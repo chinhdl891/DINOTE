@@ -9,8 +9,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.dinote.R;
+import com.example.dinote.databases.DinoteDataBase;
+import com.example.dinote.model.TimeRemind;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.views.activities.MainActivity;
+
+import java.util.Calendar;
+import java.util.List;
 
 public class RemindReceiver extends BroadcastReceiver {
 
@@ -32,6 +37,10 @@ public class RemindReceiver extends BroadcastReceiver {
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         notificationManagerCompat.notify(123, builder.build());
+        Calendar calendar = Calendar.getInstance();
+        List<TimeRemind> timeRemindList = DinoteDataBase.getInstance(context).timeRemindDAO().getListTimeRemind();
+
+
 
 
     }
