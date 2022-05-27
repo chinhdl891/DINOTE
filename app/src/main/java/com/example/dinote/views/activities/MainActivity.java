@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -38,10 +37,11 @@ import com.example.dinote.views.fragments.CreateDinoteFragment;
 import com.example.dinote.views.fragments.FavouriteFragment;
 import com.example.dinote.views.fragments.MainFragment;
 import com.example.dinote.views.fragments.ReminderFragment;
+import com.example.dinote.views.fragments.SearchFragment;
 import com.example.dinote.views.fragments.ThemeFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, CreateDinoteFragment.CreateDinoteListener {
+public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, CreateDinoteFragment.CreateDinoteListener, View.OnClickListener {
 
     private static final String TAG = "MainActivity";
     private FragmentManager fragmentManager;
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         createChanelID();
 
         long time = new MySharePreference(this).getTimeRemind();
-        Log.e(TAG, "onCreate: " +time );
         int theme = new MySharePreference(this).getDataTheme(ThemeFragment.TAG);
         if (theme == 1) {
             setTheme(com.google.android.material.R.style.Theme_Material3_Dark_NoActionBar);
@@ -74,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         mainBinding.ngvMainAction.setNavigationItemSelectedListener(this::onNavigationItemSelected);
         MainFragment fragment = new MainFragment();
         loadFragment(fragment, Constant.MAIN_FRAGMENT);
+        mainBinding.imvMainSearch.setOnClickListener(this);
 
 
     }
@@ -258,6 +258,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                     checkPermission();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.imv_main_search) {
+            loadFragment(new SearchFragment(), Constant.SEARCH_FRAGMENT);
         }
     }
 }

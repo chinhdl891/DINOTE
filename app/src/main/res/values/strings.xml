@@ -30,4 +30,8 @@
     <string name="add_favorite">Đã thêm vào mục yêu thích</string>
     <string name="time_remind_default">Thời gian nhắc nhở mặc định</string>
     <string name="delete">Xóa</string>
+    <string name="txt_search">Nhập thẻ, nội dung để tìm kiếm</string>
+    <string name="txt_history_search">Lịch sử tìm kiểm</string>
+    <string name="tag_hot">Nhãn nổi bật</string>
+    <string name="delete_history">Xóa lịch sử</string>
 </resources>
