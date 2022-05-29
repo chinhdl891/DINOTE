@@ -34,4 +34,5 @@
     <string name="txt_history_search">Lịch sử tìm kiểm</string>
     <string name="tag_hot">Nhãn nổi bật</string>
     <string name="delete_history">Xóa lịch sử</string>
+    <string name="hint_search">Nhập gì đó để tìm kiếm</string>
 </resources>

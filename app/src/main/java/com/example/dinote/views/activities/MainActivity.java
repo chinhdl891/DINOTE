@@ -79,11 +79,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     private void createChanelID() {
-        if (Build.VERSION.SDK_INT >Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
             CharSequence name = "Dinote Chanel";
-            String des  = "Chanel remind write dinote";
+            String des = "Chanel remind write dinote";
             int importance = NotificationManagerCompat.IMPORTANCE_HIGH;
-            @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel("dinoteId",name ,(int) importance);
+            @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel("dinoteId", name, (int) importance);
             channel.setDescription(des);
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
@@ -111,30 +111,33 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if (mainBinding.drlMain.isDrawerOpen(GravityCompat.START)) {
             mainBinding.drlMain.closeDrawer(GravityCompat.START);
         } else {
-
-            if (getTopFragment().getTag().equals(Constant.MAIN_FRAGMENT)) {
+            String getTopFragment = getTopFragment().getTag();
+            if (getTopFragment.equals(Constant.MAIN_FRAGMENT)) {
                 onShowExitApp();
-            } else if (getTopFragment().getTag().equals(Constant.CREATE_DINOTE_FRAGMENT)) {
+            } else if (getTopFragment.equals(Constant.CREATE_DINOTE_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
 
-            } else if (getTopFragment().getTag().equals(Constant.DETAIL_FRAGMENT)) {
+            } else if (getTopFragment.equals(Constant.DETAIL_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
 
-            } else if (getTopFragment().getTag().equals(Constant.DETAIL_FRAGMENT_LOVE)) {
+            } else if (getTopFragment.equals(Constant.DETAIL_FRAGMENT_LOVE)) {
                 loadFragment(new FavouriteFragment(), Constant.FAVORITE_FRAGMENT);
 
-            } else if (getTopFragment().getTag().equals(Constant.FAVORITE_FRAGMENT)) {
+            } else if (getTopFragment.equals(Constant.FAVORITE_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
 
-            } else if (getTopFragment().getTag().equals(Constant.DRAW_FRAGMENT)) {
+            } else if (getTopFragment.equals(Constant.DRAW_FRAGMENT)) {
                 super.onBackPressed();
-            } else if (getTopFragment().getTag().equals(Constant.THEME_FRAGMENT)) {
+            } else if (getTopFragment.equals(Constant.THEME_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
-            } else if (getTopFragment().getTag().equals(Constant.REMIND_FRAGMENT)) {
+            } else if (getTopFragment.equals(Constant.REMIND_FRAGMENT)) {
+                mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
+                loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
+            } else if (getTopFragment.equals(Constant.SEARCH_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
             }
@@ -191,6 +194,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             fragmentTransaction.add(R.id.frl_main_content, fragment, tag);
             fragmentTransaction.addToBackStack(tag);
             fragmentTransaction.commit();
+        } else if (tag.equals(Constant.SEARCH_FRAGMENT)) {
+
         } else {
 
             if (fragment instanceof CreateDinoteFragment) {

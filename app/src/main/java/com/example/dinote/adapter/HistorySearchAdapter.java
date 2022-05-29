@@ -16,7 +16,9 @@ import java.util.List;
 public class HistorySearchAdapter extends RecyclerView.Adapter<HistorySearchAdapter.HistorySearchViewHolder> {
     List<SearchHistory> searchHistoryList;
 
-
+    public HistorySearchAdapter(List<SearchHistory> searchHistoryList) {
+        this.searchHistoryList = searchHistoryList;
+    }
 
     @NonNull
     @Override

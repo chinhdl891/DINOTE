@@ -23,13 +23,11 @@ public class Constant {
     public final static String SEND_DATA_OBJ_DINOTE = "send_obj_dinote";
     public final static int PERMISSION_WRITE_EXTERNAL_STORAGE = 101;
     public final static String THEME_SHARE_PER = "theme_int";
-
-
-
-
     public static final int REQUEST_MOTION = 101;
     public static final String TIME_REMIND = "time_default";
     public static final String RE_CREATE_ALARM = "re_create_alarm" ;
     public static final String TIME_REMIND_DEFAULT = "long_time_default";
     public static final String SEARCH_FRAGMENT = "search_fragment" ;
+    public static final String KEY_SEARCH = "key_search";
+    public static final String RESULT_SEARCH_FRAGMENT = "result_search_fragment";
 }
