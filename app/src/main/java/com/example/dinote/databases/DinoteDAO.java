@@ -30,10 +30,13 @@ public interface DinoteDAO {
     @Delete
     void deleteDinote(Dinote dinote);
 
-    @Query("select * from dinote where content like '%' +:search+'%' ")
+    @Query("select * from dinote where title like '%' ||:search||'%' ")
     List<Dinote> searchList(String search);
 
     @Query("select COUNT(id) from dinote")
     int getTotalItemCount();
+
+    @Query("select * from dinote where title like '%' ||:search || '%' or content like '%' || :search || '%' or tagList like '%' || :search || '%' ")
+    List<Dinote> searchAll(String search);
 
 }

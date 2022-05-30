@@ -30,7 +30,7 @@ public class HistorySearchAdapter extends RecyclerView.Adapter<HistorySearchAdap
     @Override
     public void onBindViewHolder(@NonNull HistorySearchViewHolder holder, int position) {
         SearchHistory searchHistory = searchHistoryList.get(position);
-            holder.tvHistorySearch.setText(searchHistory.getContentSearch());
+        holder.tvHistorySearch.setText(searchHistory.getContentSearch());
     }
 
     @Override
@@ -48,6 +48,22 @@ public class HistorySearchAdapter extends RecyclerView.Adapter<HistorySearchAdap
         public HistorySearchViewHolder(@NonNull View itemView) {
             super(itemView);
             tvHistorySearch = itemView.findViewById(R.id.tv_item_search_history);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    historySearchAdapterListener.onSendData(searchHistoryList.get(getLayoutPosition()));
+                }
+            });
         }
+    }
+
+    private HistorySearchAdapterListener historySearchAdapterListener;
+
+    public void setHistorySearchAdapterListener(HistorySearchAdapterListener historySearchAdapterListener) {
+        this.historySearchAdapterListener = historySearchAdapterListener;
+    }
+
+    public interface HistorySearchAdapterListener {
+        void onSendData(SearchHistory searchHistory);
     }
 }

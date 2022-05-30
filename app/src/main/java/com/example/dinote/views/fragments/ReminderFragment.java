@@ -1,12 +1,12 @@
 package com.example.dinote.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -124,7 +124,7 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
                 calendar.set(Calendar.SECOND, 0);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a");
                 String date = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
-                mBinding.tvTimeSelect.setText("Thời gian nhắc nhở " + date);
+                mBinding.tvTimeSelect.setText(getString(R.string.time_remind) + date);
                 mySharePreference.pushTimeRemind(calendar.getTimeInMillis());
                 mySharePreference.pushTimeValue(Constant.TIME_REMIND, date);
                 setAlarmRemind(calendar);
@@ -133,6 +133,7 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
         timePicker.show();
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private void setAlarmRemind(Calendar calendar) {
         alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext, RemindReceiver.class);
@@ -181,7 +182,6 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
 
         timeRemind.setStatus(status);
         DinoteDataBase.getInstance(getActivity()).timeRemindDAO().update(timeRemind);
-        Log.e(TAG, "onSetUpStatusTime: " + DinoteDataBase.getInstance(getActivity()).timeRemindDAO().getListTimeRemind().get(0).getStatus());
     }
 
     @Override

@@ -40,4 +40,12 @@ public class MyDataLocal {
         return MyDataLocal.getInstance().mySharePreference.getTimeRemind();
     }
 
+    public static boolean getIsFirstInstall() {
+        return MyDataLocal.getInstance().mySharePreference.getFirstInstall();
+    }
+
+    public static void setInstalled() {
+        MyDataLocal.getInstance().mySharePreference.setInstalled();
+    }
+
 }

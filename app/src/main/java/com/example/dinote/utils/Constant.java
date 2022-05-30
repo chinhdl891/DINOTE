@@ -30,4 +30,6 @@ public class Constant {
     public static final String SEARCH_FRAGMENT = "search_fragment" ;
     public static final String KEY_SEARCH = "key_search";
     public static final String RESULT_SEARCH_FRAGMENT = "result_search_fragment";
+    public static final String DETAIL_FRAGMENT_SEARCH = "detail_fragment_search" ;
+    public static final String FIRST_INSTALL = "the_first_install" ;
 }

@@ -61,5 +61,16 @@ public class MySharePreference {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
         return sharedPreferences.getLong(Constant.TIME_REMIND_DEFAULT, calendar.getTimeInMillis());
     }
+    public boolean getFirstInstall() {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(Constant.FIRST_INSTALL, false);
+    }
+
+    public void setInstalled() {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(Constant.TIME_REMIND_DEFAULT, true);
+        editor.apply();
+    }
 
 }

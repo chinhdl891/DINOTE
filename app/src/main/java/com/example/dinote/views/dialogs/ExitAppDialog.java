@@ -42,7 +42,7 @@ public class ExitAppDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_exit_exit:
-                System.exit(0);
+                exitDialogListener.onExit();
                 break;
             case  R.id.btn_exit_continue:
                 dismiss();
@@ -50,5 +50,14 @@ public class ExitAppDialog extends Dialog implements View.OnClickListener {
 
 
         }
+    }
+    public ExitDialogListener exitDialogListener;
+
+    public void setExitDialogListener(ExitDialogListener exitDialogListener) {
+        this.exitDialogListener = exitDialogListener;
+    }
+
+    public interface ExitDialogListener {
+        void onExit();
     }
 }

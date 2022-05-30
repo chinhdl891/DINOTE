@@ -3,8 +3,11 @@ package com.example.dinote.views.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -12,6 +15,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,7 +34,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.dinote.R;
 import com.example.dinote.databinding.ActivityMainBinding;
 import com.example.dinote.model.Motion;
+import com.example.dinote.myshareferences.MyDataLocal;
 import com.example.dinote.myshareferences.MySharePreference;
+import com.example.dinote.reciver.RemindReceiver;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.views.dialogs.ExitAppDialog;
 import com.example.dinote.views.fragments.CreateDinoteFragment;
@@ -41,7 +47,9 @@ import com.example.dinote.views.fragments.SearchFragment;
 import com.example.dinote.views.fragments.ThemeFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, CreateDinoteFragment.CreateDinoteListener, View.OnClickListener {
+import java.util.Calendar;
+
+public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, CreateDinoteFragment.CreateDinoteListener, View.OnClickListener, ExitAppDialog.ExitDialogListener {
 
     private static final String TAG = "MainActivity";
     private FragmentManager fragmentManager;
@@ -49,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     public static int LAYOUT_WIDTH = 0;
     public static int LAYOUT_HEIGHT = 0;
     private ActivityMainBinding mainBinding;
-
+    private PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +65,30 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         checkPermission();
         createChanelID();
 
-        long time = new MySharePreference(this).getTimeRemind();
+
+        if (!MyDataLocal.getIsFirstInstall()) {
+            MyDataLocal.setInstalled();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 9);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Intent intent = new Intent(this, RemindReceiver.class);
+            MyDataLocal.setTimeRemind(calendar.getTimeInMillis());
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                pendingIntent = PendingIntent.getBroadcast(this, 10, intent, PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                pendingIntent = PendingIntent.getBroadcast(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            int type = AlarmManager.RTC_WAKEUP;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(type, calendar.getTimeInMillis(), pendingIntent);
+            } else {
+                alarmManager.set(type, calendar.getTimeInMillis(), pendingIntent);
+            }
+        }
+
         int theme = new MySharePreference(this).getDataTheme(ThemeFragment.TAG);
         if (theme == 1) {
             setTheme(com.google.android.material.R.style.Theme_Material3_Dark_NoActionBar);
@@ -74,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         MainFragment fragment = new MainFragment();
         loadFragment(fragment, Constant.MAIN_FRAGMENT);
         mainBinding.imvMainSearch.setOnClickListener(this);
-
 
     }
 
@@ -140,16 +170,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             } else if (getTopFragment.equals(Constant.SEARCH_FRAGMENT)) {
                 mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
                 loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
+            } else if (getTopFragment.equals(Constant.DETAIL_FRAGMENT_SEARCH)) {
+                loadFragment(new SearchFragment(), Constant.SEARCH_FRAGMENT);
             }
-
-
         }
-
-
     }
 
     private void onShowExitApp() {
         ExitAppDialog exitAppDialog = new ExitAppDialog(this);
+        exitAppDialog.setExitDialogListener(this);
         exitAppDialog.show();
     }
 
@@ -178,13 +207,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 fragment = new ThemeFragment();
                 loadFragment(fragment, Constant.THEME_FRAGMENT);
                 break;
-
         }
         mainBinding.drlMain.closeDrawer(GravityCompat.START);
         return true;
     }
 
     public void loadFragment(Fragment fragment, String tag) {
+        hideKeyboard(this);
         if (!tag.equals(Constant.MAIN_FRAGMENT)) {
             mainBinding.tlbMainAction.setVisibility(View.GONE);
         }
@@ -194,14 +223,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             fragmentTransaction.add(R.id.frl_main_content, fragment, tag);
             fragmentTransaction.addToBackStack(tag);
             fragmentTransaction.commit();
-        } else if (tag.equals(Constant.SEARCH_FRAGMENT)) {
-
         } else {
 
             if (fragment instanceof CreateDinoteFragment) {
                 ((CreateDinoteFragment) fragment).setCreateDinoteListener(this);
             }
-
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frl_main_content, fragment, tag);
@@ -271,5 +297,19 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if (view.getId() == R.id.imv_main_search) {
             loadFragment(new SearchFragment(), Constant.SEARCH_FRAGMENT);
         }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onExit() {
+        this.finish();
     }
 }

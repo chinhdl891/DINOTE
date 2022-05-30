@@ -35,4 +35,7 @@
     <string name="tag_hot">Nhãn nổi bật</string>
     <string name="delete_history">Xóa lịch sử</string>
     <string name="hint_search">Nhập gì đó để tìm kiếm</string>
+    <string name="showmore">Thêm</string>
+    <string name="hint_search_result">Search Result</string>
+    <string name="time_remind">\"Thời gian nhắc nhở \"</string>
 </resources>

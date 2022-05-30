@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class RemindReceiver extends BroadcastReceiver {
-    private PendingIntent piReMind;
     private long timeSetAlarm;
 
     @SuppressLint("UnspecifiedImmutableFlag")
@@ -31,7 +30,12 @@ public class RemindReceiver extends BroadcastReceiver {
         Intent i = new Intent(context, MainActivity.class);
         i.putExtra(Constant.RE_CREATE_ALARM, 892001);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "dinoteId")
                 .setContentTitle("Dinote luôn bên cạnh bạn")
                 .setContentText("Bạn đã sử dụng ghi chú hôm nay chưa")
@@ -50,15 +54,16 @@ public class RemindReceiver extends BroadcastReceiver {
         }
 
         Intent reIntent = new Intent(context, RemindReceiver.class);
+        PendingIntent piReMind;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             piReMind = PendingIntent.getBroadcast(context,10,reIntent,PendingIntent.FLAG_IMMUTABLE);
         }else {
             piReMind = PendingIntent.getBroadcast(context,10,reIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         }
+
         List<TimeRemind> timeRemindListNoSort = DinoteDataBase.getInstance(context).timeRemindDAO().getListTimeRemind();
         timeRemindListNoSort.add(new TimeRemind(0, timeRemindDefault, 1));
         Collections.sort(timeRemindListNoSort);
-
         for (int j = 0; j < timeRemindListNoSort.size(); j++) {
             TimeRemind timeRemind = timeRemindListNoSort.get(j);
             if (timeRemind.getStatus() == 1) {
