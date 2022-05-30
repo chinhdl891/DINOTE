@@ -31,7 +31,7 @@ public class ExportFragment extends BaseFragment<FragmentExportBinding> {
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
     }
 

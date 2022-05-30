@@ -51,8 +51,6 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
     private List<Tag> tagList;
     private LinearLayout lnlListTag;
     private PopupWindow popup;
-
-
     private static final String TAG = "DetailsDinoteFragment";
 
 
@@ -69,7 +67,7 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
         mBinding.lnlCrateOption.setVisibility(View.GONE);
         Bundle bundle = getArguments();
@@ -295,11 +293,8 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
 
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(uri));
-
             int height = bitmap.getHeight();
-
             mBinding.imvCreateDrawer.getLayoutParams().height = (int) height / 2;
-
             mBinding.imvCreateDrawer.setImageBitmap(MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(uri)));
         } catch (IOException e) {
             e.printStackTrace();
@@ -323,20 +318,21 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
             if (lnlCreateListTag.getChildAt(lnlChildCount - 1) instanceof AddTagView) {
                 int tagSize = (((AddTagView) lnlCreateListTag.getChildAt(lnlChildCount - 1)).getTagString().length());
                 if (tagSize > 0) {
-                    AddTagView addTagView = new AddTagView(mContext);
-                    addTagView.setTag(lnlCreateListTag.getChildCount());
-                    addTagView.setEditTagListener(this);
-                    lnlCreateListTag.addView(addTagView);
+                    addTagView(lnlCreateListTag);
                 }
             }
 
         } else {
-            AddTagView addTagView = new AddTagView(mContext);
-            addTagView.setTag(lnlCreateListTag.getChildCount());
-            addTagView.setEditTagListener(this);
-            lnlCreateListTag.addView(addTagView);
+            addTagView(lnlCreateListTag);
         }
 
+    }
+
+    private void addTagView(LinearLayout lnlCreateListTag) {
+        AddTagView addTagView = new AddTagView(mContext);
+        addTagView.setTag(lnlCreateListTag.getChildCount());
+        addTagView.setEditTagListener(this);
+        lnlCreateListTag.addView(addTagView);
     }
 
     @Override

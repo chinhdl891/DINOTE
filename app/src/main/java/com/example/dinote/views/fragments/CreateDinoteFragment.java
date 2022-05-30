@@ -61,7 +61,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     private LinearLayout lnlCreateListTag;
     private Dialog dialog;
     private int textColor;
-    // public Dinote(int id, long date, String content, String title, int motion, String imageUri, String imageDes, List<Tag> tagList) {
     private String title;
     private String content;
     private int motion = 1;
@@ -86,7 +85,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         addTagView.setTag(mBinding.lnlCreateListTag.getChildCount());
         addTagView.setEditTagListener(this);
         lnlCreateListTag.addView(addTagView);
-//        imvDrawer = rootView.findViewById(R.id.imv_create_drawer);
         mBinding.imvCreateDrawer.setVisibility(View.GONE);
         mBinding.edtCreateDesDrawer.setVisibility(View.GONE);
     }
@@ -145,11 +143,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         mBinding.imvCreateTextEdit.setOnClickListener(this);
         mBinding.tvCreateSave.setOnClickListener(this);
 
-
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
         setDateDefault();
         if (mMotion != null) {
             mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
@@ -237,7 +234,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     private void onSaveData() {
         // public Dinote(int id, long date, String content, String title, int motion, String imageUri, String imageDes, List<Tag> tagList)
-
         imageDes = mBinding.edtCreateDesDrawer.getText().toString();
         title = mBinding.edtCreateTitle.getText().toString();
         content = mBinding.edtCreateContent.getText().toString();
@@ -261,21 +257,19 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 , isLike
                 , getListTag()
         );
-
         DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+        for (int i = 0; i < 1000; i++) {
+            dinote.setTitle(i+"");
+            dinote.setContent(i+"");
+            DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+        }
         showDiaLogSaveSuccess();
-
     }
 
     private void showDiaLogSaveSuccess() {
         SavedDialog dialog = new SavedDialog(getActivity());
         dialog.show();
-        dialog.setCallbackSaveDialog(new SavedDialog.CallbackSaveDialog() {
-            @Override
-            public void onClickSaved() {
-                getActivity().onBackPressed();
-            }
-        });
+        dialog.setCallbackSaveDialog(() -> getActivity().onBackPressed());
     }
 
     private List<Tag> getListTag() {
@@ -345,7 +339,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         btnContinues.setOnClickListener(this);
         dialog.show();
 
-
     }
 
 
@@ -366,8 +359,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         popup.setFocusable(true);
         popup.setBackgroundDrawable(new BitmapDrawable());
         popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX * 1.3) + 22, (int) (pointViewY * 1.1));
-
-
     }
 
     public void setDateDefault() {
@@ -416,7 +407,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         this.motion = motion.getId();
         popup.dismiss();
 
-
     }
 
     @Override
@@ -436,20 +426,21 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             if (lnlCreateListTag.getChildAt(lnlChildCount - 1) instanceof AddTagView) {
                 int tagSize = (((AddTagView) lnlCreateListTag.getChildAt(lnlChildCount - 1)).getTagString().length());
                 if (tagSize > 0) {
-                    AddTagView addTagView = new AddTagView(mContext);
-                    addTagView.setTag(lnlCreateListTag.getChildCount());
-                    addTagView.setEditTagListener(this);
-                    lnlCreateListTag.addView(addTagView);
+                    addTagView();
                 }
             }
 
         } else {
-            AddTagView addTagView = new AddTagView(mContext);
-            addTagView.setTag(lnlCreateListTag.getChildCount());
-            addTagView.setEditTagListener(this);
-            lnlCreateListTag.addView(addTagView);
+            addTagView();
         }
 
+    }
+
+    private void addTagView() {
+        AddTagView addTagView = new AddTagView(mContext);
+        addTagView.setTag(lnlCreateListTag.getChildCount());
+        addTagView.setEditTagListener(this);
+        lnlCreateListTag.addView(addTagView);
     }
 
 

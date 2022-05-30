@@ -52,7 +52,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
         initViews(view);
         resizeViews();
         onClickViews();
-        setView();
+        setUpData();
         setTypeView();
         getParamView(view);
 
@@ -67,7 +67,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
 
     protected abstract void onClickViews();
 
-    protected abstract void setView();
+    protected abstract void setUpData();
 
     protected abstract void setTypeView();
 

@@ -14,7 +14,7 @@ import com.example.dinote.model.SearchHistory;
 import java.util.List;
 
 public class HistorySearchAdapter extends RecyclerView.Adapter<HistorySearchAdapter.HistorySearchViewHolder> {
-    List<SearchHistory> searchHistoryList;
+    private List<SearchHistory> searchHistoryList;
 
     public HistorySearchAdapter(List<SearchHistory> searchHistoryList) {
         this.searchHistoryList = searchHistoryList;
@@ -48,12 +48,7 @@ public class HistorySearchAdapter extends RecyclerView.Adapter<HistorySearchAdap
         public HistorySearchViewHolder(@NonNull View itemView) {
             super(itemView);
             tvHistorySearch = itemView.findViewById(R.id.tv_item_search_history);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    historySearchAdapterListener.onSendData(searchHistoryList.get(getLayoutPosition()));
-                }
-            });
+            itemView.setOnClickListener(view -> historySearchAdapterListener.onSendData(searchHistoryList.get(getLayoutPosition())));
         }
     }
 

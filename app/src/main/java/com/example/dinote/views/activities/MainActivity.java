@@ -47,8 +47,6 @@ import com.example.dinote.views.fragments.SearchFragment;
 import com.example.dinote.views.fragments.ThemeFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.Calendar;
-
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, CreateDinoteFragment.CreateDinoteListener, View.OnClickListener, ExitAppDialog.ExitDialogListener {
 
     private static final String TAG = "MainActivity";
@@ -65,16 +63,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         checkPermission();
         createChanelID();
 
-
         if (!MyDataLocal.getIsFirstInstall()) {
             MyDataLocal.setInstalled();
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 9);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
+            long timeDefault = Constant.defaultCalendar();
             Intent intent = new Intent(this, RemindReceiver.class);
-            MyDataLocal.setTimeRemind(calendar.getTimeInMillis());
+            MyDataLocal.setTimeRemind(timeDefault);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 pendingIntent = PendingIntent.getBroadcast(this, 10, intent, PendingIntent.FLAG_IMMUTABLE);
             } else {
@@ -83,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             int type = AlarmManager.RTC_WAKEUP;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(type, calendar.getTimeInMillis(), pendingIntent);
+                alarmManager.setExactAndAllowWhileIdle(type, timeDefault, pendingIntent);
             } else {
-                alarmManager.set(type, calendar.getTimeInMillis(), pendingIntent);
+                alarmManager.set(type, timeDefault, pendingIntent);
             }
         }
 
@@ -110,12 +103,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     private void createChanelID() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-            CharSequence name = "Dinote Chanel";
-            String des = "Chanel remind write dinote";
+            CharSequence name = getString(R.string.dinote_chanel);
+            String des = getString(R.string.remind_dinote);
             int importance = NotificationManagerCompat.IMPORTANCE_HIGH;
-            @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel("dinoteId", name, (int) importance);
+            @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel(getString(R.string.dinote_id), name, (int) importance);
             channel.setDescription(des);
-
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
@@ -282,9 +274,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                     if (i == 0) {
-                        Toast.makeText(this, "Write permission denied", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.write_debied, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Read permission denied", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.read_denied, Toast.LENGTH_SHORT).show();
                     }
                     checkPermission();
                 }

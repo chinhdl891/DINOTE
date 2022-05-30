@@ -1,9 +1,13 @@
 package com.example.dinote.views.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dinote.R;
 import com.example.dinote.adapter.DinoteAdapter;
@@ -19,6 +23,12 @@ import java.util.List;
 public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBinding> implements View.OnClickListener, DinoteAdapter.DinoteAdapterListener {
     private String search;
     private DinoteAdapter dinoteAdapter;
+    private List<Dinote> dinoteList;
+    private int offset = 0;
+    private boolean isLoadMore;
+    private int totalItemSearch = 0;
+    private static final String TAG = "ResultSearchFragment";
+    private RecyclerView.LayoutManager mLayoutManager;
 
 
     @Override
@@ -42,32 +52,60 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             search = bundle.getString(Constant.KEY_SEARCH);
         }
-        dinoteAdapter = new DinoteAdapter(loadData());
+        totalItemSearch = DinoteDataBase.getInstance(mContext).dinoteDAO().getTotalSearch(search);
+        Log.e(TAG, "setUpData: " + totalItemSearch);
+        dinoteList = DinoteDataBase.getInstance(mContext).dinoteDAO().searchAll(search, Constant.LIMIT_SEARCH, 0);
+        dinoteAdapter = new DinoteAdapter(dinoteList);
         dinoteAdapter.setDinoteAdapterListener(this);
         mBinding.rcvSearchResult.setAdapter(dinoteAdapter);
-        mBinding.rcvSearchResult.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mBinding.rcvSearchResult.setLayoutManager(mLayoutManager);
+        mBinding.rcvSearchResult.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!isLoadMore) {
+                    if (((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition() == dinoteList.size() - 1) {
+                        isLoadMore = true;
+                        loadData();
+                    }
+                }
+
+            }
+        });
 
     }
 
     @Override
     protected void setTypeView() {
-        ReDesign.resizeImage(mBinding.imvResultCancel,64,64);
+        ReDesign.resizeImage(mBinding.imvResultCancel, 64, 64);
 
     }
-     private List<Dinote> loadData(){
-        return DinoteDataBase.getInstance(getActivity()).dinoteDAO().searchAll(search);
-     }
+
+    private void loadData() {
+        offset +=50;
+        if (offset>= totalItemSearch){
+            isLoadMore = true;
+            Toast.makeText(mContext, R.string.item_end_dinote, Toast.LENGTH_SHORT).show();
+        } else {
+            List<Dinote> dinoteListNew = DinoteDataBase.getInstance(getActivity()).dinoteDAO().searchAll(search, Constant.LIMIT_SEARCH, offset);
+            dinoteList.addAll(dinoteListNew);
+            dinoteAdapter.notifyItemRangeInserted(offset, dinoteListNew.size());
+            isLoadMore = false;
+        }
+
+    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imv_result_cancel:
-                mainActivity.loadFragment(new SearchFragment(),Constant.SEARCH_FRAGMENT);
+                mainActivity.loadFragment(new SearchFragment(), Constant.SEARCH_FRAGMENT);
                 break;
         }
     }

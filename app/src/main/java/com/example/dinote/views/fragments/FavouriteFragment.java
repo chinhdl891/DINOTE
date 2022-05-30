@@ -52,7 +52,7 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
         mBinding.rcvFavoriteDinote.setLayoutManager(new LinearLayoutManager(getActivity()));
         DinoteAdapter dinoteAdapter = new DinoteAdapter(getListDinoteFavorite());

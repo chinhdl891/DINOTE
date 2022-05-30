@@ -36,7 +36,10 @@ public interface DinoteDAO {
     @Query("select COUNT(id) from dinote")
     int getTotalItemCount();
 
-    @Query("select * from dinote where title like '%' ||:search || '%' or content like '%' || :search || '%' or tagList like '%' || :search || '%' ")
-    List<Dinote> searchAll(String search);
+    @Query("select * from dinote where title like '%' ||:search || '%' or content like '%' || :search || '%' or tagList like '%' || :search || '%' order by date limit :limit offset :next ")
+    List<Dinote> searchAll(String search, int limit , int next);
+
+    @Query("select count(id) from dinote where title like '%' ||:search || '%' or content like '%' || :search || '%' or tagList like '%' || :search || '%' ")
+   int getTotalSearch (String search);
 
 }

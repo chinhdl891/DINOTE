@@ -77,7 +77,7 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
     }
 

@@ -46,7 +46,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
 
 
     public class TagHolder extends RecyclerView.ViewHolder {
-        TextView tvTagName;
+        private TextView tvTagName;
 
         public TagHolder(@NonNull View itemView) {
             super(itemView);

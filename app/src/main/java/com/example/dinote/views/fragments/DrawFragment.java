@@ -77,7 +77,7 @@ public class DrawFragment extends BaseFragment<FragmentDrawBinding> implements V
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
     }
 

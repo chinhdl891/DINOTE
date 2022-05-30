@@ -151,7 +151,7 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
     }
 

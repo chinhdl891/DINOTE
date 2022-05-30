@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import com.example.dinote.utils.Constant;
 
-import java.util.Calendar;
-
 public class MySharePreference {
 
     private static final String MY_SHARE_PREFERENCE = "my_share_preference";
@@ -52,24 +50,18 @@ public class MySharePreference {
     }
 
     public long getTimeRemind() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
-        return sharedPreferences.getLong(Constant.TIME_REMIND_DEFAULT, calendar.getTimeInMillis());
+        return sharedPreferences.getLong(Constant.TIME_REMIND_DEFAULT, Constant.defaultCalendar());
     }
     public boolean getFirstInstall() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(Constant.FIRST_INSTALL, false);
+        return sharedPreferences.getBoolean(Constant.FIRST_INSTALL,false);
     }
 
     public void setInstalled() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(Constant.TIME_REMIND_DEFAULT, true);
+        editor.putBoolean(Constant.FIRST_INSTALL, true);
         editor.apply();
     }
 

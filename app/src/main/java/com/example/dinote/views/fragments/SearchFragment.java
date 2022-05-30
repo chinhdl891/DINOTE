@@ -51,7 +51,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
         mBinding.rcvSearchHistory.setLayoutManager(flexboxLayoutManager());
         historySearchAdapter = new HistorySearchAdapter(searchHistoryList());

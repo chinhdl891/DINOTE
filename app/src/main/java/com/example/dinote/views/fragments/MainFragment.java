@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,8 +29,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class MainFragment extends BaseFragment<MainFragmentBinding> implements View.OnClickListener, DinoteAdapter.DinoteAdapterListener {
     private static final String TAG = "MainFragment";
     public static final int NUM_ITEM_LOAD_MORE = 50;
@@ -46,9 +42,9 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     private DinoteAdapter mDinoteAdapter;
     private int mOffset = 0;
     private boolean isCanLoadMore = false;
-
     private RecyclerView.LayoutManager mLayoutManager;
     private int totalItem;
+
 
     @Override
     protected int getLayoutResource() {
@@ -60,20 +56,23 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     protected void initViews(View rootView) {
 
         mainActivity = (MainActivity) getActivity();
-        totalItem = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getTotalItemCount();
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         vpgMainFragment = rootView.findViewById(R.id.vpg_main_fragment);
-        vpgMainFragment.setPageMargin(50);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mBinding.rcvMainDinote.setLayoutManager(mLayoutManager);
+
+    }
+
+    @Override
+    protected void setUpData() {
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         photoModelList = viewModel.image;
+        vpgMainFragment.setPageMargin(50);
         photoAdapter = new PhotoAdapter(mContext, photoModelList);
         vpgMainFragment.setAdapter(photoAdapter);
         autoNextAds();
 
-        mBinding.bgMainBackground.setOnClickListener(this);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mBinding.rcvMainDinote.setLayoutManager(mLayoutManager);
-
         dinoteList = new ArrayList<>();
+        totalItem = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getTotalItemCount();
         dinoteList.addAll(DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote(NUM_ITEM_LOAD_MORE, mOffset));
         mDinoteAdapter = new DinoteAdapter(dinoteList);
         mDinoteAdapter.setDinoteAdapterListener(this);
@@ -81,7 +80,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         mBinding.rcvMainDinote.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
                 if (((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition() == (dinoteList.size() - 1) && !isCanLoadMore) {
                     isCanLoadMore = true;
                     loadData();
@@ -91,20 +89,17 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     }
 
 
-
     private void loadData() {
 
-        if (mOffset -50 >= totalItem) {
+        if (mOffset - 50 >= totalItem) {
             isCanLoadMore = true;
-        }else {
+        } else {
             mOffset += NUM_ITEM_LOAD_MORE;
             List<Dinote> newDataList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote(NUM_ITEM_LOAD_MORE, mOffset);
             dinoteList.addAll(newDataList);
             mDinoteAdapter.notifyItemRangeInserted(mOffset, newDataList.size());
             isCanLoadMore = false;
         }
-
-
 
 
     }
@@ -151,13 +146,10 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     protected void onClickViews() {
         mBinding.bgMainBackground.setOnClickListener(this);
         mBinding.imvMainCreateDinote.setOnClickListener(this);
+        mBinding.bgMainBackground.setOnClickListener(this);
 
     }
 
-    @Override
-    protected void setView() {
-
-    }
 
     @Override
     protected void setTypeView() {
@@ -170,7 +162,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     public void onClick(View view) {
 
         switch (view.getId()) {
-
             case R.id.bg_main_background:
             case R.id.imv_main_create_dinote:
                 mainActivity.loadFragment(new CreateDinoteFragment(), Constant.CREATE_DINOTE_FRAGMENT);
@@ -190,5 +181,9 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
 
     }
 
-
+    @Override
+    public void onDestroy() {
+        mTimer.cancel();
+        super.onDestroy();
+    }
 }
