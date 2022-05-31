@@ -36,6 +36,7 @@
                 android:layout_weight="9"
                 android:gravity="center"
                 android:text="@string/text_remind"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -51,6 +52,7 @@
             android:orientation="vertical">
 
             <TextView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_textview"
@@ -63,26 +65,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10dp"
                 android:padding="5dp"
-                android:text="Thời gian nhắc nhở 5:45 AM" />
+                android:text="@string/hit_remind_default" />
 
         </LinearLayout>
 
         <TextView
-            android:layout_marginStart="@dimen/margin_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/margin_10dp"
             android:padding="5dp"
-            android:text="Điều chỉnh thời gian nhắc nhở"
+            android:text="@string/add_remind"
             android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_marginStart="@dimen/margin_10dp"
-            android:layout_marginEnd="@dimen/margin_10dp"
             android:id="@+id/lnl_remind_list_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_10dp"
             android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_10dp"
             android:orientation="vertical">
 
 
@@ -94,9 +96,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginEnd="@dimen/margin_start"
-            android:textColor="@color/white"
             android:background="@drawable/coner_view_bule"
-            android:text="Thêm lời nhắc thời gian " />
+            android:text="@string/add_time_remind"
+            android:textColor="@color/white" />
 
 
     </LinearLayout>

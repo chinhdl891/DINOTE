@@ -30,14 +30,16 @@
                 android:src="@drawable/ic_cancel" />
 
             <EditText
-                android:paddingStart="@dimen/margin_start"
-                android:background="@android:color/transparent"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
                 android:id="@+id/edit_search_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/imv_search_show"
                 android:layout_toEndOf="@+id/imv_search_cancel"
-                android:hint="@string/txt_search" />
+                android:background="@android:color/transparent"
+                android:hint="@string/txt_search"
+                android:paddingStart="@dimen/margin_start" />
 
             <ImageView
                 android:id="@+id/imv_search_show"
@@ -54,14 +56,16 @@
             app:layout_constraintTop_toBottomOf="@+id/lnl_search_action">
 
             <TextView
-                android:textSize="@dimen/text_size_title"
+                android:textColor="@color/black"
                 android:id="@+id/tv_search_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/txt_history_search"
+                android:textSize="@dimen/text_size_title"
                 android:textStyle="bold" />
 
             <TextView
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -76,13 +80,14 @@
 
 
             <TextView
-                android:textSize="@dimen/text_size_title"
+                android:textColor="@color/black"
                 android:id="@+id/tv_search_tag_hot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btn_search_show_more"
                 android:layout_marginTop="@dimen/margin_10dp"
                 android:text="@string/tag_hot"
+                android:textSize="@dimen/text_size_title"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -93,6 +98,7 @@
                 android:layout_marginTop="@dimen/margin_16dp" />
 
             <TextView
+                android:textColor="@color/black"
                 android:id="@+id/btn_search_show_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

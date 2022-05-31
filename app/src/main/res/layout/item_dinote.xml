@@ -22,6 +22,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
         android:id="@+id/tv_item_dinote_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,10 +40,14 @@
         android:layout_marginStart="5dp"
         android:layout_marginBottom="5dp"
         android:hint="16"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/imv_item_dinote_bg"
         app:layout_constraintStart_toStartOf="@+id/imv_item_dinote_bg" />
 
     <TextView
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:id="@+id/tv_item_dinote_moth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,20 +72,24 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.example.dinote.views.customs.font.TextViewSemiBold
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:id="@+id/tv_item_dinote_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start"
-            android:hint="Tiêu đề no way hôm "
+            android:hint="@string/hint_dinote_item_title"
         />
 
         <TextView
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:id="@+id/tv_item_dinote_content"
             android:layout_width="wrap_content"
             android:layout_height="19dp"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="10dp"
-            android:hint="Không có nội dung"
+            android:hint="@string/hint_dinote_item_content"
              />
     </LinearLayout>
 

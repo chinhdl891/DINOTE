@@ -7,9 +7,11 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -56,19 +58,20 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     public static int LAYOUT_HEIGHT = 0;
     private ActivityMainBinding mainBinding;
     private PendingIntent pendingIntent;
+    private UiModeManager uiModeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermission();
         createChanelID();
-
+        uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
         if (!MyDataLocal.getIsFirstInstall()) {
             MyDataLocal.setInstalled();
             long timeDefault = Constant.defaultCalendar();
             Intent intent = new Intent(this, RemindReceiver.class);
             MyDataLocal.setTimeRemind(timeDefault);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 pendingIntent = PendingIntent.getBroadcast(this, 10, intent, PendingIntent.FLAG_IMMUTABLE);
             } else {
                 pendingIntent = PendingIntent.getBroadcast(this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -85,8 +88,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         int theme = new MySharePreference(this).getDataTheme(ThemeFragment.TAG);
         if (theme == 1) {
             setTheme(com.google.android.material.R.style.Theme_Material3_Dark_NoActionBar);
+            uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
         } else {
             setTheme(com.google.android.material.R.style.Theme_Material3_Light_NoActionBar);
+            uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
         }
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         getInfoDisplay();
@@ -98,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         MainFragment fragment = new MainFragment();
         loadFragment(fragment, Constant.MAIN_FRAGMENT);
         mainBinding.imvMainSearch.setOnClickListener(this);
+        mainBinding.imvMainNotification.setOnClickListener(this);
+
 
     }
 
@@ -180,15 +187,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         Fragment fragment;
         switch (item.getItemId()) {
 
-            case R.id.item_menu_export:
-                break;
-            case R.id.item_menu_lock_app:
-                break;
             case R.id.item_menu_favorite:
                 fragment = new FavouriteFragment();
                 loadFragment(fragment, Constant.FAVORITE_FRAGMENT);
                 break;
             case R.id.item_menu_rate:
+                rateApp();
                 break;
             case R.id.item_menu_remind:
                 loadFragment(new ReminderFragment(), Constant.REMIND_FRAGMENT);
@@ -204,6 +208,21 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         return true;
     }
 
+    private void rateApp() {
+        try {
+            Uri uri = Uri.parse("market://details?id="+getPackageName());
+            Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+        } catch (Exception e) {
+            Uri uri = Uri.parse("http://play.google.com/store/apps/details?id" +getPackageName());
+            Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
+
     public void loadFragment(Fragment fragment, String tag) {
         hideKeyboard(this);
         if (!tag.equals(Constant.MAIN_FRAGMENT)) {
@@ -215,18 +234,25 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             fragmentTransaction.add(R.id.frl_main_content, fragment, tag);
             fragmentTransaction.addToBackStack(tag);
             fragmentTransaction.commit();
+        } else if (tag.equals(Constant.MAIN_FRAGMENT)) {
+            mainBinding.tlbMainAction.setVisibility(View.VISIBLE);
+            replaceFragment(fragment, tag);
         } else {
-
             if (fragment instanceof CreateDinoteFragment) {
                 ((CreateDinoteFragment) fragment).setCreateDinoteListener(this);
             }
-            fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frl_main_content, fragment, tag);
-            fragmentTransaction.addToBackStack(tag);
-            fragmentTransaction.commit();
+            replaceFragment(fragment, tag);
         }
     }
+
+    private void replaceFragment(Fragment fragment, String tag) {
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frl_main_content, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.commit();
+    }
+
 
     public Fragment getTopFragment() {
         int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
@@ -288,6 +314,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     public void onClick(View view) {
         if (view.getId() == R.id.imv_main_search) {
             loadFragment(new SearchFragment(), Constant.SEARCH_FRAGMENT);
+        } else if (view.getId() == R.id.imv_main_notification) {
+            loadFragment(new ReminderFragment(), Constant.REMIND_FRAGMENT);
         }
     }
 

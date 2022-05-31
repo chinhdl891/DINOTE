@@ -37,7 +37,6 @@ public class DinoteAdapter extends RecyclerView.Adapter<DinoteAdapter.DinoteView
         holder.tvDinoteContent.setText(dinote.getContent());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(dinote.getDate());
-
         int moth = calendar.get(Calendar.MONTH) +1;
         holder.tvDinoteMoth.setText("Th" + moth);
         holder.tvDinoteYear.setText(calendar.get(Calendar.YEAR) + "");

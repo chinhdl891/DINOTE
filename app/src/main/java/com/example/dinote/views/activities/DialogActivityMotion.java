@@ -1,29 +1,25 @@
 package com.example.dinote.views.activities;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.WindowManager;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.WindowManager;
-
 import com.example.dinote.R;
 import com.example.dinote.adapter.MotionAdapter;
 import com.example.dinote.databinding.ActivityDialogMotionBinding;
-import com.example.dinote.interfaces.SendMotionListener;
 import com.example.dinote.model.Motion;
-import com.example.dinote.utils.Constant;
 import com.example.dinote.viewmodel.MotionViewModel;
 
 public class DialogActivityMotion extends AppCompatActivity implements MotionAdapter.EditMotionListener {
     private static final String TAG = "DialogActivityMotion";
-
     private Motion mMotion;
 
     @Override
@@ -59,7 +55,6 @@ public class DialogActivityMotion extends AppCompatActivity implements MotionAda
 
         }
         finish();
-
     }
 
 

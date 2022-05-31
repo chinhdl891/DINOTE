@@ -107,7 +107,9 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
         }
         tagList = new ArrayList<>();
         tagList = mDinote.getTagList();
-        setListTag(tagList);
+       if (tagList !=null) {
+           setListTag(tagList);
+       }
 
     }
 
@@ -239,9 +241,11 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
 
     }
 
+
     @Override
     protected void setTypeView() {
         onShowDetail();
+
     }
 
     private void onShowDetail() {

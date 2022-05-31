@@ -36,9 +36,9 @@ public class RemindReceiver extends BroadcastReceiver {
         } else {
             pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "dinoteId")
-                .setContentTitle("Dinote luôn bên cạnh bạn")
-                .setContentText("Bạn đã sử dụng ghi chú hôm nay chưa")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, context.getString(R.string.notifi_id))
+                .setContentTitle(context.getString(R.string.notifi_title))
+                .setContentText(context.getString(R.string.notifi_cation_content))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_text_loved)

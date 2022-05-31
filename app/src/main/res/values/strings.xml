@@ -44,4 +44,20 @@
     <string name="write_debied">Write permission denied</string>
     <string name="read_denied">Read permission denied</string>
     <string name="item_end_dinote">Đã đến ghi chú cuối cùng</string>
+    <string name="notifi_title">Dinote luôn bên cạnh bạn</string>
+    <string name="notifi_id">dinoteId</string>
+    <string name="notifi_cation_content">Bạn đã sử dụng ghi chú hôm nay chưa</string>
+    <string name="choose_color">Choose</string>
+    <string name="cancel_color">Cancel</string>
+    <string name="time_remid">Thời gian nhắc nhở:  %1$s</string>
+    <string name="hit_remind_default">Thời gian nhắc nhở 5:45 AM</string>
+    <string name="add_remind">Điều chỉnh thời gian nhắc nhở</string>
+    <string name="add_time_remind">Thêm lời nhắc thời gian</string>
+    <string name="dinote_lite">Dinote Lite</string>
+    <string name="des_image">Mô tả ảnh</string>
+    <string name="wirte_on_my_life">Nhập nội dung</string>
+    <string name="hint_dinote_item_title">Tiêu đề no way hôm</string>
+    <string name="hint_dinote_item_content">Không có nội dung</string>
+    <string name="txt_month">Th %1$i</string>
+    <string name="time_reminded">Thời gian đã tồn tại</string>
 </resources>

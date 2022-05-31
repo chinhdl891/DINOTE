@@ -19,6 +19,7 @@ import com.example.dinote.base.BaseFragment;
 import com.example.dinote.databases.DinoteDataBase;
 import com.example.dinote.databinding.FragmentReminderBinding;
 import com.example.dinote.model.TimeRemind;
+import com.example.dinote.myshareferences.MyDataLocal;
 import com.example.dinote.reciver.RemindReceiver;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.views.customs.TimeSetUpView;
@@ -27,6 +28,7 @@ import com.example.dinote.views.dialogs.DeleteTimeDialog;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
     private List<TimeRemind> timeRemindList;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a");
     private static final String TAG = "ReminderFragment";
+    private long timeSetAlarm;
 
     @Override
     protected int getLayoutResource() {
@@ -97,7 +100,7 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
                 timeSetUpView.setTag(mBinding.lnlRemindListTime.getChildCount());
                 int loop = DinoteDataBase.getInstance(getActivity()).timeRemindDAO().getCountTimeAlarm(calendar.getTimeInMillis());
                 if (loop > 0) {
-                    Toast.makeText(getActivity(), "Thời gian đã tồn tại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.time_reminded, Toast.LENGTH_SHORT).show();
                 } else {
                     DinoteDataBase.getInstance(getActivity()).timeRemindDAO().insertTime(timeRemind);
                     mBinding.lnlRemindListTime.addView(timeSetUpView);
@@ -130,6 +133,7 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
                 setAlarmRemind(calendar);
             }
         }, hour, minus, false);
+        timePicker.setTitle("Choose hour");
         timePicker.show();
     }
 
@@ -157,7 +161,9 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
 
     @Override
     protected void setTypeView() {
-        mBinding.tvTimeSelect.setText("Thời gian nhắc nhở " + mySharePreference.getDataTime(Constant.TIME_REMIND));
+//        String s = String.format(getString(R.string.time_remid), mySharePreference.getDataTime(Constant.TIME_REMIND), 999);
+//        String s = String.format("Thời gian nhắc nhở:  rffry %d sadasd %s", mySharePreference.getDataTime(Constant.TIME_REMIND), 999);
+        mBinding.tvTimeSelect.setText(getString(R.string.time_remid, mySharePreference.getDataTime(Constant.TIME_REMIND)));
     }
 
     private int tag;
@@ -179,9 +185,46 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
 
     @Override
     public void onSetUpStatusTime(int status, TimeRemind timeRemind) {
-
+        long timeRemindDefault = MyDataLocal.getTimeRemind();
         timeRemind.setStatus(status);
         DinoteDataBase.getInstance(getActivity()).timeRemindDAO().update(timeRemind);
+        if (status == 1) {
+            Intent reIntent = new Intent(mContext, RemindReceiver.class);
+            PendingIntent piReMind;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                piReMind = PendingIntent.getBroadcast(mContext, 10, reIntent, PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                piReMind = PendingIntent.getBroadcast(mContext, 10, reIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
+
+            List<TimeRemind> timeRemindListNoSort = DinoteDataBase.getInstance(mContext).timeRemindDAO().getListTimeRemind();
+            timeRemindListNoSort.add(new TimeRemind(0, timeRemindDefault, 1));
+            Collections.sort(timeRemindListNoSort);
+
+            long dayMilis = AlarmManager.INTERVAL_DAY;
+
+            for (int j = 0; j < timeRemindListNoSort.size(); j++) {
+                TimeRemind timeRemindNext = timeRemindListNoSort.get(j);
+                if (timeRemindNext.getStatus() == 1) {
+                    if (timeRemindNext.getTime() > System.currentTimeMillis()) {
+                        timeSetAlarm = timeRemindNext.getTime();
+                        break;
+                    } else {
+                        timeRemindNext.setTime(timeRemindNext.getTime() + dayMilis);
+                        DinoteDataBase.getInstance(mContext).timeRemindDAO().update(timeRemindNext);
+                    }
+                }
+            }
+
+            AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+            int type = AlarmManager.RTC_WAKEUP;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(type, timeSetAlarm, piReMind);
+            } else {
+                alarmManager.set(type, timeSetAlarm, piReMind);
+            }
+
+        }
     }
 
     @Override

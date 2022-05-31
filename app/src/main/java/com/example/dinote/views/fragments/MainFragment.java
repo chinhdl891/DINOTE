@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -101,7 +102,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
             isCanLoadMore = false;
         }
 
-
     }
 
 
@@ -182,8 +182,10 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     }
 
     @Override
-    public void onDestroy() {
+    public void onStop() {
+        super.onStop();
         mTimer.cancel();
-        super.onDestroy();
+        Log.e(TAG, "onStop: " );
     }
+
 }

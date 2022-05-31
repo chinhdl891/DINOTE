@@ -22,4 +22,6 @@ public interface TagDAO {
     @Query("select * from tag order by id desc limit 10 ")
     List<Tag> listHotTag();
 
+    @Query("select * from tag where contentTag = :tag ")
+    List<Tag> getTagFindByTagConTent(String tag);
 }

@@ -78,7 +78,7 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
 
             }
         });
-
+        mBinding.tvSearchResultContent.setText(search);
     }
 
     @Override
@@ -87,16 +87,19 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
 
     }
 
+    private int page = 0;
+
     private void loadData() {
-        offset +=50;
-        if (offset>= totalItemSearch){
-            isLoadMore = true;
+        offset += 50;
+        if (offset >= totalItemSearch) {
             Toast.makeText(mContext, R.string.item_end_dinote, Toast.LENGTH_SHORT).show();
+            isLoadMore = true;
         } else {
             List<Dinote> dinoteListNew = DinoteDataBase.getInstance(getActivity()).dinoteDAO().searchAll(search, Constant.LIMIT_SEARCH, offset);
             dinoteList.addAll(dinoteListNew);
             dinoteAdapter.notifyItemRangeInserted(offset, dinoteListNew.size());
             isLoadMore = false;
+            page++;
         }
 
     }
