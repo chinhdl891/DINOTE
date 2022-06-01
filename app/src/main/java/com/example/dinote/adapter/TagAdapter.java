@@ -1,17 +1,23 @@
 package com.example.dinote.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dinote.R;
+import com.example.dinote.base.BaseViewHolder;
+import com.example.dinote.databinding.ItemHotTagBinding;
 import com.example.dinote.model.Tag;
+import com.example.dinote.utils.ColorUtils;
+import com.example.dinote.utils.ReDesign;
 
 import java.util.List;
+import java.util.Random;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
     private List<Tag> tagList;
@@ -25,14 +31,16 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
     @NonNull
     @Override
     public TagHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_history, parent, false);
+        ItemHotTagBinding view = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_hot_tag, parent, false);
         return new TagHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TagHolder holder, int position) {
         Tag tag = tagList.get(position);
-        holder.tvTagName.setText(tag.getContentTag());
+        holder.bindData(tag);
+
+
     }
 
     @Override
@@ -45,13 +53,36 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
     }
 
 
-    public class TagHolder extends RecyclerView.ViewHolder {
-        private TextView tvTagName;
+    public class TagHolder extends BaseViewHolder<Tag> {
+        private ItemHotTagBinding mBinding;
 
-        public TagHolder(@NonNull View itemView) {
+        public TagHolder(@NonNull ViewDataBinding itemView) {
             super(itemView);
-            tvTagName = itemView.findViewById(R.id.tv_item_search_history);
-            itemView.setOnClickListener(view -> tagAdapterListener.onSendData(tagList.get(getLayoutPosition())));
+            mBinding = (ItemHotTagBinding) itemView;
+        }
+
+        @Override
+        public void bindData(Tag obj) {
+            onResizeViews();
+            onClickViews(obj);
+
+            mBinding.tvItemHotTag.setText(obj.getContentTag());
+
+            int random = new Random().nextInt(13);
+            mBinding.cvItemHead.setCardBackgroundColor(ColorUtils.arrayColor()[random]);
+            mBinding.tvItemHotTag.setTextColor(Color.WHITE);
+        }
+
+        @Override
+        public void onResizeViews() {
+            ReDesign.resizeImage(mBinding.imvItemHotTag, 48, 48);
+        }
+
+        @Override
+        public void onClickViews(Tag o) {
+            itemView.setOnClickListener(view -> {
+                tagAdapterListener.onSendData(tagList.get(getLayoutPosition()));
+            });
         }
     }
 

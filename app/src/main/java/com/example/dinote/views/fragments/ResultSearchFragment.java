@@ -49,6 +49,7 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
     @Override
     protected void onClickViews() {
         mBinding.imvResultCancel.setOnClickListener(this);
+
     }
 
     @Override

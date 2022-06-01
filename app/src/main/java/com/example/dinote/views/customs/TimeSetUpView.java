@@ -72,7 +72,6 @@ public class TimeSetUpView extends ConstraintLayout {
             swTimeAlarmStatus.setChecked(false);
         }
 
-
     }
 
     private TimeRemind mTimeRemind;

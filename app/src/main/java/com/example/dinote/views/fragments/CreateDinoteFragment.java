@@ -465,20 +465,9 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         }
     }
 
-    private CreateDinoteListener createDinoteListener;
-
-    public void setCreateDinoteListener(CreateDinoteListener createDinoteListener) {
-        this.createDinoteListener = createDinoteListener;
-    }
-
     @Override
     public void onClickSaved() {
         mainActivity.loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
     }
 
-    public interface CreateDinoteListener {
-
-        void onShowSaveComplete();
-
-    }
 }

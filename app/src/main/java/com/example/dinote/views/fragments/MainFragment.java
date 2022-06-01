@@ -89,17 +89,27 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
         });
     }
 
-
     private void loadData() {
-
-        if (mOffset - 50 >= totalItem) {
+        Timer timer = new Timer();
+        if (mOffset - NUM_ITEM_LOAD_MORE >= totalItem) {
             isCanLoadMore = true;
         } else {
-            mOffset += NUM_ITEM_LOAD_MORE;
-            List<Dinote> newDataList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote(NUM_ITEM_LOAD_MORE, mOffset);
-            dinoteList.addAll(newDataList);
-            mDinoteAdapter.notifyItemRangeInserted(mOffset, newDataList.size());
-            isCanLoadMore = false;
+            mBinding.pbMainLoadMore.setVisibility(View.VISIBLE);
+            isCanLoadMore = true;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mOffset += NUM_ITEM_LOAD_MORE;
+                    mBinding.rcvMainDinote.post(() -> {
+                        List<Dinote> newDataList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote(NUM_ITEM_LOAD_MORE, mOffset);
+                        dinoteList.addAll(newDataList);
+                        mDinoteAdapter.notifyItemRangeInserted(mOffset, newDataList.size());
+                        isCanLoadMore = false;
+                        mBinding.pbMainLoadMore.setVisibility(View.GONE);
+                    });
+                    timer.cancel();
+                }
+            }, 2000);
         }
 
     }
@@ -185,7 +195,7 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     public void onStop() {
         super.onStop();
         mTimer.cancel();
-        Log.e(TAG, "onStop: " );
+        Log.e(TAG, "onStop: ");
     }
 
 }

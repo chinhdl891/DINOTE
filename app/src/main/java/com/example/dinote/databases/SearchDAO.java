@@ -2,6 +2,7 @@ package com.example.dinote.databases;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.dinote.model.SearchHistory;
@@ -13,7 +14,7 @@ public interface  SearchDAO {
     @Query("select * from searchhistory limit 20")
     List<SearchHistory> getListStory();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SearchHistory searchHistory);
 
     @Query("delete from SearchHistory")

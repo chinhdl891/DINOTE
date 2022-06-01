@@ -41,11 +41,8 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
 
             @Override
             public void onPageSelected(int position) {
-
                 if (position == 0) {
-
                     mBinding.ctlTheme.setBackgroundColor(Color.WHITE);
-
                 } else {
                     mBinding.ctlTheme.setBackgroundColor(Color.BLACK);
 //                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -100,10 +97,16 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imv_theme_cancel:
-                getActivity().onBackPressed();
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
                 break;
             case R.id.btn_theme_change:
-                getActivity().recreate();
+                if (getActivity() != null) {
+                    getActivity().recreate();
+                }
+
+                break;
         }
     }
 }

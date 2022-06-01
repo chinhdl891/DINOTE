@@ -15,7 +15,6 @@ import com.example.dinote.utils.ReDesign;
 
 public class ExitAppDialog extends Dialog implements View.OnClickListener {
     private DialogExitBinding mBinding;
-    private Context mContext;
 
     public ExitAppDialog(@NonNull Context context) {
         super(context);
@@ -31,26 +30,31 @@ public class ExitAppDialog extends Dialog implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mBinding = DialogExitBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+
         mBinding.btnExitExit.setOnClickListener(this);
         mBinding.btnExitContinue.setOnClickListener(this);
-        setContentView(mBinding.getRoot());
-        ReDesign.resizeImage(mBinding.ivmExit,900,900);
+        ReDesign.resizeImage(mBinding.ivmExit, 900, 900);
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_exit_exit:
-                exitDialogListener.onExit();
+                if (exitDialogListener != null) {
+                    dismiss();
+                    exitDialogListener.onExit();
+                }
                 break;
-            case  R.id.btn_exit_continue:
+            case R.id.btn_exit_continue:
                 dismiss();
                 break;
 
 
         }
     }
+
     public ExitDialogListener exitDialogListener;
 
     public void setExitDialogListener(ExitDialogListener exitDialogListener) {

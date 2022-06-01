@@ -19,7 +19,6 @@ public class MySharePreference {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(key, value);
         editor.apply();
-
     }
 
     public int getDataTheme(String key) {
@@ -32,14 +31,11 @@ public class MySharePreference {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.apply();
-
     }
-
 
     public String getDataTime(String key) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
         return sharedPreferences.getString(key, "09:00 AM");
-
     }
 
     public void pushTimeRemind(long timeRemindDefault) {
@@ -53,9 +49,10 @@ public class MySharePreference {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
         return sharedPreferences.getLong(Constant.TIME_REMIND_DEFAULT, Constant.defaultCalendar());
     }
+
     public boolean getFirstInstall() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(MY_SHARE_PREFERENCE, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(Constant.FIRST_INSTALL,false);
+        return sharedPreferences.getBoolean(Constant.FIRST_INSTALL, false);
     }
 
     public void setInstalled() {

@@ -48,6 +48,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
     protected void onClickViews() {
         mBinding.imvSearchShow.setOnClickListener(this);
         mBinding.imvSearchCancel.setOnClickListener(this);
+        mBinding.tvSearchDelete.setOnClickListener(this);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.imv_search_show) {
-            edtSearch = mBinding.editSearchContent.getText().toString();
+            edtSearch = mBinding.editSearchContent.getText().toString().trim();
             if (edtPattern(edtSearch)) {
                 new Thread(() -> DinoteDataBase.getInstance(getActivity()).searchDAO().insert(new SearchHistory(System.currentTimeMillis(), edtSearch))).start();
                 ResultSearchFragment resultSearchFragment = new ResultSearchFragment();
@@ -86,8 +87,20 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
             }
         } else if (view.getId() == R.id.imv_search_cancel) {
             getActivity().onBackPressed();
+        } else if (view.getId() == R.id.tv_search_delete) {
+            historySearchAdapter.clear();
+            deleteSearchHistory();
         }
 
+    }
+
+    private void deleteSearchHistory() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DinoteDataBase.getInstance(getActivity()).searchDAO().delete();
+            }
+        }).start();
     }
 
 

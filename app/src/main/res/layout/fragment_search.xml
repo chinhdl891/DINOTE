@@ -65,11 +65,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:textColor="@color/black"
+                android:id="@+id/tv_search_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="@string/delete_history" />
+                android:text="@string/delete_history"
+                android:textColor="@color/black" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_search_history"
@@ -105,7 +106,7 @@
                 android:layout_below="@id/rcv_search_history"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin_10dp"
-                android:background="@drawable/coner_view"
+                android:background="@drawable/conner_view"
                 android:paddingStart="@dimen/padding_text"
                 android:paddingEnd="@dimen/padding_text"
                 android:text="@string/showmore" />
