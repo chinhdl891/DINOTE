@@ -16,7 +16,7 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
     private ViewPager vpgThemeFragment;
     private ThemeAdapter themeAdapter;
     public static final String TAG = "ThemeFragment";
-
+    private int theme;
 
     @Override
     protected int getLayoutResource() {
@@ -25,7 +25,7 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
 
     @Override
     protected void initViews(View rootView) {
-        int theme = new MySharePreference(getActivity()).getDataTheme(ThemeFragment.TAG);
+        theme = new MySharePreference(getActivity()).getDataTheme(ThemeFragment.TAG);
         vpgThemeFragment = rootView.findViewById(R.id.vpg_theme_change);
         vpgThemeFragment.setPageMargin(50);
         vpgThemeFragment.setBackgroundColor(Color.TRANSPARENT);
@@ -44,8 +44,13 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
             public void onPageSelected(int position) {
                 if (position == 0) {
                     mBinding.ctlTheme.setBackgroundColor(Color.WHITE);
+                    mBinding.tvThemeTitle.setTextColor(Color.BLACK);
+                    mBinding.btnThemeChange.setTextColor(Color.BLACK);
+
                 } else {
                     mBinding.ctlTheme.setBackgroundColor(Color.BLACK);
+                    mBinding.tvThemeTitle.setTextColor(Color.WHITE);
+                    mBinding.btnThemeChange.setTextColor(Color.WHITE);
                 }
                 MySharePreference mySharePreference = new MySharePreference(getContext());
                 mySharePreference.pushThemeValue(TAG, position);
@@ -91,7 +96,6 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
         return image;
 
     }
-
 
     @Override
     public void onClick(View view) {

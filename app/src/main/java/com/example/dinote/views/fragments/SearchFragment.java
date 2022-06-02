@@ -26,6 +26,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
     private TagAdapter tagAdapter;
     private String edtSearch;
     private List<SearchHistory> searchHistoryList;
+    private boolean isShow;
 
     @Override
     protected int getLayoutResource() {
@@ -49,6 +50,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
         mBinding.imvSearchShow.setOnClickListener(this);
         mBinding.imvSearchCancel.setOnClickListener(this);
         mBinding.tvSearchDelete.setOnClickListener(this);
+        mBinding.btnSearchShowMore.setOnClickListener(this);
     }
 
     @Override
@@ -58,7 +60,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
         historySearchAdapter = new HistorySearchAdapter(searchHistoryList());
         historySearchAdapter.setHistorySearchAdapterListener(this);
         mBinding.rcvSearchHistory.setAdapter(historySearchAdapter);
-
         mBinding.rcvSearchTagHot.setLayoutManager(flexboxLayoutManager());
         tagAdapter = new TagAdapter(getHotTag(), this);
         mBinding.rcvSearchTagHot.setAdapter(tagAdapter);
@@ -90,8 +91,26 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
         } else if (view.getId() == R.id.tv_search_delete) {
             historySearchAdapter.clear();
             deleteSearchHistory();
+        } else if (view.getId() == R.id.btn_search_show_more) {
+            showMoreHistory(isShow);
         }
 
+    }
+
+    private void showMoreHistory(boolean show) {
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        layoutManager.setAlignItems(AlignItems.FLEX_START);
+        if (!show) {
+            layoutManager.setMaxLine(10);
+            mBinding.btnSearchShowMore.setText(R.string.autumn);
+        } else {
+            layoutManager.setMaxLine(3);
+            mBinding.btnSearchShowMore.setText(R.string.show_more);
+        }
+        mBinding.rcvSearchHistory.setLayoutManager(layoutManager);
+        isShow = !isShow;
     }
 
     private void deleteSearchHistory() {
@@ -140,7 +159,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
         mainActivity.loadFragment(resultSearchFragment, Constant.RESULT_SEARCH_FRAGMENT);
 
     }
-
 
     @Override
     public void onSendData(Tag tag) {

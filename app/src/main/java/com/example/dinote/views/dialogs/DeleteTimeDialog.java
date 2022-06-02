@@ -31,11 +31,12 @@ public class DeleteTimeDialog extends Dialog implements View.OnClickListener {
     public void initView() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        setContentView(mBinding.getRoot());
+
 
         mBinding = DialogDeleteTimeBinding.inflate(getLayoutInflater());
         ReDesign.resizeImage(mBinding.imvDeleteTime, 64, 64);
         mBinding.cvDeleteRemoveTime.setOnClickListener(this);
+        setContentView(mBinding.getRoot());
     }
 
     @Override

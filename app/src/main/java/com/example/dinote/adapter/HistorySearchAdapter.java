@@ -61,13 +61,13 @@ public class HistorySearchAdapter extends RecyclerView.Adapter<HistorySearchAdap
     public interface HistorySearchAdapterListener {
         void onSendData(SearchHistory searchHistory);
     }
+
     public void clear() {
         int size = searchHistoryList.size();
         if (size > 0) {
             for (int i = 0; i < size; i++) {
                 searchHistoryList.remove(0);
             }
-
             notifyItemRangeRemoved(0, size);
         }
     }

@@ -80,6 +80,10 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
             }
         });
         mBinding.tvSearchResultContent.setText(search);
+        if (dinoteList.size() == 0 ) {
+            mBinding.rcvSearchResult.setVisibility(View.GONE);
+            mBinding.lnlSearchResultEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

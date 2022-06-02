@@ -29,7 +29,6 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
     protected MainActivity mainActivity;
     protected  MySharePreference mySharePreference;
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -55,7 +54,6 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
         setUpData();
         setTypeView();
         getParamView(view);
-
 
     }
 

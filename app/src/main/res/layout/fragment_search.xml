@@ -99,7 +99,6 @@
                 android:layout_marginTop="@dimen/margin_16dp" />
 
             <TextView
-                android:textColor="@color/black"
                 android:id="@+id/btn_search_show_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,7 +108,8 @@
                 android:background="@drawable/conner_view"
                 android:paddingStart="@dimen/padding_text"
                 android:paddingEnd="@dimen/padding_text"
-                android:text="@string/showmore" />
+                android:text="@string/showmore"
+                android:textColor="@color/black" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

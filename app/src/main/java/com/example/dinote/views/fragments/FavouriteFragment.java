@@ -13,6 +13,7 @@ import com.example.dinote.databases.DinoteDataBase;
 import com.example.dinote.databinding.FragmentFavouriteBinding;
 import com.example.dinote.model.Dinote;
 import com.example.dinote.utils.Constant;
+import com.example.dinote.utils.ReDesign;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     @Override
     protected void resizeViews() {
-
+        ReDesign.resizeImage(mBinding.imvFavoriteEmpty, 256, 256);
     }
 
     @Override
@@ -58,6 +59,10 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
         DinoteAdapter dinoteAdapter = new DinoteAdapter(getListDinoteFavorite());
         dinoteAdapter.setDinoteAdapterListener(this);
         mBinding.rcvFavoriteDinote.setAdapter(dinoteAdapter);
+        if (dinoteList.size() == 0) {
+            mBinding.rcvFavoriteDinote.setVisibility(View.GONE);
+            mBinding.lnlFavoriteEmpty.setVisibility(View.VISIBLE);
+        }
 
     }
 

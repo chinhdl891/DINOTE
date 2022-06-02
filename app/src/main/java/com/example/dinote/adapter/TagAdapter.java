@@ -40,7 +40,6 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
         Tag tag = tagList.get(position);
         holder.bindData(tag);
 
-
     }
 
     @Override
@@ -65,9 +64,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
         public void bindData(Tag obj) {
             onResizeViews();
             onClickViews(obj);
-
             mBinding.tvItemHotTag.setText(obj.getContentTag());
-
             int random = new Random().nextInt(13);
             mBinding.cvItemHead.setCardBackgroundColor(ColorUtils.arrayColor()[random]);
             mBinding.tvItemHotTag.setTextColor(Color.WHITE);

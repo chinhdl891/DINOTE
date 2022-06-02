@@ -20,13 +20,12 @@ import com.example.dinote.utils.ReDesign;
 
 public class AddTagView extends ConstraintLayout implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = "AddTagView";
-
+    private TagListener tagListener;
     private LinearLayout llAddTag;
     private Context mContext;
     private View mRootView;
     private EditText edtTagAdd;
     private ImageView imvTagCancel, imvTagAdd;
-
 
     public AddTagView(Context context) {
         super(context);
@@ -88,7 +87,6 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
     public void setUpString(String data) {
         edtTagAdd.setText(data);
 
-
     }
 
 
@@ -103,11 +101,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
     @Override
     public void onFocusChange(View view, boolean b) {
 
-
     }
-
-    private TagListener tagListener;
-
 
     public void setEditTagListener(TagListener tagListener) {
         this.tagListener = tagListener;

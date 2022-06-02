@@ -17,11 +17,7 @@ import java.util.Objects;
 
 public class ThemeAdapter extends PagerAdapter {
     private Context context;
-
-
     private int[] images;
-
-
     private LayoutInflater mLayoutInflater;
 
     public ThemeAdapter(Context context, int[] images) {
