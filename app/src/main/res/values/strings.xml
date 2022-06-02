@@ -22,7 +22,7 @@
     <string name="noninteresting">Nhạt</string>
     <string name="hate">Tức Giận</string>
     <string name="add_tag">Bấm thêm thẻ</string>
-    <string name="continues_dinote">Tiếp tục Nhật ký của bạn</string>
+    <string name="continues_dinote_title">Tiếp tục Nhật ký của bạn</string>
     <string name="question_and_answer">Bạn có muốn tiếp tục viết nhật ký ?</string>
     <string name="update">Cập Nhật</string>
     <string name="save">Lưu</string>
@@ -73,4 +73,7 @@
     <string name="dinote_channel">dinoteId</string>
     <string name="des_notifi">des notification</string>
     <string name="text_change">Thay đổi</string>
+    <string name="text_exit">Thoát</string>
+    <string name="text_continue">Tiếp tục</string>
+    <string name="give">Giữ lại</string>
 </resources>

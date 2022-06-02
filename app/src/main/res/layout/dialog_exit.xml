@@ -29,6 +29,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:textColor="@color/text_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10dp"
@@ -61,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/coner_view_button_cancel"
-                android:text="Thoát"
+                android:text="@string/text_exit"
                 android:textColor="@color/purple_500" />
 
         </LinearLayout>

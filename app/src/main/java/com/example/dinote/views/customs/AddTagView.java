@@ -60,6 +60,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
                 } else {
                     llAddTag.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.un_focused_background));
                     imvTagCancel.setVisibility(INVISIBLE);
+                    edtTagAdd.setHint("");
                 }
             }
         });
@@ -69,6 +70,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
                 if (i == EditorInfo.IME_ACTION_DONE) {
                     if (getTagString().length() > 0) {
                         tagListener.onAddTag();
+                        edtTagAdd.setHint("");
                         return true;
                     } else {
                         return false;
@@ -85,6 +87,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
     }
 
     public void setUpString(String data) {
+        edtTagAdd.setHint("");
         edtTagAdd.setText(data);
 
     }

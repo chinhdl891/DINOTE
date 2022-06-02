@@ -39,10 +39,12 @@ import com.example.dinote.model.Dinote;
 import com.example.dinote.model.Motion;
 import com.example.dinote.model.Tag;
 import com.example.dinote.utils.Constant;
+import com.example.dinote.utils.GetDisplayInfo;
 import com.example.dinote.utils.ReDesign;
 import com.example.dinote.viewmodel.MotionViewModel;
 import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.views.customs.AddTagView;
+import com.example.dinote.views.dialogs.BackCreateDinoteDialog;
 import com.example.dinote.views.dialogs.SavedDialog;
 
 import java.io.IOException;
@@ -55,7 +57,7 @@ import java.util.List;
 import top.defaults.colorpicker.ColorPickerPopup;
 
 
-public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.TagListener, DrawFragment.SendUriListerner, SavedDialog.CallbackSaveDialog {
+public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.TagListener, DrawFragment.SendUriListerner, SavedDialog.CallbackSaveDialog, BackCreateDinoteDialog.DiaLogCreateDinoteListener {
     private boolean isLove;
     private Motion mMotion;
     private LinearLayout lnlCreateListTag;
@@ -96,7 +98,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             mMotion = (Motion) getArguments().getSerializable("obj_emoji");
 
         }
-
 
     }
 
@@ -154,7 +155,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
         }
 
-
     }
 
     @Override
@@ -174,7 +174,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 onShowDiaLogMotion(getActivity());
             }
         } else if (view.getId() == R.id.imv_create_cancel) {
-            getActivity().onBackPressed();
+            showDialogCancel();
         } else if (view.getId() == R.id.imv_create_text_custom_text) {
             mBinding.lnlCrateOption.setVisibility(View.GONE);
             mBinding.lnlCreateTextCustom.setVisibility(View.VISIBLE);
@@ -233,6 +233,18 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     }
 
+    public void showDialogCancel() {
+        BackCreateDinoteDialog backCreateDinoteDialog = new BackCreateDinoteDialog(getActivity());
+        backCreateDinoteDialog.setDiaLogCreateDinoteListener(this);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(backCreateDinoteDialog.getWindow().getAttributes());
+        lp.width = (int) (GetDisplayInfo.listInfoDisplay(getActivity())[0] * 0.8);
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+        backCreateDinoteDialog.getWindow().setAttributes(lp);
+        backCreateDinoteDialog.show();
+    }
+
     private void onSaveData() {
         // public Dinote(int id, long date, String content, String title, int motion, String imageUri, String imageDes, List<Tag> tagList)
         imageDes = mBinding.edtCreateDesDrawer.getText().toString();
@@ -259,12 +271,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 , getListTag()
         );
         DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
-        for (int i = 0; i < 1000; i++) {
-            dinote.setTitle(i + "");
-            dinote.setContent(i + "");
-            dinote.setTagList(null);
-            DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
-        }
         showDiaLogSaveSuccess();
     }
 
@@ -398,11 +404,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         datePickerDialog.show();
     }
 
-    //    public void handleEmotion(Motion mMotion) {
-//        mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
-//        mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
-//    }
-//
+
     @Override
     public void onSelectMotion(Motion motion) {
 
@@ -468,6 +470,12 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     @Override
     public void onClickSaved() {
         mainActivity.loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
+    }
+
+    @Override
+    public void onBack() {
+        mainActivity.loadFragment(new MainFragment(),Constant.MAIN_FRAGMENT);
+
     }
 
 }

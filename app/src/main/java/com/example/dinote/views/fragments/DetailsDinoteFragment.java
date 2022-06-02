@@ -29,6 +29,7 @@ import com.example.dinote.databinding.FragmentDetailsDinoteBinding;
 import com.example.dinote.model.Dinote;
 import com.example.dinote.model.Motion;
 import com.example.dinote.model.Tag;
+import com.example.dinote.utils.AppUtils;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.EditTextUtils;
 import com.example.dinote.utils.ReDesign;
@@ -36,6 +37,7 @@ import com.example.dinote.viewmodel.MotionViewModel;
 import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.views.customs.AddTagView;
 import com.example.dinote.views.customs.ToastCustom;
+import com.example.dinote.views.dialogs.DropDinoteDialog;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -107,9 +109,9 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
         }
         tagList = new ArrayList<>();
         tagList = mDinote.getTagList();
-       if (tagList !=null) {
-           setListTag(tagList);
-       }
+        if (tagList != null) {
+            setListTag(tagList);
+        }
 
     }
 
@@ -174,8 +176,7 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
                 getActivity().onBackPressed();
                 break;
             case R.id.imv_detail_is_drop:
-                DinoteDataBase.getInstance(getActivity()).dinoteDAO().deleteDinote(mDinote);
-                getActivity().onBackPressed();
+                showDialogDrop();
                 break;
             case R.id.imv_detail_is_loved:
                 if (isLike == 1) {
@@ -207,6 +208,12 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
         }
     }
 
+    private void showDialogDrop() {
+        DropDinoteDialog dropDinoteDialog = new DropDinoteDialog(getActivity());
+        dropDinoteDialog.getWindow().setAttributes(AppUtils.getWindowManager(dropDinoteDialog));
+        dropDinoteDialog.show();
+    }
+
     private void onShowDiaLogMotion(@NonNull FragmentActivity context) {
 
         LinearLayout viewGroup = context.findViewById(R.id.cv_popup_motion);
@@ -230,10 +237,16 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
 
 
     private void setListTag(List<Tag> tagList) {
+        if (tagList.size() == 0) {
+            AddTagView addTagView = new AddTagView(getActivity());
+            addTagView.setEditTagListener(this);
+            mBinding.lnlCreateListTag.addView(addTagView);
+        }
         for (int i = 0; i < tagList.size(); i++) {
             AddTagView addTagView = new AddTagView(getContext());
             addTagView.setTag(i);
             addTagView.setUpString(tagList.get(i).getContentTag());
+
             addTagView.setEditTagListener(this);
             mBinding.lnlCreateListTag.addView(addTagView);
         }
