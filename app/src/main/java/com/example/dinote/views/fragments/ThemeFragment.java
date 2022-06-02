@@ -28,6 +28,7 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
         int theme = new MySharePreference(getActivity()).getDataTheme(ThemeFragment.TAG);
         vpgThemeFragment = rootView.findViewById(R.id.vpg_theme_change);
         vpgThemeFragment.setPageMargin(50);
+        vpgThemeFragment.setBackgroundColor(Color.TRANSPARENT);
         themeAdapter = new ThemeAdapter(mContext, images());
         vpgThemeFragment.setAdapter(themeAdapter);
         if (theme == 1) {
@@ -45,7 +46,6 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
                     mBinding.ctlTheme.setBackgroundColor(Color.WHITE);
                 } else {
                     mBinding.ctlTheme.setBackgroundColor(Color.BLACK);
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 MySharePreference mySharePreference = new MySharePreference(getContext());
                 mySharePreference.pushThemeValue(TAG, position);

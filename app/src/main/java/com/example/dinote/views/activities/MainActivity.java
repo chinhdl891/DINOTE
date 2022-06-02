@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -104,11 +105,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
         int theme = new MySharePreference(this).getDataTheme(ThemeFragment.TAG);
         if (theme == 1) {
-            setTheme(com.google.android.material.R.style.Theme_Material3_Dark_NoActionBar);
-            uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
-//            setTheme(com.google.android.material.R.style.Theme_Material3_Light_NoActionBar);
-            uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 

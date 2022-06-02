@@ -133,7 +133,7 @@ public class ReminderFragment extends BaseFragment<FragmentReminderBinding> impl
                 setAlarmRemind(calendar);
             }
         }, hour, minus, false);
-        timePicker.setTitle("Choose hour");
+        timePicker.setTitle(getString(R.string.choose_time_remind));
         timePicker.show();
     }
 

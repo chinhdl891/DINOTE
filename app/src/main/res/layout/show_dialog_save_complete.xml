@@ -37,19 +37,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
-                    android:text="Thành Công" />
+                    android:text="@string/txt_success"
+                    android:textColor="@color/text_color" />
 
                 <TextView
+                    android:textColor="@color/text_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
-                    android:text="Chúc Mừng" />
+                    android:text="@string/good_jod" />
 
                 <TextView
+                    android:textColor="@color/text_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
-                    android:text="Nhật Ký của bạn đã lưu thành công" />
+                    android:text="@string/save_success" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_save_dialog"
@@ -60,7 +63,7 @@
                     android:layout_marginEnd="@dimen/margin_start"
                     android:layout_marginBottom="@dimen/margin_20"
                     android:background="@drawable/coner_view_button_continues"
-                    android:text="Đồng ý"
+                    android:text="@string/yes"
                     android:textColor="@color/white" />
 
 

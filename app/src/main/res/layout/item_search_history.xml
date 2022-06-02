@@ -5,6 +5,7 @@
     android:background="@drawable/conner_view"
     android:layout_height="wrap_content">
     <TextView
+        android:textColor="@color/text_color"
         android:ellipsize="middle"
         android:paddingStart="@dimen/margin_10dp"
         android:paddingEnd="@dimen/margin_10dp"

@@ -37,7 +37,6 @@
     <string name="hint_search">Nhập gì đó để tìm kiếm</string>
     <string name="showmore">Thêm</string>
     <string name="hint_search_result">Search Result</string>
-    <string name="time_remind">Thời gian nhắc nhở </string>
     <string name="dinote_chanel">Dinote Chanel</string>
     <string name="remind_dinote">Chanel remind write dinote</string>
     <string name="dinote_id">dinoteId</string>
@@ -60,4 +59,10 @@
     <string name="hint_dinote_item_content">Không có nội dung</string>
     <string name="txt_month">Th %1$i</string>
     <string name="time_reminded">Thời gian đã tồn tại</string>
+    <string name="save_success">Nhật Ký của bạn đã lưu thành công</string>
+    <string name="good_jod">Chúc Mừng</string>
+    <string name="yes">Đồng ý</string>
+    <string name="txt_success">Thành Công</string>
+    <string name="time_remind">Thời gian nhắc nhở:</string>
+    <string name="choose_time_remind">Choose Time</string>
 </resources>

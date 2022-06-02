@@ -11,5 +11,5 @@
     <color name="dot_color_select">#806EFF</color>
     <color name="dot_color_un_select">#6956EA</color>
     <color name="blue">#806EFF</color>
-
+    <color name="text_color">#E0E6FA</color>
 </resources>
