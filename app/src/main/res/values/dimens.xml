@@ -6,4 +6,7 @@
     <dimen name="margin_16dp">16dp</dimen>
     <dimen name="conner_radius">12dp</dimen>
     <dimen name="padding_textview">5dp</dimen>
+    <dimen name="padding_text">4dp</dimen>
+    <dimen name="text_size_title">16sp</dimen>
+    <dimen name="margin_start_text">4dp</dimen>
 </resources>

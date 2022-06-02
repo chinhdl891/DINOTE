@@ -25,9 +25,10 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
 
     @Override
     protected void initViews(View rootView) {
-        int theme = new MySharePreference(getActivity()).getData(ThemeFragment.TAG);
+        int theme = new MySharePreference(getActivity()).getDataTheme(ThemeFragment.TAG);
         vpgThemeFragment = rootView.findViewById(R.id.vpg_theme_change);
         vpgThemeFragment.setPageMargin(50);
+        vpgThemeFragment.setBackgroundColor(Color.TRANSPARENT);
         themeAdapter = new ThemeAdapter(mContext, images());
         vpgThemeFragment.setAdapter(themeAdapter);
         if (theme == 1) {
@@ -41,14 +42,10 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
 
             @Override
             public void onPageSelected(int position) {
-
                 if (position == 0) {
-
                     mBinding.ctlTheme.setBackgroundColor(Color.WHITE);
-
                 } else {
                     mBinding.ctlTheme.setBackgroundColor(Color.BLACK);
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 MySharePreference mySharePreference = new MySharePreference(getContext());
                 mySharePreference.pushThemeValue(TAG, position);
@@ -77,7 +74,7 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
     }
 
@@ -100,10 +97,16 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imv_theme_cancel:
-                getActivity().onBackPressed();
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
                 break;
             case R.id.btn_theme_change:
-                getActivity().recreate();
+                if (getActivity() != null) {
+                    getActivity().recreate();
+                }
+
+                break;
         }
     }
 }

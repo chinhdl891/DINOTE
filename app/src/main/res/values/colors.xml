@@ -10,5 +10,7 @@
     <color name="dot_color_select">#806EFF</color>
     <color name="dot_color_un_select">#6956EA</color>
     <color name="blue">#806EFF</color>
+    <color name="milky">#F4F5F6</color>
+    <color name="text_color">#1C1E25</color>
 
 </resources>

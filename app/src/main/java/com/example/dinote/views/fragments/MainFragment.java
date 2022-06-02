@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.dinote.R;
@@ -22,23 +25,27 @@ import com.example.dinote.utils.ReDesign;
 import com.example.dinote.viewmodel.MainViewModel;
 import com.example.dinote.views.activities.MainActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class MainFragment extends BaseFragment<MainFragmentBinding> implements View.OnClickListener, DinoteAdapter.DinoteAdapterListener {
+    private static final String TAG = "MainFragment";
+    public static final int NUM_ITEM_LOAD_MORE = 50;
     private ViewPager vpgMainFragment;
     private PhotoAdapter photoAdapter;
-    private CircleImageView circleImageView;
     private MainActivity mainActivity;
     private List<Dinote> dinoteList;
     private MainViewModel viewModel;
     private int[] photoModelList;
     private Timer mTimer;
-    int i = 0;
-    private static final String TAG = "MainFragment";
+    private DinoteAdapter mDinoteAdapter;
+    private int mOffset = 0;
+    private boolean isCanLoadMore = false;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private int totalItem;
+
 
     @Override
     protected int getLayoutResource() {
@@ -50,24 +57,63 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     protected void initViews(View rootView) {
 
         mainActivity = (MainActivity) getActivity();
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         vpgMainFragment = rootView.findViewById(R.id.vpg_main_fragment);
-        vpgMainFragment.setPageMargin(50);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mBinding.rcvMainDinote.setLayoutManager(mLayoutManager);
+
+    }
+
+    @Override
+    protected void setUpData() {
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         photoModelList = viewModel.image;
+        vpgMainFragment.setPageMargin(50);
         photoAdapter = new PhotoAdapter(mContext, photoModelList);
         vpgMainFragment.setAdapter(photoAdapter);
         autoNextAds();
-        mBinding.bgMainBackground.setOnClickListener(this);
-        mBinding.rcvMainDinote.setLayoutManager(new LinearLayoutManager(mContext));
-        DinoteAdapter dinoteAdapter = new DinoteAdapter();
-        mBinding.rcvMainDinote.setAdapter(dinoteAdapter);
-        dinoteAdapter.setDinoteList(getListDinote());
-        dinoteAdapter.setDinoteAdapterListener(this);
 
+        dinoteList = new ArrayList<>();
+        totalItem = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getTotalItemCount();
+        dinoteList.addAll(DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote(NUM_ITEM_LOAD_MORE, mOffset));
+        mDinoteAdapter = new DinoteAdapter(dinoteList);
+        mDinoteAdapter.setDinoteAdapterListener(this);
+        mBinding.rcvMainDinote.setAdapter(mDinoteAdapter);
+        mBinding.rcvMainDinote.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition() == (dinoteList.size() - 1) && !isCanLoadMore) {
+                    isCanLoadMore = true;
+                    loadData();
+                }
+            }
+        });
+    }
 
-
+    private void loadData() {
+        Timer timer = new Timer();
+        if (mOffset - NUM_ITEM_LOAD_MORE >= totalItem) {
+            isCanLoadMore = true;
+        } else {
+            mBinding.pbMainLoadMore.setVisibility(View.VISIBLE);
+            isCanLoadMore = true;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mOffset += NUM_ITEM_LOAD_MORE;
+                    mBinding.rcvMainDinote.post(() -> {
+                        List<Dinote> newDataList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote(NUM_ITEM_LOAD_MORE, mOffset);
+                        dinoteList.addAll(newDataList);
+                        mDinoteAdapter.notifyItemRangeInserted(mOffset, newDataList.size());
+                        isCanLoadMore = false;
+                        mBinding.pbMainLoadMore.setVisibility(View.GONE);
+                    });
+                    timer.cancel();
+                }
+            }, 2000);
+        }
 
     }
+
 
     private void autoNextAds() {
         if (photoModelList == null || photoModelList.length == 0 || vpgMainFragment == null) {
@@ -99,10 +145,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
 
     }
 
-    private List<Dinote> getListDinote() {
-        dinoteList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinote();
-        return dinoteList;
-    }
 
     @Override
     protected void resizeViews() {
@@ -114,13 +156,10 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     protected void onClickViews() {
         mBinding.bgMainBackground.setOnClickListener(this);
         mBinding.imvMainCreateDinote.setOnClickListener(this);
+        mBinding.bgMainBackground.setOnClickListener(this);
 
     }
 
-    @Override
-    protected void setView() {
-
-    }
 
     @Override
     protected void setTypeView() {
@@ -133,7 +172,6 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
     public void onClick(View view) {
 
         switch (view.getId()) {
-
             case R.id.bg_main_background:
             case R.id.imv_main_create_dinote:
                 mainActivity.loadFragment(new CreateDinoteFragment(), Constant.CREATE_DINOTE_FRAGMENT);
@@ -153,5 +191,11 @@ public class MainFragment extends BaseFragment<MainFragmentBinding> implements V
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mTimer.cancel();
+        Log.e(TAG, "onStop: ");
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.example.dinote.utils;
 
+import java.util.Calendar;
+
 public class Constant {
     public final static String  MAIN_FRAGMENT = "main_fragment" ;
     public final static String  CREATE_DINOTE_FRAGMENT = "create_fragment" ;
@@ -23,9 +25,24 @@ public class Constant {
     public final static String SEND_DATA_OBJ_DINOTE = "send_obj_dinote";
     public final static int PERMISSION_WRITE_EXTERNAL_STORAGE = 101;
     public final static String THEME_SHARE_PER = "theme_int";
-
-
-
-
     public static final int REQUEST_MOTION = 101;
+    public static final String TIME_REMIND = "time_default";
+    public static final String RE_CREATE_ALARM = "re_create_alarm" ;
+    public static final String TIME_REMIND_DEFAULT = "long_time_default";
+    public static final String SEARCH_FRAGMENT = "search_fragment" ;
+    public static final String KEY_SEARCH = "key_search";
+    public static final String RESULT_SEARCH_FRAGMENT = "result_search_fragment";
+    public static final String DETAIL_FRAGMENT_SEARCH = "detail_fragment_search" ;
+    public static final String FIRST_INSTALL = "the_first_install" ;
+    public static final int LIMIT_SEARCH = 50;
+
+
+    public static long defaultCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
 }

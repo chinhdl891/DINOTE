@@ -12,6 +12,7 @@
     </data>
 
     <ScrollView
+        android:paddingTop="@dimen/margin_16dp"
         android:id="@+id/svCreateDinote"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,12 +46,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.example.dinote.views.customs.font.TextViewSemiBold
-                    android:id="@+id/textView2"
+                    android:textColor="@color/black"
+                    android:id="@+id/tv_title_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
                     android:gravity="center"
-                    android:text="Dinote Lite"
+                    android:text="@string/dinote_lite"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toStartOf="@+id/cardView"
                     app:layout_constraintHorizontal_bias="0.483"
@@ -84,7 +86,8 @@
 
 
             <EditText
-
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
                 android:id="@+id/edt_create_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_start"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/coner_view"
+                    android:background="@drawable/conner_view"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
@@ -129,6 +132,7 @@
                         android:src="@drawable/ic_fun" />
 
                     <TextView
+                        android:textColorHint="@color/black"
                         android:id="@+id/edt_create_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -164,15 +168,17 @@
 
 
             <EditText
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
                 android:id="@+id/edt_create_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_20"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="@dimen/margin_20"
-                android:background="@drawable/coner_view"
+                android:background="@drawable/conner_view"
                 android:gravity="top"
-                android:hint="Nhập nội dung "
+                android:hint="@string/wirte_on_my_life"
                 android:maxHeight="400dp"
                 android:minHeight="200dp"
                 android:paddingStart="12dp"
@@ -289,6 +295,8 @@
             </LinearLayout>
 
             <TextView
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
                 android:id="@+id/tv_date_selection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -325,6 +333,7 @@
             </androidx.cardview.widget.CardView>
 
             <EditText
+                android:textColor="@color/black"
                 android:id="@+id/edt_create_des_drawer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -333,7 +342,8 @@
                 android:layout_marginEnd="@dimen/margin_start"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:hint="Mô tả ảnh"
+                android:hint="@string/des_image"
+                android:textColorHint="@color/black"
                 android:inputType="textPersonName"
                 app:layout_constraintTop_toBottomOf="@+id/cv_create_drawer"
                 tools:layout_editor_absoluteX="115dp" />

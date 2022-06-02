@@ -28,7 +28,7 @@ public class TagFragment extends BaseFragment {
     }
 
     @Override
-    protected void setView() {
+    protected void setUpData() {
 
     }
 

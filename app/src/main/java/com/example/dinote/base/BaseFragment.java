@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
+import com.example.dinote.myshareferences.MySharePreference;
 import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.utils.GetDisplayInfo;
 
@@ -26,6 +27,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
     protected int pointViewX;
     protected int pointViewY;
     protected MainActivity mainActivity;
+    protected  MySharePreference mySharePreference;
 
 
     @Override
@@ -46,10 +48,11 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mySharePreference = new MySharePreference(getActivity());
         initViews(view);
         resizeViews();
         onClickViews();
-        setView();
+        setUpData();
         setTypeView();
         getParamView(view);
 
@@ -64,7 +67,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
 
     protected abstract void onClickViews();
 
-    protected abstract void setView();
+    protected abstract void setUpData();
 
     protected abstract void setTypeView();
 

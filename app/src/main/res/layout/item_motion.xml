@@ -12,6 +12,7 @@
         android:layout_height="50dp"
         android:src="@drawable/ic_motion_item_cool"/>
     <TextView
+        android:textColor="@color/text_color"
         android:padding="5dp"
         android:text="Hạnh Phúc"
         android:layout_width="wrap_content"

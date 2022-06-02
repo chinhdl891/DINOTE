@@ -10,15 +10,11 @@
             android:icon="@drawable/ic_menu_heart"
             android:id="@+id/item_menu_favorite"
             android:title="@string/text_like" />
-        <item android:id="@+id/item_menu_lock_app"
-            android:icon="@drawable/ic_menu_lock_app"
-            android:title="@string/text_lock"/>
+
         <item android:id="@+id/item_menu_remind"
             android:icon="@drawable/ic_menu_remind"
             android:title="@string/text_remind"/>
-        <item android:id="@+id/item_menu_export"
-            android:icon="@drawable/ic_menu_export"
-            android:title="Xuất tệp"/>
+
         <item android:id="@+id/item_menu_rate"
             android:icon="@drawable/ic_menu_rate"
             android:title="@string/text_rate"/>
@@ -26,4 +22,5 @@
             android:icon="@drawable/ic_menu_tag"
             android:title="@string/text_tag"/>
     </group>
+
 </menu>
