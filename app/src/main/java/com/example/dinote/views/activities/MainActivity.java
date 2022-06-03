@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout lnlMainOpenTheme, lnlMainOpenRate, lnlMainOpenFavorite;
     private ActionBarDrawerToggle toggle;
     private RecyclerView rcvHeadHotTag;
-    private TagAdapter tagAdapter;
+    public TagAdapter tagAdapter;
+    public List<Tag> tagList;
 
 
     @Override
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private List<Tag> getTagListSuggest() {
-        return DinoteDataBase.getInstance(this).tagDAO().listHotTag();
+        return tagList = DinoteDataBase.getInstance(this).tagDAO().listHotTag();
     }
 
 

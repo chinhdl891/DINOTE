@@ -8,18 +8,18 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingStart="@dimen/margin_10dp"
-        android:paddingEnd="@dimen/margin_10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="@dimen/margin_10dp"
+        android:paddingEnd="@dimen/margin_10dp"
         tools:context=".views.fragments.SearchFragment">
 
         <RelativeLayout
-            android:gravity="center"
             android:id="@+id/lnl_search_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
+            android:gravity="center"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -30,8 +30,6 @@
                 android:src="@drawable/ic_cancel" />
 
             <EditText
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
                 android:id="@+id/edit_search_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +37,9 @@
                 android:layout_toEndOf="@+id/imv_search_cancel"
                 android:background="@android:color/transparent"
                 android:hint="@string/txt_search"
-                android:paddingStart="@dimen/margin_start" />
+                android:paddingStart="@dimen/margin_start"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/hint_text_color" />
 
             <ImageView
                 android:id="@+id/imv_search_show"
@@ -50,17 +50,19 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rlt_search_suggest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/lnl_search_action">
 
             <TextView
-                android:textColor="@color/black"
                 android:id="@+id/tv_search_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/txt_history_search"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_title"
                 android:textStyle="bold" />
 
@@ -81,13 +83,13 @@
 
 
             <TextView
-                android:textColor="@color/black"
                 android:id="@+id/tv_search_tag_hot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btn_search_show_more"
                 android:layout_marginTop="@dimen/margin_10dp"
                 android:text="@string/tag_hot"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_title"
                 android:textStyle="bold" />
 
@@ -109,7 +111,43 @@
                 android:paddingStart="@dimen/padding_text"
                 android:paddingEnd="@dimen/padding_text"
                 android:text="@string/showmore"
-                android:textColor="@color/black" />
+                android:textColor="@color/text_color" />
         </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:paddingBottom="100dp"
+            android:clipToPadding="true"
+            android:id="@+id/rcv_search_suggest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size_title"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/lnl_search_action" />
+
+        <LinearLayout
+            android:id="@+id/lnl_search_empty"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnl_search_action">
+
+            <ImageView
+                android:id="@+id/imv_search_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_box_empty" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:text="@string/no_dinote"
+                android:textColor="@color/text_color" />
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

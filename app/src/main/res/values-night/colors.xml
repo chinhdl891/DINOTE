@@ -13,4 +13,5 @@
     <color name="blue">#806EFF</color>
     <color name="text_color">#E0E6FA</color>
     <color name="text_color_exit">#806EFF</color>
+    <color name="hint_text_color">#C8D4F4</color>
 </resources>

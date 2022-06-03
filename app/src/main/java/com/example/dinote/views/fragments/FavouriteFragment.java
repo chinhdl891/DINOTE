@@ -1,7 +1,6 @@
 package com.example.dinote.views.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +28,6 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     @Override
     protected void initViews(View rootView) {
-
     }
 
     @Override
@@ -54,7 +52,6 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     @Override
     protected void setUpData() {
-
         mBinding.rcvFavoriteDinote.setLayoutManager(new LinearLayoutManager(getActivity()));
         DinoteAdapter dinoteAdapter = new DinoteAdapter(getListDinoteFavorite());
         dinoteAdapter.setDinoteAdapterListener(this);
@@ -73,7 +70,9 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     private List<Dinote> getListDinoteFavorite() {
         dinoteList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinoteFavorite();
-        Log.d(TAG, "getListDinoteFavorite: " + dinoteList.size());
+        if (dinoteList.size() > 0) {
+            mBinding.imvFavoriteEmpty.setVisibility(View.GONE);
+        }
         return dinoteList;
     }
 

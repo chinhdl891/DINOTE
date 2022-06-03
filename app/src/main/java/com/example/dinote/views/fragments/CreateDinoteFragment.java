@@ -195,7 +195,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             addTag(lnlCreateListTag, lnlCreateListTag.getChildCount(), mContext);
         } else if (view.getId() == R.id.imv_create_text_remove) {
             onShowDialogRemove(Gravity.CENTER);
-        } else if (view.getId() == R.id.btn_dialog_continues) {
+        } else if (view.getId() == R.id.btn_dialog_continues_cancel) {
             dialog.dismiss();
         } else if (view.getId() == R.id.btn_dialog_continues_cancel) {
             dialog.dismiss();
@@ -224,15 +224,18 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             fragment.setSendUriListerner(this);
             assert mainActivity != null;
             mainActivity.loadFragment(fragment, Constant.DRAW_FRAGMENT);
-
         } else if (view.getId() == R.id.tv_create_save) {
             onSaveData();
 
+        } else if (view.getId() == R.id.btn_continue_create_dinote_cancel){
+            dialog.dismiss();
+        } else if (view.getId() == R.id.btn_continue_create_dinote_clear) {
+            mBinding.edtCreateContent.setText("");
+            dialog.dismiss();
         }
 
 
     }
-
     public void showDialogCancel() {
         BackCreateDinoteDialog backCreateDinoteDialog = new BackCreateDinoteDialog(getActivity());
         backCreateDinoteDialog.setDiaLogCreateDinoteListener(this);
@@ -271,6 +274,11 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 , getListTag()
         );
         DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+        for (int i = 0; i < 500; i++) {
+            dinote.setTitle(String.format("Nhat Ki Fake %d",i));
+            dinote.setContent("Fake" + i);
+            DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
+        }
         showDiaLogSaveSuccess();
     }
 
@@ -290,11 +298,14 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                     if (DinoteDataBase.getInstance(getActivity()).tagDAO().getCount(tag) > 0) {
                         List<Tag> tags = DinoteDataBase.getInstance(getActivity()).tagDAO().getTagFindByTagConTent(tag);
                         tagList.add(tags.get(0));
+                        mainActivity.tagList.add(tags.get(0));
                     } else {
-                        DinoteDataBase.getInstance(getActivity()).tagDAO().insertTag(new Tag(0, tag));
+                        DinoteDataBase.getInstance(getActivity()).tagDAO().insertTag(new Tag( tag));
                         List<Tag> tags = DinoteDataBase.getInstance(getActivity()).tagDAO().getTagFindByTagConTent(tag);
                         tagList.add(tags.get(0));
+                        mainActivity.tagList.add(tags.get(0));
                     }
+                    mainActivity.tagAdapter.notifyItemRangeInserted(mainActivity.tagList.size(),1);
                 }
             }
         }
@@ -326,14 +337,12 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                     }
 
                 });
-
     }
-
 
     private void onShowDialogRemove(int gravity) {
         dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_remove_dinote);
+        dialog.setContentView(R.layout.dialog_remove_text);
         Window window = dialog.getWindow();
         if (window == null) {
             return;
@@ -343,10 +352,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         layoutParams.gravity = gravity;
         window.setAttributes(layoutParams);
-        Button btnContinues = dialog.findViewById(R.id.btn_dialog_continues);
-        Button btnCancel = dialog.findViewById(R.id.btn_dialog_continues_cancel);
+        Button btnCancel = dialog.findViewById(R.id.btn_continue_create_dinote_cancel);
+        Button btnClear = dialog.findViewById(R.id.btn_continue_create_dinote_clear);
         btnCancel.setOnClickListener(this);
-        btnContinues.setOnClickListener(this);
+        btnClear.setOnClickListener(this);
         dialog.show();
 
     }
@@ -407,7 +416,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
 
     @Override
     public void onSelectMotion(Motion motion) {
-
         mBinding.imvCreateMotion.setImageResource(motion.getImgMotion());
         mBinding.edtCreateStatus.setText(getString(motion.getMotion()));
         this.motion = motion.getId();
@@ -424,6 +432,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     @Override
     public void onAddTag() {
         addTag(lnlCreateListTag, lnlCreateListTag.getChildCount(), mContext);
+        mBinding.lnlCreateListTag.getChildAt(mBinding.lnlCreateListTag.getChildCount()-1).requestFocus();
     }
 
     private void addTag(LinearLayout lnlCreateListTag, int lnlChildCount, Context mContext) {

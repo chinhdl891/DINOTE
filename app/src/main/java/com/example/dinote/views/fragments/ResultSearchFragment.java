@@ -43,6 +43,7 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
 
     @Override
     protected void resizeViews() {
+        ReDesign.resizeImage(mBinding.imvFavoriteEmpty,256,256);
 
     }
 

@@ -6,13 +6,12 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class SearchHistory {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo
     private String contentSearch;
 
-    public SearchHistory(long id, String contentSearch) {
-        this.id = id;
+    public SearchHistory(String contentSearch) {
         this.contentSearch = contentSearch;
     }
 

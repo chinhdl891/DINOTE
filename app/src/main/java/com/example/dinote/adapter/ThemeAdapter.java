@@ -12,6 +12,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.example.dinote.R;
+import com.example.dinote.utils.ReDesign;
 
 import java.util.Objects;
 
@@ -32,6 +33,7 @@ public class ThemeAdapter extends PagerAdapter {
 
         View itemView = mLayoutInflater.inflate(R.layout.item_photo, container, false);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imv_item_photo);
+        ReDesign.resizeImage(imageView,640,720);
         Glide.with(context).load(images[position]).into(imageView);
         Objects.requireNonNull(container).addView(itemView);
 

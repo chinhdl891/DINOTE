@@ -60,7 +60,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
                 } else {
                     llAddTag.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.un_focused_background));
                     imvTagCancel.setVisibility(INVISIBLE);
-                    edtTagAdd.setHint("");
+                    edtTagAdd.setHint(mContext.getString(R.string.add_tag));
                 }
             }
         });

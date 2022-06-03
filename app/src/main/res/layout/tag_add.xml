@@ -13,6 +13,7 @@
         android:drawableStart="@drawable/ic_tag"
         android:drawablePadding="20dp"
         android:hint="@string/text_tag"
+        android:textColorHint="@color/hint_text_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 

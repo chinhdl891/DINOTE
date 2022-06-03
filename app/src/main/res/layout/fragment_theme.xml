@@ -14,60 +14,45 @@
         android:orientation="vertical"
         tools:context=".base.BaseFragment">
 
-        <LinearLayout
-            android:id="@+id/lnl_option"
+
+        <ImageView
+            android:id="@+id/imv_theme_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_cancel"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_theme_title"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_weight="9"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="10"
-            app:layout_constraintTop_toTopOf="parent">
+            android:text="@string/change_theme"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imv_theme_cancel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/ic_cancel" />
-
-            <TextView
-                android:id="@+id/tv_theme_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="9"
-                android:gravity="center"
-                android:text="@string/favorite"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnl_theme_vpg"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vpg_theme_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnl_option">
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/vpg_theme_change"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:background="@android:color/transparent" />
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
             android:id="@+id/dot"
             android:layout_width="wrap_content"
             android:layout_height="10dp"
-            android:layout_below="@+id/lnl_theme_vpg"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="10dp"
             app:dotsColor="@color/dot_color_un_select"
@@ -77,7 +62,7 @@
             app:dotsWidthFactor="2.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lnl_theme_vpg"
+            app:layout_constraintTop_toBottomOf="@+id/vpg_theme_change"
             app:progressMode="true"
             app:selectedDotColor="@color/dot_color_select" />
 
@@ -90,7 +75,6 @@
             android:paddingStart="@dimen/margin_start"
             android:paddingEnd="@dimen/margin_start"
             android:text="@string/text_change"
-
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
