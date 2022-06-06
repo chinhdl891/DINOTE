@@ -224,8 +224,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding> implemen
                     goToSearchSuggest(edtSearch.toString());
                 }
             },2000);
-        } else {
-
         }
     }
 

@@ -45,7 +45,7 @@
                 android:id="@+id/btn_dialog_dinote_continue"
                 style="@style/twoButton"
                 android:background="@drawable/coner_view_button_continues"
-                android:text="@string/text_continue"
+                android:text="@string/txt_continue"
                 android:textColor="@color/white" />
         </LinearLayout>
 

@@ -74,7 +74,7 @@
     <string name="des_notifi">des notification</string>
     <string name="text_change">Thay đổi</string>
     <string name="text_exit">Thoát</string>
-    <string name="text_continue">Tiếp tục</string>
+    <string name="txt_continue">Tiếp tục</string>
     <string name="give">Giữ lại</string>
     <string name="txt_delete">Xóa</string>
     <string name="Question_Delete">Bạn có chắc chắn xóa nhật ký này</string>
@@ -82,4 +82,14 @@
     <string name="txt_continue_create_dinote">Tiếp tục viết nhật ky</string>
     <string name="question_create_continue">Bạn có muốn tiếp tục viết nhạt ký không</string>
     <string name="change_theme">Thay đôi chủ đề</string>
+    <string name="txt_skip">Bỏ qua</string>
+    <string name="txt_dinote_title">Nhật ký Dinotes</string>
+    <string name="txt_backup_and_security_title">Sao lưu và bảo mật</string>
+    <string name="txt_theme_title">Thay đổi chủ đề</string>
+    <string name="txt_backup_and_security">Bảo vệ nhật ký riêng tư và không lo mất dữ liệu</string>
+    <string name="txt_theme">Thay đổi chế độ sáng tối</string>
+    <string name="txt_dinote">Tạo nhật ký cá nhân của bạn</string>
+    <string name="txt_go_to_main" />
+    <string name="txt_go_to_main_des">Viết ghi chú cá nhân của bạn,  những sự kiện hằng ngày, những cảm xúc và bí mật cá nhân</string>
+    <string name="txt_start_dinote">Bắt đầu ngay bây giờ</string>
 </resources>

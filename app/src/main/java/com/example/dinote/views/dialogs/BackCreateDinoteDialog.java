@@ -34,7 +34,6 @@ public class BackCreateDinoteDialog extends Dialog implements View.OnClickListen
         dialogDinoteCancelBinding.btnDialogDinoteContinue.setOnClickListener(this);
         dialogDinoteCancelBinding.btnDialogDinoteExit.setOnClickListener(this);
 
-
     }
 
     @Override

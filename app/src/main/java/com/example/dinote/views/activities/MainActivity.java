@@ -30,6 +30,7 @@ import com.example.dinote.adapter.TagAdapter;
 import com.example.dinote.databases.DinoteDataBase;
 import com.example.dinote.databinding.ActivityMainBinding;
 import com.example.dinote.model.Tag;
+import com.example.dinote.myshareferences.MyDataLocal;
 import com.example.dinote.myshareferences.MySharePreference;
 import com.example.dinote.utils.AppUtils;
 import com.example.dinote.utils.Constant;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyDataLocal.setInstalled();
         setupTheme();
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         checkPermission();

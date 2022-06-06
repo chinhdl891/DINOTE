@@ -60,6 +60,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:textColor="@color/text_color"
                 android:textColorHint="@color/hint_text_color"
                 android:id="@+id/tv_time_select"
                 android:layout_width="wrap_content"
@@ -88,8 +89,6 @@
             android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_10dp"
             android:orientation="vertical">
-
-
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton

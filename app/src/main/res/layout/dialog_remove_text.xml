@@ -37,7 +37,7 @@
                 android:id="@+id/btn_continue_create_dinote_cancel"
                 style="@style/twoButton"
                 android:background="@drawable/coner_view_button_cancel"
-                android:text="@string/text_continue"
+                android:text="@string/txt_continue"
                 android:textColor="@color/text_color_exit" />
 
             <androidx.appcompat.widget.AppCompatButton

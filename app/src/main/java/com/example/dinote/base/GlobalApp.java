@@ -24,7 +24,6 @@ public class GlobalApp extends Application {
 
     private void setUpTimeRemind() {
         if (!MyDataLocal.getIsFirstInstall()) {
-            MyDataLocal.setInstalled();
             long timeDefault = Constant.defaultCalendar();
             Intent intent = new Intent(this, RemindReceiver.class);
             MyDataLocal.setTimeRemind(timeDefault);

@@ -1,7 +1,6 @@
 package com.example.dinote.views.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +18,8 @@ import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.ReDesign;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBinding> implements View.OnClickListener, DinoteAdapter.DinoteAdapterListener {
     private String search;
@@ -43,7 +44,7 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
 
     @Override
     protected void resizeViews() {
-        ReDesign.resizeImage(mBinding.imvFavoriteEmpty,256,256);
+        ReDesign.resizeImage(mBinding.imvFavoriteEmpty, 256, 256);
 
     }
 
@@ -60,7 +61,6 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
             search = bundle.getString(Constant.KEY_SEARCH);
         }
         totalItemSearch = DinoteDataBase.getInstance(mContext).dinoteDAO().getTotalSearch(search);
-        Log.e(TAG, "setUpData: " + totalItemSearch);
         dinoteList = DinoteDataBase.getInstance(mContext).dinoteDAO().searchAll(search, Constant.LIMIT_SEARCH, 0);
         dinoteAdapter = new DinoteAdapter(dinoteList);
         dinoteAdapter.setDinoteAdapterListener(this);
@@ -81,7 +81,7 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
             }
         });
         mBinding.tvSearchResultContent.setText(search);
-        if (dinoteList.size() == 0 ) {
+        if (dinoteList.size() == 0) {
             mBinding.rcvSearchResult.setVisibility(View.GONE);
             mBinding.lnlSearchResultEmpty.setVisibility(View.VISIBLE);
         }
@@ -94,6 +94,7 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
     }
 
     private int page = 0;
+    private Timer mTimer;
 
     private void loadData() {
         offset += 50;
@@ -101,11 +102,25 @@ public class ResultSearchFragment extends BaseFragment<FragmentResultSearchBindi
             Toast.makeText(mContext, R.string.item_end_dinote, Toast.LENGTH_SHORT).show();
             isLoadMore = true;
         } else {
-            List<Dinote> dinoteListNew = DinoteDataBase.getInstance(getActivity()).dinoteDAO().searchAll(search, Constant.LIMIT_SEARCH, offset);
-            dinoteList.addAll(dinoteListNew);
-            dinoteAdapter.notifyItemRangeInserted(offset, dinoteListNew.size());
-            isLoadMore = false;
-            page++;
+            mBinding.pbResultLoadMore.setVisibility(View.VISIBLE);
+            isLoadMore = true;
+            mTimer = new Timer();
+            mTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mBinding.rcvSearchResult.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<Dinote> dinoteListNew = DinoteDataBase.getInstance(getActivity()).dinoteDAO().searchAll(search, Constant.LIMIT_SEARCH, offset);
+                            dinoteList.addAll(dinoteListNew);
+                            dinoteAdapter.notifyItemRangeInserted(offset, dinoteListNew.size());
+                            isLoadMore = false;
+                            mBinding.pbResultLoadMore.setVisibility(View.GONE);
+                            page++;
+                        }
+                    });
+                }
+            }, 2000);
         }
 
     }

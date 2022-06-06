@@ -274,11 +274,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 , getListTag()
         );
         DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
-        for (int i = 0; i < 500; i++) {
-            dinote.setTitle(String.format("Nhat Ki Fake %d",i));
-            dinote.setContent("Fake" + i);
-            DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
-        }
         showDiaLogSaveSuccess();
     }
 
