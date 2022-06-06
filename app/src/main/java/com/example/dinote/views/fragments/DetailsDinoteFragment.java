@@ -272,6 +272,7 @@ public class DetailsDinoteFragment extends BaseFragment<FragmentDetailsDinoteBin
         LinearLayout viewGroup = context.findViewById(R.id.cv_popup_motion);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = layoutInflater.inflate(R.layout.dialog_motion_pop_up, viewGroup, true);
+        layout.setBackgroundColor(Color.TRANSPARENT);
         RecyclerView rcvMotion = layout.findViewById(R.id.rcv_pop_up_motion);
         rcvMotion.setLayoutManager(new GridLayoutManager(context, 3));
         MotionAdapter motionAdapter = new MotionAdapter();

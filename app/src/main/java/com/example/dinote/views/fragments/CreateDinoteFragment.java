@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -360,19 +359,16 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         LinearLayout viewGroup = context.findViewById(R.id.cv_popup_motion);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = layoutInflater.inflate(R.layout.dialog_motion_pop_up, viewGroup, true);
+        layout.setBackgroundColor(Color.TRANSPARENT);
         RecyclerView rcvMotion = layout.findViewById(R.id.rcv_pop_up_motion);
         rcvMotion.setLayoutManager(new GridLayoutManager(context, 3));
         MotionAdapter motionAdapter = new MotionAdapter();
         motionAdapter.setMotionList(MotionViewModel.motionList());
         rcvMotion.setAdapter(motionAdapter);
         motionAdapter.setEditMotionListener(this);
-        popup = new PopupWindow(context);
-        popup.setContentView(layout);
-        popup.setWidth((int) (0.8 * widthDisplay));
-        popup.setHeight((int) (0.4 * heightDisplay));
-        popup.setFocusable(true);
-        popup.setBackgroundDrawable(new BitmapDrawable());
-        popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX * 1.3) + 22, (int) (pointViewY * 1.1));
+        dialog = new Dialog(mContext);
+        dialog.setContentView(layout);
+        dialog.show();
     }
 
     public void setDateDefault() {
