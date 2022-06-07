@@ -2,6 +2,8 @@ package com.example.dinote.reciver;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,6 +26,7 @@ import java.util.List;
 public class RemindReceiver extends BroadcastReceiver {
     private long timeSetAlarm;
 
+
     @SuppressLint("UnspecifiedImmutableFlag")
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,12 +34,13 @@ public class RemindReceiver extends BroadcastReceiver {
         i.putExtra(Constant.RE_CREATE_ALARM, 892001);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
             pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_IMMUTABLE);
         } else {
             pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, context.getString(R.string.notifi_id))
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,createNotificationChannel(context))
                 .setContentTitle(context.getString(R.string.notifi_title))
                 .setContentText(context.getString(R.string.notifi_cation_content))
                 .setAutoCancel(true)
@@ -49,13 +53,13 @@ public class RemindReceiver extends BroadcastReceiver {
 
         long timeRemindDefault = MyDataLocal.getTimeRemind();
         if (timeRemindDefault < System.currentTimeMillis()) {
-            timeRemindDefault = timeRemindDefault + 24 * 60 * 60 * 1000;
+            timeRemindDefault = timeRemindDefault + AlarmManager.INTERVAL_DAY;
             MyDataLocal.setTimeRemind(timeRemindDefault);
         }
 
         Intent reIntent = new Intent(context, RemindReceiver.class);
         PendingIntent piReMind;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             piReMind = PendingIntent.getBroadcast(context,10,reIntent,PendingIntent.FLAG_IMMUTABLE);
         }else {
             piReMind = PendingIntent.getBroadcast(context,10,reIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -71,7 +75,7 @@ public class RemindReceiver extends BroadcastReceiver {
                     timeSetAlarm = timeRemind.getTime();
                     break;
                 } else {
-                    timeRemind.setTime(timeRemind.getTime() + 24 * 60 * 60 * 1000);
+                    timeRemind.setTime(timeRemind.getTime() + AlarmManager.INTERVAL_DAY);
                     DinoteDataBase.getInstance(context).timeRemindDAO().update(timeRemind);
                 }
             }
@@ -84,6 +88,19 @@ public class RemindReceiver extends BroadcastReceiver {
             alarmManager.set(type, timeSetAlarm, piReMind);
         }
 
+    }
+    private String createNotificationChannel(Context context) {
+        String name = context.getString(R.string.dinote_channel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+             name = context.getString(R.string.dinote_channel);
+            String description = context.getString(R.string.des_notifi);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("dinoteId", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+        return name;
     }
 }
 

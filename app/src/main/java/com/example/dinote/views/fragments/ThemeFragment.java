@@ -1,6 +1,8 @@
 package com.example.dinote.views.fragments;
 
 import android.graphics.Color;
+import android.os.Build;
+import android.view.Gravity;
 import android.view.View;
 
 import androidx.viewpager.widget.ViewPager;
@@ -16,7 +18,7 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
     private ViewPager vpgThemeFragment;
     private ThemeAdapter themeAdapter;
     public static final String TAG = "ThemeFragment";
-
+    private int theme;
 
     @Override
     protected int getLayoutResource() {
@@ -25,12 +27,16 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
 
     @Override
     protected void initViews(View rootView) {
-        int theme = new MySharePreference(getActivity()).getDataTheme(ThemeFragment.TAG);
+        theme = new MySharePreference(getActivity()).getDataTheme(ThemeFragment.TAG);
         vpgThemeFragment = rootView.findViewById(R.id.vpg_theme_change);
-        vpgThemeFragment.setPageMargin(50);
         vpgThemeFragment.setBackgroundColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            vpgThemeFragment.setForegroundGravity(Gravity.CENTER);
+        }
         themeAdapter = new ThemeAdapter(mContext, images());
         vpgThemeFragment.setAdapter(themeAdapter);
+        vpgThemeFragment.setOffscreenPageLimit(2);
+        vpgThemeFragment.setPageMargin(-320);
         if (theme == 1) {
             vpgThemeFragment.setCurrentItem(theme);
         }
@@ -44,8 +50,13 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
             public void onPageSelected(int position) {
                 if (position == 0) {
                     mBinding.ctlTheme.setBackgroundColor(Color.WHITE);
+                    mBinding.tvThemeTitle.setTextColor(Color.BLACK);
+                    mBinding.btnThemeChange.setTextColor(Color.BLACK);
+
                 } else {
                     mBinding.ctlTheme.setBackgroundColor(Color.BLACK);
+                    mBinding.tvThemeTitle.setTextColor(Color.WHITE);
+                    mBinding.btnThemeChange.setTextColor(Color.WHITE);
                 }
                 MySharePreference mySharePreference = new MySharePreference(getContext());
                 mySharePreference.pushThemeValue(TAG, position);
@@ -64,7 +75,8 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
 
     @Override
     protected void resizeViews() {
-        ReDesign.resizeImage(vpgThemeFragment, 596, 668);
+        ReDesign.resizeImage(mBinding.imvThemeCancel,64,64);
+        ReDesign.resizeImage(mBinding.vpgThemeChange,1080,720);
     }
 
     @Override
@@ -91,7 +103,6 @@ public class ThemeFragment extends BaseFragment<FragmentThemeBinding> implements
         return image;
 
     }
-
 
     @Override
     public void onClick(View view) {

@@ -40,7 +40,6 @@ public class MotionAdapter extends RecyclerView.Adapter<MotionAdapter.MotionView
         holder.imvItemMotion.setImageResource(motion.getImgMotion());
         holder.tvItemMotionName.setText(motion.getMotion());
 
-
     }
 
     @Override

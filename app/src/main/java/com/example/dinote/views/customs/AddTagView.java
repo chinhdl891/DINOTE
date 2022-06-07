@@ -20,13 +20,12 @@ import com.example.dinote.utils.ReDesign;
 
 public class AddTagView extends ConstraintLayout implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = "AddTagView";
-
+    private TagListener tagListener;
     private LinearLayout llAddTag;
     private Context mContext;
     private View mRootView;
     private EditText edtTagAdd;
     private ImageView imvTagCancel, imvTagAdd;
-
 
     public AddTagView(Context context) {
         super(context);
@@ -61,6 +60,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
                 } else {
                     llAddTag.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.un_focused_background));
                     imvTagCancel.setVisibility(INVISIBLE);
+                    edtTagAdd.setHint(mContext.getString(R.string.add_tag));
                 }
             }
         });
@@ -70,6 +70,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
                 if (i == EditorInfo.IME_ACTION_DONE) {
                     if (getTagString().length() > 0) {
                         tagListener.onAddTag();
+                        edtTagAdd.setHint("");
                         return true;
                     } else {
                         return false;
@@ -86,8 +87,8 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
     }
 
     public void setUpString(String data) {
+        edtTagAdd.setHint("");
         edtTagAdd.setText(data);
-
 
     }
 
@@ -103,11 +104,7 @@ public class AddTagView extends ConstraintLayout implements View.OnClickListener
     @Override
     public void onFocusChange(View view, boolean b) {
 
-
     }
-
-    private TagListener tagListener;
-
 
     public void setEditTagListener(TagListener tagListener) {
         this.tagListener = tagListener;

@@ -1,7 +1,6 @@
 package com.example.dinote.views.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +12,7 @@ import com.example.dinote.databases.DinoteDataBase;
 import com.example.dinote.databinding.FragmentFavouriteBinding;
 import com.example.dinote.model.Dinote;
 import com.example.dinote.utils.Constant;
+import com.example.dinote.utils.ReDesign;
 
 import java.util.List;
 
@@ -28,12 +28,11 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     @Override
     protected void initViews(View rootView) {
-
     }
 
     @Override
     protected void resizeViews() {
-
+        ReDesign.resizeImage(mBinding.imvFavoriteEmpty, 256, 256);
     }
 
     @Override
@@ -53,11 +52,14 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     @Override
     protected void setUpData() {
-
         mBinding.rcvFavoriteDinote.setLayoutManager(new LinearLayoutManager(getActivity()));
         DinoteAdapter dinoteAdapter = new DinoteAdapter(getListDinoteFavorite());
         dinoteAdapter.setDinoteAdapterListener(this);
         mBinding.rcvFavoriteDinote.setAdapter(dinoteAdapter);
+        if (dinoteList.size() == 0) {
+            mBinding.rcvFavoriteDinote.setVisibility(View.GONE);
+            mBinding.lnlFavoriteEmpty.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -68,7 +70,9 @@ public class FavouriteFragment extends BaseFragment<FragmentFavouriteBinding> im
 
     private List<Dinote> getListDinoteFavorite() {
         dinoteList = DinoteDataBase.getInstance(getActivity()).dinoteDAO().getAllDinoteFavorite();
-        Log.d(TAG, "getListDinoteFavorite: " + dinoteList.size());
+        if (dinoteList.size() > 0) {
+            mBinding.imvFavoriteEmpty.setVisibility(View.GONE);
+        }
         return dinoteList;
     }
 

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,10 +38,12 @@ import com.example.dinote.model.Dinote;
 import com.example.dinote.model.Motion;
 import com.example.dinote.model.Tag;
 import com.example.dinote.utils.Constant;
+import com.example.dinote.utils.GetDisplayInfo;
 import com.example.dinote.utils.ReDesign;
 import com.example.dinote.viewmodel.MotionViewModel;
 import com.example.dinote.views.activities.MainActivity;
 import com.example.dinote.views.customs.AddTagView;
+import com.example.dinote.views.dialogs.BackCreateDinoteDialog;
 import com.example.dinote.views.dialogs.SavedDialog;
 
 import java.io.IOException;
@@ -55,7 +56,7 @@ import java.util.List;
 import top.defaults.colorpicker.ColorPickerPopup;
 
 
-public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.TagListener, DrawFragment.SendUriListerner, SavedDialog.CallbackSaveDialog {
+public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBinding> implements View.OnClickListener, MotionAdapter.EditMotionListener, AddTagView.TagListener, DrawFragment.SendUriListerner, SavedDialog.CallbackSaveDialog, BackCreateDinoteDialog.DiaLogCreateDinoteListener {
     private boolean isLove;
     private Motion mMotion;
     private LinearLayout lnlCreateListTag;
@@ -96,7 +97,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             mMotion = (Motion) getArguments().getSerializable("obj_emoji");
 
         }
-
 
     }
 
@@ -154,7 +154,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
         }
 
-
     }
 
     @Override
@@ -174,7 +173,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 onShowDiaLogMotion(getActivity());
             }
         } else if (view.getId() == R.id.imv_create_cancel) {
-            getActivity().onBackPressed();
+            showDialogCancel();
         } else if (view.getId() == R.id.imv_create_text_custom_text) {
             mBinding.lnlCrateOption.setVisibility(View.GONE);
             mBinding.lnlCreateTextCustom.setVisibility(View.VISIBLE);
@@ -195,7 +194,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             addTag(lnlCreateListTag, lnlCreateListTag.getChildCount(), mContext);
         } else if (view.getId() == R.id.imv_create_text_remove) {
             onShowDialogRemove(Gravity.CENTER);
-        } else if (view.getId() == R.id.btn_dialog_continues) {
+        } else if (view.getId() == R.id.btn_dialog_continues_cancel) {
             dialog.dismiss();
         } else if (view.getId() == R.id.btn_dialog_continues_cancel) {
             dialog.dismiss();
@@ -224,13 +223,28 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
             fragment.setSendUriListerner(this);
             assert mainActivity != null;
             mainActivity.loadFragment(fragment, Constant.DRAW_FRAGMENT);
-
         } else if (view.getId() == R.id.tv_create_save) {
             onSaveData();
 
+        } else if (view.getId() == R.id.btn_continue_create_dinote_cancel){
+            dialog.dismiss();
+        } else if (view.getId() == R.id.btn_continue_create_dinote_clear) {
+            mBinding.edtCreateContent.setText("");
+            dialog.dismiss();
         }
 
 
+    }
+    public void showDialogCancel() {
+        BackCreateDinoteDialog backCreateDinoteDialog = new BackCreateDinoteDialog(getActivity());
+        backCreateDinoteDialog.setDiaLogCreateDinoteListener(this);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(backCreateDinoteDialog.getWindow().getAttributes());
+        lp.width = (int) (GetDisplayInfo.listInfoDisplay(getActivity())[0] * 0.8);
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+        backCreateDinoteDialog.getWindow().setAttributes(lp);
+        backCreateDinoteDialog.show();
     }
 
     private void onSaveData() {
@@ -259,12 +273,6 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                 , getListTag()
         );
         DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
-        for (int i = 0; i < 1000; i++) {
-            dinote.setTitle(i + "");
-            dinote.setContent(i + "");
-            dinote.setTagList(null);
-            DinoteDataBase.getInstance(getActivity()).dinoteDAO().insertDinote(dinote);
-        }
         showDiaLogSaveSuccess();
     }
 
@@ -284,11 +292,14 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                     if (DinoteDataBase.getInstance(getActivity()).tagDAO().getCount(tag) > 0) {
                         List<Tag> tags = DinoteDataBase.getInstance(getActivity()).tagDAO().getTagFindByTagConTent(tag);
                         tagList.add(tags.get(0));
+                        mainActivity.tagList.add(tags.get(0));
                     } else {
-                        DinoteDataBase.getInstance(getActivity()).tagDAO().insertTag(new Tag(0, tag));
+                        DinoteDataBase.getInstance(getActivity()).tagDAO().insertTag(new Tag( tag));
                         List<Tag> tags = DinoteDataBase.getInstance(getActivity()).tagDAO().getTagFindByTagConTent(tag);
                         tagList.add(tags.get(0));
+                        mainActivity.tagList.add(tags.get(0));
                     }
+                    mainActivity.tagAdapter.notifyItemRangeInserted(mainActivity.tagList.size(),1);
                 }
             }
         }
@@ -320,14 +331,12 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
                     }
 
                 });
-
     }
-
 
     private void onShowDialogRemove(int gravity) {
         dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_remove_dinote);
+        dialog.setContentView(R.layout.dialog_remove_text);
         Window window = dialog.getWindow();
         if (window == null) {
             return;
@@ -337,10 +346,10 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         layoutParams.gravity = gravity;
         window.setAttributes(layoutParams);
-        Button btnContinues = dialog.findViewById(R.id.btn_dialog_continues);
-        Button btnCancel = dialog.findViewById(R.id.btn_dialog_continues_cancel);
+        Button btnCancel = dialog.findViewById(R.id.btn_continue_create_dinote_cancel);
+        Button btnClear = dialog.findViewById(R.id.btn_continue_create_dinote_clear);
         btnCancel.setOnClickListener(this);
-        btnContinues.setOnClickListener(this);
+        btnClear.setOnClickListener(this);
         dialog.show();
 
     }
@@ -350,19 +359,16 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         LinearLayout viewGroup = context.findViewById(R.id.cv_popup_motion);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = layoutInflater.inflate(R.layout.dialog_motion_pop_up, viewGroup, true);
+        layout.setBackgroundColor(Color.TRANSPARENT);
         RecyclerView rcvMotion = layout.findViewById(R.id.rcv_pop_up_motion);
         rcvMotion.setLayoutManager(new GridLayoutManager(context, 3));
         MotionAdapter motionAdapter = new MotionAdapter();
         motionAdapter.setMotionList(MotionViewModel.motionList());
         rcvMotion.setAdapter(motionAdapter);
         motionAdapter.setEditMotionListener(this);
-        popup = new PopupWindow(context);
-        popup.setContentView(layout);
-        popup.setWidth((int) (0.8 * widthDisplay));
-        popup.setHeight((int) (0.4 * heightDisplay));
-        popup.setFocusable(true);
-        popup.setBackgroundDrawable(new BitmapDrawable());
-        popup.showAtLocation(layout, Gravity.NO_GRAVITY, (int) (pointViewX * 1.3) + 22, (int) (pointViewY * 1.1));
+        dialog = new Dialog(mContext);
+        dialog.setContentView(layout);
+        dialog.show();
     }
 
     public void setDateDefault() {
@@ -398,14 +404,9 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
         datePickerDialog.show();
     }
 
-    //    public void handleEmotion(Motion mMotion) {
-//        mBinding.imvCreateMotion.setImageResource(mMotion.getImgMotion());
-//        mBinding.edtCreateStatus.setText(getString(mMotion.getMotion()));
-//    }
-//
+
     @Override
     public void onSelectMotion(Motion motion) {
-
         mBinding.imvCreateMotion.setImageResource(motion.getImgMotion());
         mBinding.edtCreateStatus.setText(getString(motion.getMotion()));
         this.motion = motion.getId();
@@ -422,6 +423,7 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     @Override
     public void onAddTag() {
         addTag(lnlCreateListTag, lnlCreateListTag.getChildCount(), mContext);
+        mBinding.lnlCreateListTag.getChildAt(mBinding.lnlCreateListTag.getChildCount()-1).requestFocus();
     }
 
     private void addTag(LinearLayout lnlCreateListTag, int lnlChildCount, Context mContext) {
@@ -468,6 +470,12 @@ public class CreateDinoteFragment extends BaseFragment<FragmentCreateDinoteBindi
     @Override
     public void onClickSaved() {
         mainActivity.loadFragment(new MainFragment(), Constant.MAIN_FRAGMENT);
+    }
+
+    @Override
+    public void onBack() {
+        mainActivity.loadFragment(new MainFragment(),Constant.MAIN_FRAGMENT);
+
     }
 
 }

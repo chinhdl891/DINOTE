@@ -1,5 +1,6 @@
 package com.example.dinote.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -37,8 +38,6 @@ public class DinoteAdapter extends RecyclerView.Adapter<DinoteAdapter.DinoteView
 
         Dinote dinote = dinoteList.get(position);
         holder.bindData(dinote);
-
-
     }
 
     @Override
@@ -58,20 +57,20 @@ public class DinoteAdapter extends RecyclerView.Adapter<DinoteAdapter.DinoteView
             mBinding = (ItemDinoteBinding) itemView;
         }
 
+        @SuppressLint("DefaultLocale")
         @Override
         public void bindData(Dinote obj) {
             onResizeViews();
             onClickViews(obj);
-
             mBinding.tvItemDinoteContent.setText(obj.getContent());
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(obj.getDate());
             int moth = calendar.get(Calendar.MONTH) + 1;
-            mBinding.tvItemDinoteMoth.setText("Th" + moth);
+
+            mBinding.tvItemDinoteMoth.setText(String.format("Th %d",moth));
             mBinding.tvItemDinoteYear.setText(calendar.get(Calendar.YEAR) + "");
             mBinding.tvItemDinoteDay.setText(calendar.get(Calendar.DAY_OF_MONTH) + "");
-
             mBinding.tvItemDinoteContent.setText(obj.getContent());
             mBinding.tvItemDinoteTitle.setText(obj.getTitle());
 

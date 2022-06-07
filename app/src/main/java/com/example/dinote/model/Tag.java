@@ -11,11 +11,9 @@ public class Tag {
     @ColumnInfo()
     private String contentTag;
 
-    public Tag(int id, String contentTag) {
-        this.id = id;
+    public Tag(String contentTag) {
         this.contentTag = contentTag;
     }
-
 
 
     public int getId() {

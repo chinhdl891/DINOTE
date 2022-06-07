@@ -30,11 +30,13 @@ import com.example.dinote.adapter.TagAdapter;
 import com.example.dinote.databases.DinoteDataBase;
 import com.example.dinote.databinding.ActivityMainBinding;
 import com.example.dinote.model.Tag;
+import com.example.dinote.myshareferences.MyDataLocal;
 import com.example.dinote.myshareferences.MySharePreference;
 import com.example.dinote.utils.AppUtils;
 import com.example.dinote.utils.Constant;
 import com.example.dinote.utils.ReDesign;
 import com.example.dinote.views.dialogs.ExitAppDialog;
+import com.example.dinote.views.fragments.CreateDinoteFragment;
 import com.example.dinote.views.fragments.FavouriteFragment;
 import com.example.dinote.views.fragments.MainFragment;
 import com.example.dinote.views.fragments.ReminderFragment;
@@ -54,12 +56,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout lnlMainOpenTheme, lnlMainOpenRate, lnlMainOpenFavorite;
     private ActionBarDrawerToggle toggle;
     private RecyclerView rcvHeadHotTag;
-    private TagAdapter tagAdapter;
+    public TagAdapter tagAdapter;
+    public List<Tag> tagList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyDataLocal.setInstalled();
         setupTheme();
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         checkPermission();
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mainBinding.drlMain.closeDrawer(GravityCompat.START);
                 ResultSearchFragment resultSearchFragment = new ResultSearchFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.KEY_SEARCH,tag.getContentTag());
+                bundle.putString(Constant.KEY_SEARCH, tag.getContentTag());
                 resultSearchFragment.setArguments(bundle);
                 resultSearchFragment.setArguments(bundle);
                 loadFragment(resultSearchFragment, Constant.RESULT_SEARCH_FRAGMENT);
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private List<Tag> getTagListSuggest() {
-        return DinoteDataBase.getInstance(this).tagDAO().listHotTag();
+        return tagList = DinoteDataBase.getInstance(this).tagDAO().listHotTag();
     }
 
 
@@ -163,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mainBinding.drlMain.isDrawerOpen(GravityCompat.START)) {
             mainBinding.drlMain.closeDrawer(GravityCompat.START);
         } else {
-            String getTopFragment = getTopFragment().getTag();
-            if (getTopFragment != null) {
-                switch (getTopFragment) {
+            String getTopFragmentString = getTopFragment().getTag();
+            if (getTopFragmentString != null) {
+                switch (getTopFragmentString) {
                     case Constant.MAIN_FRAGMENT:
                         onShowExitApp();
                         break;
@@ -176,6 +180,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         super.onBackPressed();
                         break;
                     case Constant.CREATE_DINOTE_FRAGMENT:
+                        if (getTopFragment() instanceof CreateDinoteFragment) {
+                            ((CreateDinoteFragment) getTopFragment()).showDialogCancel();
+                        }
+                        break;
                     case Constant.THEME_FRAGMENT:
                     case Constant.REMIND_FRAGMENT:
                     case Constant.FAVORITE_FRAGMENT:
@@ -280,21 +288,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
+    private boolean check;
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == Constant.PERMISSION_WRITE_EXTERNAL_STORAGE) {
-            for (int i = 0; i < permissions.length; i++) {
-                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    if (i == 0) {
-                        Toast.makeText(this, R.string.write_debied, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, R.string.read_denied, Toast.LENGTH_SHORT).show();
+        if (!check) {
+            check = true;
+            if (requestCode == Constant.PERMISSION_WRITE_EXTERNAL_STORAGE) {
+                for (int i = 0; i < permissions.length; i++) {
+                    if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                        if (i == 0) {
+                            Toast.makeText(this, R.string.write_debied, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, R.string.read_denied, Toast.LENGTH_SHORT).show();
+                        }
+                        checkPermission();
                     }
-                    checkPermission();
                 }
             }
+
         }
     }
 
